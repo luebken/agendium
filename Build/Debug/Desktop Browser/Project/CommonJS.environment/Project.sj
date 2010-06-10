@@ -1,6 +1,7 @@
-@STATIC;1.0;p;15;AppController.jt;3189;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;3115;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;3743;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.ji;15;TextfieldView.jt;3649;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
+objj_executeFile("TextfieldView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("rootPages")]);
 objj_registerClassPair(the_class);
@@ -23,15 +24,25 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(column1, "setWidth:", 350.0);
     objj_msgSend(column1, "setIdentifier:", 1);
     objj_msgSend(table, "addTableColumn:", column1);
+    console.log('dataview:'+ objj_msgSend(objj_msgSend(column1, "dataView"), "isEditable"));
+    objj_msgSend(column1, "setEditable:", YES);
     var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "init");
-    var button = objj_msgSend(objj_msgSend(ButtonColumn, "alloc"), "initWithTarget:andAction:", self, sel_getUid("deleteItemFromList:"));
-    objj_msgSend(column2, "setDataView:", button);
+    var textfield = objj_msgSend(objj_msgSend(TextfieldView, "alloc"), "init");
+    objj_msgSend(column2, "setDataView:", textfield);
     objj_msgSend(table, "addTableColumn:", column2);
     objj_msgSend(table, "setUsesAlternatingRowBackgroundColors:", YES);
     objj_msgSend(table, "setRowHeight:", 50);
     objj_msgSend(table, "setDataSource:", self);
+    objj_msgSend(table, "setDelegate:", self);
+    objj_msgSend(table, "setAllowsColumnSelection:", YES);
 }
-},["void"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $AppController__numberOfRowsInTableView_(self, _cmd, tableView)
+},["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $AppController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
+{ with(self)
+{
+    console.log('shouldEditTableColumn');
+        return YES;
+}
+},["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $AppController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
     return objj_msgSend(rootPages, "count");
@@ -131,4 +142,28 @@ title = newValue;
     return title;
 }
 },["CPString"])]);
-}e;
+}p;15;TextfieldView.jt;905;@STATIC;1.0;I;21;Foundation/CPObject.jt;861;
+
+
+objj_executeFile("Foundation/CPObject.j", NO);
+
+{var the_class = objj_allocateClassPair(CPView, "TextfieldView"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("textfield2")]);
+objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $TextfieldView__init(self, _cmd)
+{ with(self)
+{
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("TextfieldView").super_class }, "initWithFrame:", CGRectMake( 10,10,10,10 ));
+        var textfield = objj_msgSend(CPTextField, "textFieldWithStringValue:placeholder:width:", "test", "", 5);
+        objj_msgSend(self, "addSubview:", textfield);
+    return self;
+}
+},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $TextfieldView__setObjectValue_(self, _cmd, object)
+{ with(self)
+{
+
+}
+},["void","CPObject"])]);
+}
+
+e;

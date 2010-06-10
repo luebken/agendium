@@ -9,6 +9,7 @@
 @import <Foundation/CPObject.j>
 @import "Page.j"
 @import "ButtonColumn.j"
+@import "TextfieldView.j"
 
 
 @implementation AppController : CPObject
@@ -36,26 +37,39 @@
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]]; 
+
  
     var column1 = [[CPTableColumn alloc] init];
     [column1 setWidth:350.0];
     [column1 setIdentifier:1];
     [table addTableColumn:column1];
+    console.log('dataview:'+ [[column1 dataView] isEditable]);
+    [column1 setEditable:YES];
 
     var column2 = [[CPTableColumn alloc] init]; 
-    var button = [[ButtonColumn alloc] initWithTarget:self 
-                    andAction:@selector(deleteItemFromList:)];
-    [column2 setDataView:button];
+    var textfield = [[TextfieldView alloc] init];
+    [column2 setDataView:textfield];
     //[button setTarget:self]; 
     //[button setAction:@selector(deleteItemFromList:)]; 
     [table addTableColumn:column2]; 
 
+
     [table setUsesAlternatingRowBackgroundColors:YES];
     [table setRowHeight:50];
     [table setDataSource:self];
+    [table setDelegate:self];
+    [table setAllowsColumnSelection:YES];
+
+
 
     //[CPMenu setMenuBarVisible:YES];
 
+}
+
+- (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
+{
+    console.log('shouldEditTableColumn');
+        return YES;
 }
 
 - (int)numberOfRowsInTableView:(CPTableView)tableView
