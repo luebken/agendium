@@ -1,14 +1,12 @@
-@STATIC;1.0;p;15;AppController.jt;3743;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.ji;15;TextfieldView.jt;3649;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;3903;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;3829;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
-objj_executeFile("TextfieldView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("rootPages")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
 {
-    console.log("applicationDidFinishLaunching");
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
@@ -21,14 +19,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
     var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "init");
+    objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Title");
     objj_msgSend(column1, "setWidth:", 350.0);
-    objj_msgSend(column1, "setIdentifier:", 1);
-    objj_msgSend(table, "addTableColumn:", column1);
-    console.log('dataview:'+ objj_msgSend(objj_msgSend(column1, "dataView"), "isEditable"));
     objj_msgSend(column1, "setEditable:", YES);
+    objj_msgSend(table, "addTableColumn:", column1);
     var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "init");
-    var textfield = objj_msgSend(objj_msgSend(TextfieldView, "alloc"), "init");
-    objj_msgSend(column2, "setDataView:", textfield);
+    objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Subtitle");
+    objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
     objj_msgSend(table, "setUsesAlternatingRowBackgroundColors:", YES);
     objj_msgSend(table, "setRowHeight:", 50);
@@ -40,7 +37,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     console.log('shouldEditTableColumn');
-        return YES;
+    return YES;
 }
 },["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $AppController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
@@ -50,10 +47,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $AppController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
 { with(self)
 {
-    console.log(" [rootPages objectAtIndex:"+row+"] " + objj_msgSend(rootPages, "objectAtIndex:", row))
         return objj_msgSend(rootPages, "objectAtIndex:", row);
 }
-},["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("addItemToList:"), function $AppController__addItemToList_(self, _cmd, sender)
+},["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $AppController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
+{ with(self)
+{
+    console.log('setObjectValue ' + aValue);
+    objj_msgSend(objj_msgSend(rootPages, "objectAtIndex:", row), "setTitle:", aValue);
+    objj_msgSend(table, "reloadData");
+}
+},["void","CPTableView","id","CPTableColumn","int"]), new objj_method(sel_getUid("addItemToList:"), function $AppController__addItemToList_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(rootPages, "addObject:", objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:", "A new Page"));
@@ -142,28 +145,4 @@ title = newValue;
     return title;
 }
 },["CPString"])]);
-}p;15;TextfieldView.jt;905;@STATIC;1.0;I;21;Foundation/CPObject.jt;861;
-
-
-objj_executeFile("Foundation/CPObject.j", NO);
-
-{var the_class = objj_allocateClassPair(CPView, "TextfieldView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("textfield2")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $TextfieldView__init(self, _cmd)
-{ with(self)
-{
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("TextfieldView").super_class }, "initWithFrame:", CGRectMake( 10,10,10,10 ));
-        var textfield = objj_msgSend(CPTextField, "textFieldWithStringValue:placeholder:width:", "test", "", 5);
-        objj_msgSend(self, "addSubview:", textfield);
-    return self;
-}
-},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $TextfieldView__setObjectValue_(self, _cmd, object)
-{ with(self)
-{
-
-}
-},["void","CPObject"])]);
-}
-
-e;
+}e;

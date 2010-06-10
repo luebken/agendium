@@ -9,8 +9,6 @@
 @import <Foundation/CPObject.j>
 @import "Page.j"
 @import "ButtonColumn.j"
-@import "TextfieldView.j"
-
 
 @implementation AppController : CPObject
 {
@@ -23,7 +21,7 @@
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     // This is called when the application is done loading.
-    console.log("applicationDidFinishLaunching");
+    //console.log("applicationDidFinishLaunching");
 }
 
 - (void)awakeFromCib
@@ -40,19 +38,16 @@
 
  
     var column1 = [[CPTableColumn alloc] init];
+    [[column1 headerView] setStringValue:"Title"];
     [column1 setWidth:350.0];
-    [column1 setIdentifier:1];
-    [table addTableColumn:column1];
-    console.log('dataview:'+ [[column1 dataView] isEditable]);
     [column1 setEditable:YES];
+    [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] init]; 
-    var textfield = [[TextfieldView alloc] init];
-    [column2 setDataView:textfield];
-    //[button setTarget:self]; 
-    //[button setAction:@selector(deleteItemFromList:)]; 
-    [table addTableColumn:column2]; 
+    [[column1 headerView] setStringValue:"Subtitle"];
+    [column2 setEditable:YES];
 
+    [table addTableColumn:column2]; 
 
     [table setUsesAlternatingRowBackgroundColors:YES];
     [table setRowHeight:50];
@@ -69,7 +64,7 @@
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
     console.log('shouldEditTableColumn');
-        return YES;
+    return YES;
 }
 
 - (int)numberOfRowsInTableView:(CPTableView)tableView
@@ -79,12 +74,21 @@
 
 - (id)tableView:(CPTableView)tableView
 objectValueForTableColumn:(CPTableColumn)tableColumn
-        row:(int)row
+                    row:(int)row
 {
-    console.log(" [rootPages objectAtIndex:"+row+"] " +  [rootPages objectAtIndex:row])
 //    if([[tableColumn identifier] isEqual:1]) {
         return [rootPages objectAtIndex:row];
 //    }
+}
+
+- (void)tableView:(CPTableView)aTableView 
+    setObjectValue:(id)aValue 
+    forTableColumn:(CPTableColumn)tableColumn 
+               row:(int)row
+{
+    console.log('setObjectValue ' + aValue);
+    [[rootPages objectAtIndex:row] setTitle:aValue];
+    [table reloadData];
 }
 - (@action)addItemToList:(id)sender {
     [rootPages addObject:[[Page alloc] initWithTitle:"A new Page"]];
@@ -93,6 +97,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)deleteItemFromList:(id)sender {
     console.log("delete " + [table selectedRow]);
+    
 }
 
 @end
