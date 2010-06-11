@@ -1,8 +1,8 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;3829;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;4035;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("rootPages")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("rootPages")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -18,13 +18,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
+    var table = objj_msgSend(objj_msgSend(CPTableView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 200.0, 500.0));
+    objj_msgSend(scrollView, "setDocumentView:", table);
     var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "init");
     objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Title");
-    objj_msgSend(column1, "setWidth:", 350.0);
+    objj_msgSend(column1, "setWidth:", 250.0);
     objj_msgSend(column1, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column1);
     var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "init");
-    objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Subtitle");
+    objj_msgSend(objj_msgSend(column2, "headerView"), "setStringValue:", "Subtitle");
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
     objj_msgSend(table, "setUsesAlternatingRowBackgroundColors:", YES);

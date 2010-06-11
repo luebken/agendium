@@ -13,7 +13,8 @@
 @implementation AppController : CPObject
 {
     @outlet CPWindow    theWindow; //this "outlet" is connected automatically by the Cib
-    @outlet CPTableView table;
+    @outlet CPScrollView scrollView;
+    CPTableView table;
     @outlet CPBox box;
     CPArray rootPages;
 }
@@ -36,15 +37,18 @@
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]]; 
 
+    var table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 500.0)];
+    [scrollView setDocumentView:table];
+
  
     var column1 = [[CPTableColumn alloc] init];
     [[column1 headerView] setStringValue:"Title"];
-    [column1 setWidth:350.0];
+    [column1 setWidth:250.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] init]; 
-    [[column1 headerView] setStringValue:@"Subtitle"];
+    [[column2 headerView] setStringValue:@"Subtitle"];
     [column2 setEditable:YES];
 
     [table addTableColumn:column2]; 
@@ -54,6 +58,7 @@
     [table setDataSource:self];
     [table setDelegate:self];
     [table setAllowsColumnSelection:YES];
+
 
 
 
