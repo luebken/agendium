@@ -44,7 +44,7 @@
     [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] init]; 
-    [[column1 headerView] setStringValue:"Subtitle"];
+    [[column1 headerView] setStringValue:@"Subtitle"];
     [column2 setEditable:YES];
 
     [table addTableColumn:column2]; 
