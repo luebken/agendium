@@ -27,11 +27,12 @@
 
 - (void)awakeFromCib
 {
-    console.log("awakeFromCib:");
-
     rootPages = [[CPArray alloc] init];
-    rootPages[0] = [[Page alloc] initWithTitle:"A new Page"];
-    rootPages[1] = [[Page alloc] initWithTitle:"A second Page"];
+    rootPages[0] = [[Page alloc] initWithTitle:"Monday" andSubtitle:"Sessions on Monday"];
+    rootPages[1] = [[Page alloc] initWithTitle:"Tuesday" andSubtitle:"Sessions on Tuesday"];
+    rootPages[2] = [[Page alloc] initWithTitle:"Wednesday" andSubtitle:"Sessions on Wednesday"];
+    rootPages[3] = [[Page alloc] initWithTitle:"Thursday" andSubtitle:"Sessions on Thursday"];
+    rootPages[4] = [[Page alloc] initWithTitle:"Friday" andSubtitle:"Sessions on Friday"];
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
@@ -41,14 +42,16 @@
     [scrollView setDocumentView:table];
 
  
-    var column1 = [[CPTableColumn alloc] init];
+    var column1 = [[CPTableColumn alloc] initWithIdentifier:"title"];
     [[column1 headerView] setStringValue:"Title"];
-    [column1 setWidth:250.0];
+    [column1 setWidth:200.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
-    var column2 = [[CPTableColumn alloc] init]; 
+    var column2 = [[CPTableColumn alloc] initWithIdentifier:"subtitle"]; 
     [[column2 headerView] setStringValue:@"Subtitle"];
+    [column2 setWidth:280.0];
+
     [column2 setEditable:YES];
 
     [table addTableColumn:column2]; 
@@ -81,9 +84,12 @@
 objectValueForTableColumn:(CPTableColumn)tableColumn
                     row:(int)row
 {
-//    if([[tableColumn identifier] isEqual:1]) {
-        return [rootPages objectAtIndex:row];
-//    }
+    var page = [rootPages objectAtIndex:row];
+    if([[tableColumn identifier] isEqual:"title"]) {
+        return [page title];
+    } else {
+        return [page subtitle];
+    }
 }
 
 - (void)tableView:(CPTableView)aTableView 
@@ -91,12 +97,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
-    console.log('setObjectValue ' + aValue);
-    [[rootPages objectAtIndex:row] setTitle:aValue];
+    var page = [rootPages objectAtIndex:row];
+    if([[tableColumn identifier] isEqual:"title"]) {
+        return [page setTitle:aValue];
+    } else {
+        return [page setSubtitle:aValue];
+    }
     [table reloadData];
 }
 - (@action)addItemToList:(id)sender {
-    [rootPages addObject:[[Page alloc] initWithTitle:"A new Page"]];
+    var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
+    [rootPages addObject:newpage];
     [table reloadData];
 }
 
