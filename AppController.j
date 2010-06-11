@@ -63,6 +63,7 @@
     [table setDelegate:self];
     [table setAllowsColumnSelection:YES];
 
+    [deleteButton setEnabled:NO];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -108,13 +109,14 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     } else {
         return [page setSubtitle:aValue];
     }
+    //geht nicht: [table deselectAll];
     [table reloadData];
 }
 
 - (void)tableViewSelectionDidChange:(CPNotification)notification
 {    
-     var chosenRow = [[table selectedRowIndexes] firstIndex];
-     console.log('-- chosenRow = ' + chosenRow );
+    var chosenRow = [[table selectedRowIndexes] firstIndex];
+    console.log("chosenRow" + chosenRow);
     [deleteButton setEnabled:chosenRow > -1]
 }
 
@@ -125,8 +127,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action)deleteItemFromList:(id)sender {
-    console.log("delete " + [table selectedRow]);
-    
+    [rootPages removeObjectAtIndex:[table selectedRow]];
+    [table deselectAll];
+    [table reloadData];
+    [self tableViewSelectionDidChange:null];
 }
 
 @end

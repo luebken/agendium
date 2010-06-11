@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;5637;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;5563;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;5844;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;5770;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
@@ -37,6 +37,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(table, "setDataSource:", self);
     objj_msgSend(table, "setDelegate:", self);
     objj_msgSend(table, "setAllowsColumnSelection:", YES);
+    objj_msgSend(deleteButton, "setEnabled:", NO);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
 }
 },["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $AppController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
@@ -74,8 +75,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","CPTableView","id","CPTableColumn","int"]), new objj_method(sel_getUid("tableViewSelectionDidChange:"), function $AppController__tableViewSelectionDidChange_(self, _cmd, notification)
 { with(self)
 {
-     var chosenRow = objj_msgSend(objj_msgSend(table, "selectedRowIndexes"), "firstIndex");
-     console.log('-- chosenRow = ' + chosenRow );
+    var chosenRow = objj_msgSend(objj_msgSend(table, "selectedRowIndexes"), "firstIndex");
+    console.log("chosenRow" + chosenRow);
     objj_msgSend(deleteButton, "setEnabled:", chosenRow > -1)
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("addItemToList:"), function $AppController__addItemToList_(self, _cmd, sender)
@@ -88,7 +89,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $AppController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
-    console.log("delete " + objj_msgSend(table, "selectedRow"));
+    objj_msgSend(rootPages, "removeObjectAtIndex:", objj_msgSend(table, "selectedRow"));
+    objj_msgSend(table, "deselectAll");
+    objj_msgSend(table, "reloadData");
+    objj_msgSend(self, "tableViewSelectionDidChange:", null);
 }
 },["@action","id"])]);
 }
