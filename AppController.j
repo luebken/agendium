@@ -16,6 +16,7 @@
     @outlet CPScrollView scrollView;
     CPTableView table;
     @outlet CPBox box;
+    @outlet CPButton deleteButton;
     CPArray rootPages;
 }
 
@@ -63,7 +64,11 @@
     [table setAllowsColumnSelection:YES];
 
 
-
+    [[CPNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(tableViewSelectionDidChange:)
+               name:CPTableViewSelectionDidChangeNotification
+             object:nil];
 
     //[CPMenu setMenuBarVisible:YES];
 
@@ -105,6 +110,14 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     }
     [table reloadData];
 }
+
+- (void)tableViewSelectionDidChange:(CPNotification)notification
+{    
+     var chosenRow = [[table selectedRowIndexes] firstIndex];
+     console.log('-- chosenRow = ' + chosenRow );
+    [deleteButton setEnabled:chosenRow > -1]
+}
+
 - (@action)addItemToList:(id)sender {
     var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
     [rootPages addObject:newpage];
