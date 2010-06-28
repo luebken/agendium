@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;5770;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;5675;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
@@ -66,17 +66,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     var page = objj_msgSend(rootPages, "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
-        return objj_msgSend(page, "setTitle:", aValue);
+        objj_msgSend(page, "setTitle:", aValue);
     } else {
-        return objj_msgSend(page, "setSubtitle:", aValue);
+        objj_msgSend(page, "setSubtitle:", aValue);
     }
-    objj_msgSend(table, "reloadData");
 }
 },["void","CPTableView","id","CPTableColumn","int"]), new objj_method(sel_getUid("tableViewSelectionDidChange:"), function $AppController__tableViewSelectionDidChange_(self, _cmd, notification)
 { with(self)
 {
     var chosenRow = objj_msgSend(objj_msgSend(table, "selectedRowIndexes"), "firstIndex");
-    console.log("chosenRow" + chosenRow);
     objj_msgSend(deleteButton, "setEnabled:", chosenRow > -1)
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("addItemToList:"), function $AppController__addItemToList_(self, _cmd, sender)

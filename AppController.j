@@ -105,18 +105,21 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 {
     var page = [rootPages objectAtIndex:row];
     if([[tableColumn identifier] isEqual:"title"]) {
-        return [page setTitle:aValue];
+        [page setTitle:aValue];
     } else {
-        return [page setSubtitle:aValue];
+        [page setSubtitle:aValue];
     }
-    //geht nicht: [table deselectAll];
-    [table reloadData];
+    //[table reloadData];
+
+    //[table setSelectedRow:0];
+    //var textfield = [tableColumn dataView];
+    //[textfield setSelectedRange:CPMakeRange(0, 0)];
+    //console.log('dataview ' + [tableColumn dataView]);
 }
 
 - (void)tableViewSelectionDidChange:(CPNotification)notification
 {    
     var chosenRow = [[table selectedRowIndexes] firstIndex];
-    console.log("chosenRow" + chosenRow);
     [deleteButton setEnabled:chosenRow > -1]
 }
 
