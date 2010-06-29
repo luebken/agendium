@@ -17,13 +17,15 @@
     CPTableView table;
     @outlet CPBox box;
     @outlet CPButton deleteButton;
+    @outlet CPButton saveButton;
     CPArray rootPages;
+    @outlet CPTextField titleLabel;
+    @outlet CPTextField idField;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    // This is called when the application is done loading.
-    //console.log("applicationDidFinishLaunching");
+    [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
 }
 
 - (void)awakeFromCib
@@ -64,6 +66,8 @@
     [table setAllowsColumnSelection:YES];
 
     [deleteButton setEnabled:NO];
+    [saveButton setEnabled:NO];
+
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -127,6 +131,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
     [rootPages addObject:newpage];
     [table reloadData];
+}
+
+- (@action)appIdEntered:(id)sender {
+    var length = [[idField objectValue] length];
+    [saveButton setEnabled:length > 0];
 }
 
 - (@action)deleteItemFromList:(id)sender {
