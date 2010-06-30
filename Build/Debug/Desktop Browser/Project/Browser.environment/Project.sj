@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;6255;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6181;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;6318;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6244;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
@@ -41,6 +41,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(deleteButton, "setEnabled:", NO);
     objj_msgSend(saveButton, "setEnabled:", NO);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
+    objj_msgSend(idField, "becomeFirstResponder")
 }
 },["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $AppController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
 { with(self)
@@ -86,12 +87,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(rootPages, "addObject:", newpage);
     objj_msgSend(table, "reloadData");
 }
-},["@action","id"]), new objj_method(sel_getUid("appIdEntered:"), function $AppController__appIdEntered_(self, _cmd, sender)
-{ with(self)
-{
-    var length = objj_msgSend(objj_msgSend(idField, "objectValue"), "length");
-    objj_msgSend(saveButton, "setEnabled:", length > 0);
-}
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $AppController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
@@ -100,7 +95,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);
 }
-},["@action","id"])]);
+},["@action","id"]), new objj_method(sel_getUid("controlTextDidChange:"), function $AppController__controlTextDidChange_(self, _cmd, sender)
+{ with(self)
+{
+    var length = objj_msgSend(objj_msgSend(idField, "objectValue"), "length");
+    objj_msgSend(saveButton, "setEnabled:", length > 0);
+}
+},["void","id"])]);
 }
 
 p;14;ButtonColumn.jt;1446;@STATIC;1.0;I;21;Foundation/CPObject.jt;1401;

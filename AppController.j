@@ -75,6 +75,8 @@
                name:CPTableViewSelectionDidChangeNotification
              object:nil];
 
+    [idField becomeFirstResponder] 
+
     //[CPMenu setMenuBarVisible:YES];
 
 }
@@ -133,16 +135,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [table reloadData];
 }
 
-- (@action)appIdEntered:(id)sender {
-    var length = [[idField objectValue] length];
-    [saveButton setEnabled:length > 0];
-}
-
 - (@action)deleteItemFromList:(id)sender {
     [rootPages removeObjectAtIndex:[table selectedRow]];
     [table deselectAll];
     [table reloadData];
     [self tableViewSelectionDidChange:null];
+}
+
+//CPTextField Delegate
+- (void)controlTextDidChange:(id)sender {
+    var length = [[idField objectValue] length];
+    [saveButton setEnabled:length > 0];
 }
 
 @end
