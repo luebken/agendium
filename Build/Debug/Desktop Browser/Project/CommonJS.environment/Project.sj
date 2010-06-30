@@ -1,6 +1,6 @@
-@STATIC;1.0;p;15;AppController.jt;6859;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6785;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;6871;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;6793;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
-objj_executeFile("ButtonColumn.j", YES);
+objj_executeFile("ButtonColumnView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPages"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
 objj_registerClassPair(the_class);
@@ -33,7 +33,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(column2, "setWidth:", 260.0);
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
-    var button = objj_msgSend(objj_msgSend(ButtonColumn, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
+    var button = objj_msgSend(objj_msgSend(ButtonColumnView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
     var column3 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "button");
     objj_msgSend(column3, "setDataView:", button);
     objj_msgSend(column3, "setWidth:", 20.0);
@@ -153,6 +153,55 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(aCoder, "encodeObject:forKey:", button, "button");
 }
 },["void","CPCoder"]), new objj_method(sel_getUid("actionHandler:"), function $ButtonColumn__actionHandler_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("handled " + row);
+}
+},["void","id"])]);
+}
+
+p;18;ButtonColumnView.jt;2066;@STATIC;1.0;I;15;AppKit/CPView.jt;2027;
+
+
+objj_executeFile("AppKit/CPView.j", NO);
+
+
+{var the_class = objj_allocateClassPair(CPView, "ButtonColumnView"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("button"), new objj_ivar("row")]);
+objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $ButtonColumnView__initWithFrame_(self, _cmd, rect)
+{ with(self)
+{
+        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumnView").super_class }, "initWithFrame:", rect);
+        button = objj_msgSend(CPButton, "buttonWithTitle:", ">");
+        objj_msgSend(button, "setCenter:", CPPointMake(10, 25));
+
+        objj_msgSend(self, "addSubview:", button);
+        objj_msgSend(button, "setTarget:", self);
+        objj_msgSend(button, "setAction:", sel_getUid("actionHandler:"));
+
+        return self;
+}
+},["id","CGRect"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumnView__setObjectValue_(self, _cmd, anObject)
+{ with(self)
+{
+    row = anObject;
+    objj_msgSend(button, "setTitle:", ">");
+}
+},["void","Object"]), new objj_method(sel_getUid("initWithCoder:"), function $ButtonColumnView__initWithCoder_(self, _cmd, aCoder)
+{ with(self)
+{
+        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumnView").super_class }, "initWithCoder:", aCoder);
+        button = objj_msgSend(aCoder, "decodeObjectForKey:", "button");
+        return self;
+}
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $ButtonColumnView__encodeWithCoder_(self, _cmd, aCoder)
+{ with(self)
+{
+        objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumnView").super_class }, "encodeWithCoder:", aCoder);
+        objj_msgSend(aCoder, "encodeObject:forKey:", button, "button");
+}
+},["void","CPCoder"]), new objj_method(sel_getUid("actionHandler:"), function $ButtonColumnView__actionHandler_(self, _cmd, sender)
 { with(self)
 {
     console.log("handled " + row);

@@ -1,11 +1,13 @@
 
-@import <Foundation/CPObject.j>
+@import <AppKit/CPView.j>
 
-@implementation ButtonColumn : CPView
+
+@implementation ButtonColumnView : CPView
 {
     CPButton button;
     CPString row;
 }
+
 - (id)initWithFrame:(CGRect)rect { 
         self = [super initWithFrame:rect]; 
         button = [CPButton buttonWithTitle:@">"]; 

@@ -8,7 +8,7 @@
 
 @import <Foundation/CPObject.j>
 @import "Page.j"
-@import "ButtonColumn.j"
+@import "ButtonColumnView.j"
 
 @implementation AppController : CPObject
 {
@@ -57,7 +57,7 @@
     [column2 setEditable:YES];
     [table addTableColumn:column2]; 
 
-    var button = [[ButtonColumn alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)];
+    var button = [[ButtonColumnView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)];
     var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
     [column3 setDataView:button];
     [column3 setWidth:20.0];

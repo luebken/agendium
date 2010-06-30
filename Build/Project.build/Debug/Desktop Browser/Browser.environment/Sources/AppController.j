@@ -1,6 +1,6 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6785;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;6793;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
-objj_executeFile("ButtonColumn.j", YES);
+objj_executeFile("ButtonColumnView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPages"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
 objj_registerClassPair(the_class);
@@ -33,7 +33,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(column2, "setWidth:", 260.0);
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
-    var button = objj_msgSend(objj_msgSend(ButtonColumn, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
+    var button = objj_msgSend(objj_msgSend(ButtonColumnView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
     var column3 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "button");
     objj_msgSend(column3, "setDataView:", button);
     objj_msgSend(column3, "setWidth:", 20.0);
