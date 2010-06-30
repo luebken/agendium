@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6244;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6785;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
@@ -30,9 +30,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(table, "addTableColumn:", column1);
     var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "subtitle");
     objj_msgSend(objj_msgSend(column2, "headerView"), "setStringValue:", "Subtitle");
-    objj_msgSend(column2, "setWidth:", 280.0);
+    objj_msgSend(column2, "setWidth:", 260.0);
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
+    var button = objj_msgSend(objj_msgSend(ButtonColumn, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
+    var column3 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "button");
+    objj_msgSend(column3, "setDataView:", button);
+    objj_msgSend(column3, "setWidth:", 20.0);
+    objj_msgSend(column3, "setEditable:", YES);
+    objj_msgSend(table, "addTableColumn:", column3);
     objj_msgSend(table, "setUsesAlternatingRowBackgroundColors:", YES);
     objj_msgSend(table, "setRowHeight:", 50);
     objj_msgSend(table, "setDataSource:", self);
@@ -60,8 +66,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     var page = objj_msgSend(rootPages, "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         return objj_msgSend(page, "title");
-    } else {
+    } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "subtitle")) {
         return objj_msgSend(page, "subtitle");
+    } else {
+        return row + "";
     }
 }
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $AppController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)

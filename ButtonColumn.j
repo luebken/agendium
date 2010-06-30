@@ -3,49 +3,39 @@
 
 @implementation ButtonColumn : CPView
 {
-    CPArray buttons;
-    CPObject target;
-    SEL action;
+    CPButton button;
+    CPString row;
 }
-
-- (id)initWithTarget:(CPObject)target2 andAction:(SEL)action2  { 
-        console.log('ButtonColumn.init');
-        self = [super initWithFrame:CGRectMake( 10,10,10,10 )]; 
-        buttons = [[CPArray alloc] init];
-
-        self.target = target2;
-        self.action = action2;
-
-/*
-        button = [CPButton buttonWithTitle:@"Delete"];
-        [button setCenter:CPPointMake(50, 25)]; 
-        //[button setAutoresizingMask:CPViewMaxXMargin];
+- (id)initWithFrame:(CGRect)rect { 
+        self = [super initWithFrame:rect]; 
+        button = [CPButton buttonWithTitle:@">"]; 
+        [button setCenter:CPPointMake(10, 25)]; 
+        //[nameField setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin]; 
         [self addSubview:button]; 
+        [button setTarget:self];
+        [button setAction:@selector(actionHandler:)];  
 
-        [button setTarget:target];
-        [button setAction:action];
-*/
         return self; 
+}   
 
+- (void)setObjectValue:(Object)anObject { 
+    row = anObject;
+    [button setTitle:">"]; 
+} 
+
+
+- (id)initWithCoder:(CPCoder)aCoder { 
+        self = [super initWithCoder:aCoder]; 
+        button = [aCoder decodeObjectForKey:"button"]; 
+        return self; 
+} 
+
+- (void)encodeWithCoder:(CPCoder)aCoder { 
+        [super encodeWithCoder:aCoder]; 
+        [aCoder encodeObject:button forKey:"button"]; 
 }
 
-- (void) setObjectValue:(CPObject) object 
-{
-    var button = [CPButton buttonWithTitle:@"Delete"];
-    [button setCenter:CPPointMake(50, 25)];
-    [buttons addObject:button];
-        [button setTarget:self.target];
-        [button setAction:self.action];
-    [self addSubview:button];
-
-    //if(object)  
-       // [button setTitle:object];
-    console.log("setObjectValue " + object + " at " + self);
+- (void) actionHandler: (id)sender { 
+    console.log("handled "  + row); 
 }
-
-/*
--(CPString) description {
-    return [button description];
-}
-*/
 @end

@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;6318;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6244;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;6859;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;14;ButtonColumn.jt;6785;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumn.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
@@ -30,9 +30,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(table, "addTableColumn:", column1);
     var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "subtitle");
     objj_msgSend(objj_msgSend(column2, "headerView"), "setStringValue:", "Subtitle");
-    objj_msgSend(column2, "setWidth:", 280.0);
+    objj_msgSend(column2, "setWidth:", 260.0);
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
+    var button = objj_msgSend(objj_msgSend(ButtonColumn, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
+    var column3 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "button");
+    objj_msgSend(column3, "setDataView:", button);
+    objj_msgSend(column3, "setWidth:", 20.0);
+    objj_msgSend(column3, "setEditable:", YES);
+    objj_msgSend(table, "addTableColumn:", column3);
     objj_msgSend(table, "setUsesAlternatingRowBackgroundColors:", YES);
     objj_msgSend(table, "setRowHeight:", 50);
     objj_msgSend(table, "setDataSource:", self);
@@ -60,8 +66,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     var page = objj_msgSend(rootPages, "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         return objj_msgSend(page, "title");
-    } else {
+    } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "subtitle")) {
         return objj_msgSend(page, "subtitle");
+    } else {
+        return row + "";
     }
 }
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $AppController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
@@ -104,37 +112,52 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","id"])]);
 }
 
-p;14;ButtonColumn.jt;1446;@STATIC;1.0;I;21;Foundation/CPObject.jt;1401;
+p;14;ButtonColumn.jt;2041;@STATIC;1.0;I;21;Foundation/CPObject.jt;1996;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
 
 {var the_class = objj_allocateClassPair(CPView, "ButtonColumn"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("buttons"), new objj_ivar("target"), new objj_ivar("action")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("button"), new objj_ivar("row")]);
 objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:andAction:"), function $ButtonColumn__initWithTarget_andAction_(self, _cmd, target2, action2)
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $ButtonColumn__initWithFrame_(self, _cmd, rect)
 { with(self)
 {
-        console.log('ButtonColumn.init');
-        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "initWithFrame:", CGRectMake( 10,10,10,10 ));
-        buttons = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "initWithFrame:", rect);
+        button = objj_msgSend(CPButton, "buttonWithTitle:", ">");
+        objj_msgSend(button, "setCenter:", CPPointMake(10, 25));
 
-        self.target = target2;
-        self.action = action2;
+        objj_msgSend(self, "addSubview:", button);
+        objj_msgSend(button, "setTarget:", self);
+        objj_msgSend(button, "setAction:", sel_getUid("actionHandler:"));
+
         return self;
 }
-},["id","CPObject","SEL"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumn__setObjectValue_(self, _cmd, object)
+},["id","CGRect"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumn__setObjectValue_(self, _cmd, anObject)
 { with(self)
 {
-    var button = objj_msgSend(CPButton, "buttonWithTitle:", "Delete");
-    objj_msgSend(button, "setCenter:", CPPointMake(50, 25));
-    objj_msgSend(buttons, "addObject:", button);
-        objj_msgSend(button, "setTarget:", self.target);
-        objj_msgSend(button, "setAction:", self.action);
-    objj_msgSend(self, "addSubview:", button);
-    console.log("setObjectValue " + object + " at " + self);
+    row = anObject;
+    objj_msgSend(button, "setTitle:", ">");
 }
-},["void","CPObject"])]);
+},["void","Object"]), new objj_method(sel_getUid("initWithCoder:"), function $ButtonColumn__initWithCoder_(self, _cmd, aCoder)
+{ with(self)
+{
+        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "initWithCoder:", aCoder);
+        button = objj_msgSend(aCoder, "decodeObjectForKey:", "button");
+        return self;
+}
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $ButtonColumn__encodeWithCoder_(self, _cmd, aCoder)
+{ with(self)
+{
+        objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "encodeWithCoder:", aCoder);
+        objj_msgSend(aCoder, "encodeObject:forKey:", button, "button");
+}
+},["void","CPCoder"]), new objj_method(sel_getUid("actionHandler:"), function $ButtonColumn__actionHandler_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("handled " + row);
+}
+},["void","id"])]);
 }
 
 p;6;main.jt;295;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;209;objj_executeFile("Foundation/Foundation.j", NO);

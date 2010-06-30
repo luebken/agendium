@@ -53,11 +53,16 @@
 
     var column2 = [[CPTableColumn alloc] initWithIdentifier:"subtitle"]; 
     [[column2 headerView] setStringValue:@"Subtitle"];
-    [column2 setWidth:280.0];
-
+    [column2 setWidth:260.0];
     [column2 setEditable:YES];
-
     [table addTableColumn:column2]; 
+
+    var button = [[ButtonColumn alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)];
+    var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
+    [column3 setDataView:button];
+    [column3 setWidth:20.0];
+    [column3 setEditable:YES];
+    [table addTableColumn:column3];
 
     [table setUsesAlternatingRowBackgroundColors:YES];
     [table setRowHeight:50];
@@ -99,8 +104,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     var page = [rootPages objectAtIndex:row];
     if([[tableColumn identifier] isEqual:"title"]) {
         return [page title];
-    } else {
+    } else if([[tableColumn identifier] isEqual:"subtitle"]) {
         return [page subtitle];
+    } else {
+        return row + "";
     }
 }
 
