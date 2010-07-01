@@ -18,7 +18,7 @@
     @outlet CPBox box;
     @outlet CPButton deleteButton;
     @outlet CPButton saveButton;
-    CPArray rootPages;
+    Page rootPage;
     @outlet CPTextField titleLabel;
     @outlet CPTextField idField;
 }
@@ -30,12 +30,18 @@
 
 - (void)awakeFromCib
 {
-    rootPages = [[CPArray alloc] init];
-    rootPages[0] = [[Page alloc] initWithTitle:"Monday" andSubtitle:"Sessions on Monday"];
-    rootPages[1] = [[Page alloc] initWithTitle:"Tuesday" andSubtitle:"Sessions on Tuesday"];
-    rootPages[2] = [[Page alloc] initWithTitle:"Wednesday" andSubtitle:"Sessions on Wednesday"];
-    rootPages[3] = [[Page alloc] initWithTitle:"Thursday" andSubtitle:"Sessions on Thursday"];
-    rootPages[4] = [[Page alloc] initWithTitle:"Friday" andSubtitle:"Sessions on Friday"];
+    rootPage = [[Page alloc] init];
+    var monday = [[Page alloc] initWithTitle:"Monday" andSubtitle:"Sessions on Monday"];
+    var tuesday = [[Page alloc] initWithTitle:"Tuesday" andSubtitle:"Sessions on Tuesday"];
+    var wednesday = [[Page alloc] initWithTitle:"Wednesday" andSubtitle:"Sessions on Wednesday"];
+    var thursday = [[Page alloc] initWithTitle:"Thursday" andSubtitle:"Sessions on Thursday"];
+    var friday = [[Page alloc] initWithTitle:"Friday" andSubtitle:"Sessions on Friday"];
+    [rootPage addChild:monday];
+    [rootPage addChild:tuesday];
+    [rootPage addChild:wednesday];
+    [rootPage addChild:thursday];
+    [rootPage addChild:friday];
+
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
@@ -94,14 +100,14 @@
 
 - (int)numberOfRowsInTableView:(CPTableView)tableView
 {
-    return [rootPages count];
+    return [[rootPage children] count];
 }
 
 - (id)tableView:(CPTableView)tableView
 objectValueForTableColumn:(CPTableColumn)tableColumn
                     row:(int)row
 {
-    var page = [rootPages objectAtIndex:row];
+    var page = [[rootPage children] objectAtIndex:row];
     if([[tableColumn identifier] isEqual:"title"]) {
         return [page title];
     } else if([[tableColumn identifier] isEqual:"subtitle"]) {
@@ -116,7 +122,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
-    var page = [rootPages objectAtIndex:row];
+    var page = [[rootPage children] objectAtIndex:row];
     if([[tableColumn identifier] isEqual:"title"]) {
         [page setTitle:aValue];
     } else {
@@ -138,12 +144,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)addItemToList:(id)sender {
     var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
-    [rootPages addObject:newpage];
+    [rootPage addChild:newpage];
     [table reloadData];
 }
 
 - (@action)deleteItemFromList:(id)sender {
-    [rootPages removeObjectAtIndex:[table selectedRow]];
+    [rootPage removeChild:[table selectedRow]];
     [table deselectAll];
     [table reloadData];
     [self tableViewSelectionDidChange:null];

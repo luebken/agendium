@@ -1,8 +1,8 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;6793;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;7099;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumnView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPages"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -12,12 +12,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","CPNotification"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
 {
-    rootPages = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
-    rootPages[0] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
-    rootPages[1] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
-    rootPages[2] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
-    rootPages[3] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
-    rootPages[4] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
+    rootPage = objj_msgSend(objj_msgSend(Page, "alloc"), "init");
+    var monday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
+    var tuesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
+    var wednesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
+    var thursday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
+    var friday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
+    objj_msgSend(rootPage, "addChild:", monday);
+    objj_msgSend(rootPage, "addChild:", tuesday);
+    objj_msgSend(rootPage, "addChild:", wednesday);
+    objj_msgSend(rootPage, "addChild:", thursday);
+    objj_msgSend(rootPage, "addChild:", friday);
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
@@ -58,12 +63,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $AppController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
-    return objj_msgSend(rootPages, "count");
+    return objj_msgSend(objj_msgSend(rootPage, "children"), "count");
 }
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $AppController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
 { with(self)
 {
-    var page = objj_msgSend(rootPages, "objectAtIndex:", row);
+    var page = objj_msgSend(objj_msgSend(rootPage, "children"), "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         return objj_msgSend(page, "title");
     } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "subtitle")) {
@@ -75,7 +80,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $AppController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
 { with(self)
 {
-    var page = objj_msgSend(rootPages, "objectAtIndex:", row);
+    var page = objj_msgSend(objj_msgSend(rootPage, "children"), "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         objj_msgSend(page, "setTitle:", aValue);
     } else {
@@ -92,13 +97,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
-    objj_msgSend(rootPages, "addObject:", newpage);
+    objj_msgSend(rootPage, "addChild:", newpage);
     objj_msgSend(table, "reloadData");
 }
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $AppController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
-    objj_msgSend(rootPages, "removeObjectAtIndex:", objj_msgSend(table, "selectedRow"));
+    objj_msgSend(rootPage, "removeChild:", objj_msgSend(table, "selectedRow"));
     objj_msgSend(table, "deselectAll");
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);

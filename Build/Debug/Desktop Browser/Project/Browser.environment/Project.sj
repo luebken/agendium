@@ -1,8 +1,8 @@
-@STATIC;1.0;p;15;AppController.jt;6871;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;6793;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7177;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;18;ButtonColumnView.jt;7099;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("ButtonColumnView.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPages"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("scrollView"), new objj_ivar("table"), new objj_ivar("box"), new objj_ivar("deleteButton"), new objj_ivar("saveButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("idField")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -12,12 +12,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","CPNotification"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
 {
-    rootPages = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
-    rootPages[0] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
-    rootPages[1] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
-    rootPages[2] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
-    rootPages[3] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
-    rootPages[4] = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
+    rootPage = objj_msgSend(objj_msgSend(Page, "alloc"), "init");
+    var monday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
+    var tuesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
+    var wednesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
+    var thursday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
+    var friday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
+    objj_msgSend(rootPage, "addChild:", monday);
+    objj_msgSend(rootPage, "addChild:", tuesday);
+    objj_msgSend(rootPage, "addChild:", wednesday);
+    objj_msgSend(rootPage, "addChild:", thursday);
+    objj_msgSend(rootPage, "addChild:", friday);
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
@@ -58,12 +63,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $AppController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
-    return objj_msgSend(rootPages, "count");
+    return objj_msgSend(objj_msgSend(rootPage, "children"), "count");
 }
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $AppController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
 { with(self)
 {
-    var page = objj_msgSend(rootPages, "objectAtIndex:", row);
+    var page = objj_msgSend(objj_msgSend(rootPage, "children"), "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         return objj_msgSend(page, "title");
     } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "subtitle")) {
@@ -75,7 +80,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $AppController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
 { with(self)
 {
-    var page = objj_msgSend(rootPages, "objectAtIndex:", row);
+    var page = objj_msgSend(objj_msgSend(rootPage, "children"), "objectAtIndex:", row);
     if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
         objj_msgSend(page, "setTitle:", aValue);
     } else {
@@ -92,13 +97,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
-    objj_msgSend(rootPages, "addObject:", newpage);
+    objj_msgSend(rootPage, "addChild:", newpage);
     objj_msgSend(table, "reloadData");
 }
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $AppController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
-    objj_msgSend(rootPages, "removeObjectAtIndex:", objj_msgSend(table, "selectedRow"));
+    objj_msgSend(rootPage, "removeChild:", objj_msgSend(table, "selectedRow"));
     objj_msgSend(table, "deselectAll");
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);
@@ -108,54 +113,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     var length = objj_msgSend(objj_msgSend(idField, "objectValue"), "length");
     objj_msgSend(saveButton, "setEnabled:", length > 0);
-}
-},["void","id"])]);
-}
-
-p;14;ButtonColumn.jt;2041;@STATIC;1.0;I;21;Foundation/CPObject.jt;1996;
-
-
-objj_executeFile("Foundation/CPObject.j", NO);
-
-{var the_class = objj_allocateClassPair(CPView, "ButtonColumn"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("button"), new objj_ivar("row")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $ButtonColumn__initWithFrame_(self, _cmd, rect)
-{ with(self)
-{
-        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "initWithFrame:", rect);
-        button = objj_msgSend(CPButton, "buttonWithTitle:", ">");
-        objj_msgSend(button, "setCenter:", CPPointMake(10, 25));
-
-        objj_msgSend(self, "addSubview:", button);
-        objj_msgSend(button, "setTarget:", self);
-        objj_msgSend(button, "setAction:", sel_getUid("actionHandler:"));
-
-        return self;
-}
-},["id","CGRect"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumn__setObjectValue_(self, _cmd, anObject)
-{ with(self)
-{
-    row = anObject;
-    objj_msgSend(button, "setTitle:", ">");
-}
-},["void","Object"]), new objj_method(sel_getUid("initWithCoder:"), function $ButtonColumn__initWithCoder_(self, _cmd, aCoder)
-{ with(self)
-{
-        self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "initWithCoder:", aCoder);
-        button = objj_msgSend(aCoder, "decodeObjectForKey:", "button");
-        return self;
-}
-},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $ButtonColumn__encodeWithCoder_(self, _cmd, aCoder)
-{ with(self)
-{
-        objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumn").super_class }, "encodeWithCoder:", aCoder);
-        objj_msgSend(aCoder, "encodeObject:forKey:", button, "button");
-}
-},["void","CPCoder"]), new objj_method(sel_getUid("actionHandler:"), function $ButtonColumn__actionHandler_(self, _cmd, sender)
-{ with(self)
-{
-    console.log("handled " + row);
 }
 },["void","id"])]);
 }
@@ -217,7 +174,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;6;Page.jt;1351;@STATIC;1.0;I;21;Foundation/CPObject.jt;1306;
+p;6;Page.jt;2228;@STATIC;1.0;I;21;Foundation/CPObject.jt;2183;
 
 
 
@@ -225,7 +182,7 @@ objj_executeFile("Foundation/CPObject.j", NO);
 
 
 {var the_class = objj_allocateClassPair(CPObject, "Page"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("title"), function $Page__title(self, _cmd)
 { with(self)
@@ -250,15 +207,44 @@ new objj_method(sel_getUid("setSubtitle:"), function $Page__setSubtitle_(self, _
 {
 subtitle = newValue;
 }
-},["void","id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:"), function $Page__initWithTitle_andSubtitle_(self, _cmd, newtitle, newsubtitle)
+},["void","id"]),
+new objj_method(sel_getUid("children"), function $Page__children(self, _cmd)
+{ with(self)
+{
+return children;
+}
+},["id"]),
+new objj_method(sel_getUid("setChildren:"), function $Page__setChildren_(self, _cmd, newValue)
+{ with(self)
+{
+children = newValue;
+}
+},["void","id"]), new objj_method(sel_getUid("init"), function $Page__init(self, _cmd)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("Page").super_class }, "init");
+    children = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+    return self;
+}
+},["id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:"), function $Page__initWithTitle_andSubtitle_(self, _cmd, newtitle, newsubtitle)
+{ with(self)
+{
+    self = objj_msgSend(self, "init");
     title = newtitle;
     subtitle = newsubtitle;
     return self;
 }
-},["id","CPString","CPString"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
+},["id","CPString","CPString"]), new objj_method(sel_getUid("addChild:"), function $Page__addChild_(self, _cmd, child)
+{ with(self)
+{
+    objj_msgSend(children, "addObject:", child);
+}
+},["id","Page"]), new objj_method(sel_getUid("removeChild:"), function $Page__removeChild_(self, _cmd, index)
+{ with(self)
+{
+    objj_msgSend(children, "removeObjectAtIndex:", index);
+}
+},["id","int"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)
 {
     return title;
