@@ -9,6 +9,8 @@
 @import <Foundation/CPObject.j>
 @import "Page.j"
 @import "ButtonColumnView.j"
+@import "PageView.j"
+@import "PageViewController.j"
 
 @implementation AppController : CPObject
 {
@@ -21,6 +23,7 @@
     Page rootPage;
     @outlet CPTextField titleLabel;
     @outlet CPTextField idField;
+    @outlet CPView pageView;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -48,8 +51,13 @@
     [box setBorderColor:[CPColor grayColor]]; 
 
     var table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 500.0)];
-    [scrollView setDocumentView:table];
+ 
 
+    var pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
+                                                        bundle:nil];
+    [pageView addSubview:[pageViewController view]];
+
+    //[scrollView setDocumentView:[pageViewController view]];
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"title"];
     [[column1 headerView] setStringValue:"Title"];
