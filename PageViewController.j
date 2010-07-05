@@ -22,9 +22,7 @@
     }
     return self;
 }
-- (void) awakeFromCib {
-    console.log('PageViewController.awakeFromCib'); 
-    
+- (void) awakeFromCib {    
     table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 500.0)];
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"title"];
@@ -39,7 +37,9 @@
     [column2 setEditable:YES];
     [table addTableColumn:column2]; 
 
-    var button = [[ButtonColumnView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)];
+    var button = [[ButtonColumnView alloc] 
+                    initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
+                    andDelegate:self];
     var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
     [column3 setDataView:button];
     [column3 setWidth:20.0];
@@ -55,12 +55,18 @@
     [scrollView setDocumentView:table]; 
 
     [deleteButton setEnabled:NO];
-    [backButton setEnabled:NO];
+    //[backButton setEnabled:NO];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(tableViewSelectionDidChange:)
                name:CPTableViewSelectionDidChangeNotification
+             object:nil];
+
+    [[CPNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(rowClicked:)
+               name:@"RowClickedNotification"
              object:nil];
 }
 
@@ -135,6 +141,18 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [[CPNotificationCenter defaultCenter] 
         postNotificationName:@"PageChangedNotification" 
         object:page]; 
+}
+
+- (void) rowClicked:(id)notification {
+    var row = [notification object];
+    page = [[page children] objectAtIndex:row];
+    [table reloadData];
+    //[table removeFromSuperview]
+}
+
+- (@action)backButtonClicked:(id)sender {
+    page = [page ancestor];
+    [table reloadData];
 }
 
 

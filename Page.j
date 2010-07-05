@@ -8,6 +8,7 @@
     CPString title @accessors;
     CPString subtitle @accessors;
     Page[] children @accessors;
+    Page ancestor @accessors;
 }
 
 - (id) init {
@@ -25,6 +26,7 @@
 }
            
 - (id) addChild:(Page) child {
+    [child setAncestor:self];
     [children addObject:child];
 }
 

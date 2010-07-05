@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;6401;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;7003;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -32,8 +32,6 @@ page = newValue;
 },["id","CPString","CPBundle"]), new objj_method(sel_getUid("awakeFromCib"), function $PageViewController__awakeFromCib(self, _cmd)
 { with(self)
 {
-    console.log('PageViewController.awakeFromCib');
-
     table = objj_msgSend(objj_msgSend(CPTableView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 200.0, 500.0));
 
     var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "title");
@@ -48,7 +46,7 @@ page = newValue;
     objj_msgSend(column2, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column2);
 
-    var button = objj_msgSend(objj_msgSend(ButtonColumnView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 10.0, 20.0));
+    var button = objj_msgSend(objj_msgSend(ButtonColumnView, "alloc"), "initWithFrame:andDelegate:", CGRectMake(0.0, 0.0, 10.0, 20.0), self);
     var column3 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "button");
     objj_msgSend(column3, "setDataView:", button);
     objj_msgSend(column3, "setWidth:", 20.0);
@@ -64,9 +62,11 @@ page = newValue;
     objj_msgSend(scrollView, "setDocumentView:", table);
 
     objj_msgSend(deleteButton, "setEnabled:", NO);
-    objj_msgSend(backButton, "setEnabled:", NO);
+
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
+
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("rowClicked:"), "RowClickedNotification", nil);
 }
 },["void"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
@@ -122,9 +122,21 @@ page = newValue;
 {
     var length = objj_msgSend(objj_msgSend(titleField, "objectValue"), "length");
     objj_msgSend(page, "setTitle:", objj_msgSend(titleField, "objectValue"));
-    console.log('notifying about ' + page);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "PageChangedNotification", page);
 }
-},["void","id"])]);
+},["void","id"]), new objj_method(sel_getUid("rowClicked:"), function $PageViewController__rowClicked_(self, _cmd, notification)
+{ with(self)
+{
+    var row = objj_msgSend(notification, "object");
+    page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
+    objj_msgSend(table, "reloadData");
+}
+},["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
+{ with(self)
+{
+    page = objj_msgSend(page, "ancestor");
+    objj_msgSend(table, "reloadData");
+}
+},["@action","id"])]);
 }
 

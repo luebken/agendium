@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;2183;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;2530;
 
 
 
@@ -6,7 +6,7 @@ objj_executeFile("Foundation/CPObject.j", NO);
 
 
 {var the_class = objj_allocateClassPair(CPObject, "Page"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children"), new objj_ivar("ancestor")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("title"), function $Page__title(self, _cmd)
 { with(self)
@@ -43,6 +43,18 @@ new objj_method(sel_getUid("setChildren:"), function $Page__setChildren_(self, _
 {
 children = newValue;
 }
+},["void","id"]),
+new objj_method(sel_getUid("ancestor"), function $Page__ancestor(self, _cmd)
+{ with(self)
+{
+return ancestor;
+}
+},["id"]),
+new objj_method(sel_getUid("setAncestor:"), function $Page__setAncestor_(self, _cmd, newValue)
+{ with(self)
+{
+ancestor = newValue;
+}
 },["void","id"]), new objj_method(sel_getUid("init"), function $Page__init(self, _cmd)
 { with(self)
 {
@@ -61,6 +73,7 @@ children = newValue;
 },["id","CPString","CPString"]), new objj_method(sel_getUid("addChild:"), function $Page__addChild_(self, _cmd, child)
 { with(self)
 {
+    objj_msgSend(child, "setAncestor:", self);
     objj_msgSend(children, "addObject:", child);
 }
 },["id","Page"]), new objj_method(sel_getUid("removeChild:"), function $Page__removeChild_(self, _cmd, index)

@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;2915;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;3564;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -14,23 +14,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     rootPage = objj_msgSend(objj_msgSend(Page, "alloc"), "init");
-    var monday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
-    var tuesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
-    var wednesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
-    var thursday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
-    var friday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
-    objj_msgSend(rootPage, "addChild:", monday);
-    objj_msgSend(rootPage, "addChild:", tuesday);
-    objj_msgSend(rootPage, "addChild:", wednesday);
-    objj_msgSend(rootPage, "addChild:", thursday);
-    objj_msgSend(rootPage, "addChild:", friday);
+    objj_msgSend(self, "loadData");
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
     var pageViewController = objj_msgSend(objj_msgSend(PageViewController, "alloc"), "initWithCibName:bundle:", "PageView", nil);
     objj_msgSend(pageViewController, "setPage:", rootPage);
     objj_msgSend(objj_msgSend(pageViewController, "view"), "setFrame:", CPRectMake(1,1,500, 350))
-    console.log('setPage');
     objj_msgSend(pageView, "addSubview:", objj_msgSend(pageViewController, "view"));
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("pageDidChange:"), "PageChangedNotification", rootPage);
     objj_msgSend(saveButton, "setEnabled:", NO);
@@ -40,6 +30,26 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     objj_msgSend(saveButton, "setEnabled:", rootPage.title.length > 0);
 }
-},["void","CPNotification"])]);
+},["void","CPNotification"]), new objj_method(sel_getUid("loadData"), function $AppController__loadData(self, _cmd)
+{ with(self)
+{
+    var monday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
+    var mSession1 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "First Session", "9:00-11:00");
+    var mSession2 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Second Session", "11:15-12:00");
+    var mSession3 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Third Session", "13:00-15:00");
+    objj_msgSend(monday, "addChild:", mSession1);
+    objj_msgSend(monday, "addChild:", mSession2);
+    objj_msgSend(monday, "addChild:", mSession3);
+    var tuesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
+    var wednesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
+    var thursday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
+    var friday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
+    objj_msgSend(rootPage, "addChild:", monday);
+    objj_msgSend(rootPage, "addChild:", tuesday);
+    objj_msgSend(rootPage, "addChild:", wednesday);
+    objj_msgSend(rootPage, "addChild:", thursday);
+    objj_msgSend(rootPage, "addChild:", friday);
+}
+},["void"])]);
 }
 

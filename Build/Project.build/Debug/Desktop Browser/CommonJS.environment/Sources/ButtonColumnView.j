@@ -1,13 +1,13 @@
-@STATIC;1.0;I;15;AppKit/CPView.jt;2027;
+@STATIC;1.0;I;15;AppKit/CPView.jt;2262;
 
 
 objj_executeFile("AppKit/CPView.j", NO);
 
 
 {var the_class = objj_allocateClassPair(CPView, "ButtonColumnView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("button"), new objj_ivar("row")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("button"), new objj_ivar("row"), new objj_ivar("delegate")]);
 objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $ButtonColumnView__initWithFrame_(self, _cmd, rect)
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:andDelegate:"), function $ButtonColumnView__initWithFrame_andDelegate_(self, _cmd, rect, delegate2)
 { with(self)
 {
         self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumnView").super_class }, "initWithFrame:", rect);
@@ -16,11 +16,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 
         objj_msgSend(self, "addSubview:", button);
         objj_msgSend(button, "setTarget:", self);
-        objj_msgSend(button, "setAction:", sel_getUid("actionHandler:"));
-
+        objj_msgSend(button, "setAction:", sel_getUid("rowSelected:"));
+        self.delegate = delegate2;
         return self;
 }
-},["id","CGRect"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumnView__setObjectValue_(self, _cmd, anObject)
+},["id","CGRect","id"]), new objj_method(sel_getUid("setObjectValue:"), function $ButtonColumnView__setObjectValue_(self, _cmd, anObject)
 { with(self)
 {
     row = anObject;
@@ -39,10 +39,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSendSuper({ receiver:self, super_class:objj_getClass("ButtonColumnView").super_class }, "encodeWithCoder:", aCoder);
         objj_msgSend(aCoder, "encodeObject:forKey:", button, "button");
 }
-},["void","CPCoder"]), new objj_method(sel_getUid("actionHandler:"), function $ButtonColumnView__actionHandler_(self, _cmd, sender)
+},["void","CPCoder"]), new objj_method(sel_getUid("rowSelected:"), function $ButtonColumnView__rowSelected_(self, _cmd, sender)
 { with(self)
 {
-    console.log("handled " + row);
+    console.log("handled about " + row);
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "RowClickedNotification", row);
 }
 },["void","id"])]);
 }

@@ -6,17 +6,18 @@
 {
     CPButton button;
     CPString row;
+    id delegate;
 }
 
-- (id)initWithFrame:(CGRect)rect { 
+- (id)initWithFrame:(CGRect)rect andDelegate:(id)delegate2  { 
         self = [super initWithFrame:rect]; 
         button = [CPButton buttonWithTitle:@">"]; 
         [button setCenter:CPPointMake(10, 25)]; 
         //[nameField setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin]; 
         [self addSubview:button]; 
         [button setTarget:self];
-        [button setAction:@selector(actionHandler:)];  
-
+        [button setAction:@selector(rowSelected:)];  
+        self.delegate = delegate2;
         return self; 
 }   
 
@@ -24,7 +25,6 @@
     row = anObject;
     [button setTitle:">"]; 
 } 
-
 
 - (id)initWithCoder:(CPCoder)aCoder { 
         self = [super initWithCoder:aCoder]; 
@@ -37,7 +37,10 @@
         [aCoder encodeObject:button forKey:"button"]; 
 }
 
-- (void) actionHandler: (id)sender { 
-    console.log("handled "  + row); 
+- (void) rowSelected: (id)sender { 
+    console.log("handled about "  + row); 
+    [[CPNotificationCenter defaultCenter] 
+        postNotificationName:@"RowClickedNotification" 
+        object:row];
 }
 @end
