@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;5867;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;6401;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -6,7 +6,7 @@ objj_executeFile("ButtonColumnView.j", YES);
 
 
 {var the_class = objj_allocateClassPair(CPViewController, "PageViewController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("table")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("table"), new objj_ivar("titleField")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("page"), function $PageViewController__page(self, _cmd)
 { with(self)
@@ -64,6 +64,7 @@ page = newValue;
     objj_msgSend(scrollView, "setDocumentView:", table);
 
     objj_msgSend(deleteButton, "setEnabled:", NO);
+    objj_msgSend(backButton, "setEnabled:", NO);
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
 }
@@ -104,7 +105,6 @@ page = newValue;
 },["void","CPNotification"]), new objj_method(sel_getUid("addItemToList:"), function $PageViewController__addItemToList_(self, _cmd, sender)
 { with(self)
 {
-    console.log('addItemToList');
     var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
     objj_msgSend(page, "addChild:", newpage);
     objj_msgSend(table, "reloadData");
@@ -112,12 +112,19 @@ page = newValue;
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $PageViewController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
-    console.log('deleteItemFromList');
     objj_msgSend(page, "removeChild:", objj_msgSend(table, "selectedRow"));
     objj_msgSend(table, "deselectAll");
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);
 }
-},["@action","id"])]);
+},["@action","id"]), new objj_method(sel_getUid("controlTextDidChange:"), function $PageViewController__controlTextDidChange_(self, _cmd, sender)
+{ with(self)
+{
+    var length = objj_msgSend(objj_msgSend(titleField, "objectValue"), "length");
+    objj_msgSend(page, "setTitle:", objj_msgSend(titleField, "objectValue"));
+    console.log('notifying about ' + page);
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "PageChangedNotification", page);
+}
+},["void","id"])]);
 }
 

@@ -8,7 +8,9 @@
     @outlet CPScrollView scrollView;
     Page page @accessors;
     @outlet CPButton deleteButton;
+    @outlet CPButton backButton;
     CPTableView table;
+    @outlet CPTextField titleField;
 }
 - (id) initWithCibName: (CPString) aCibNameOrNil
                 bundle: (CPBundle) aCibBundleOrNil
@@ -53,6 +55,7 @@
     [scrollView setDocumentView:table]; 
 
     [deleteButton setEnabled:NO];
+    [backButton setEnabled:NO];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -111,21 +114,28 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [deleteButton setEnabled:chosenRow > -1]
 }
 
-
 - (@action)addItemToList:(id)sender {
-    console.log('addItemToList');
     var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
     [page addChild:newpage];
     [table reloadData];
 }
 
 - (@action)deleteItemFromList:(id)sender {
-    console.log('deleteItemFromList');
-
     [page removeChild:[table selectedRow]];
     [table deselectAll];
     [table reloadData];
     [self tableViewSelectionDidChange:null];
 }
+
+
+//CPTextField Delegate
+- (void)controlTextDidChange:(id)sender {
+    var length = [[titleField objectValue] length];
+    [page setTitle:[titleField objectValue]];
+    [[CPNotificationCenter defaultCenter] 
+        postNotificationName:@"PageChangedNotification" 
+        object:page]; 
+}
+
 
 @end

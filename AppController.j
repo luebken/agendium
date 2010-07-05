@@ -18,7 +18,6 @@
     @outlet CPButton saveButton;
     Page rootPage;
     @outlet CPTextField titleLabel;
-    @outlet CPTextField idField;
     @outlet CPView pageView;
 }
 
@@ -41,7 +40,6 @@
     [rootPage addChild:thursday];
     [rootPage addChild:friday];
 
-
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]];  
@@ -55,19 +53,23 @@
 
     //[scrollView setDocumentView:[pageViewController view]];
 
+    [[CPNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(pageDidChange:)
+               name:@"PageChangedNotification"
+             object:rootPage];
+
     [saveButton setEnabled:NO];
 
-    [idField becomeFirstResponder] 
+    //[idField becomeFirstResponder] 
 
     //[CPMenu setMenuBarVisible:YES];
 
 }
 
-
-//CPTextField Delegate
-- (void)controlTextDidChange:(id)sender {
-    var length = [[idField objectValue] length];
-    [saveButton setEnabled:length > 0];
+- (void) pageDidChange: (CPNotification) notification {
+    //FIXME: notification.object is nil !
+    [saveButton setEnabled:rootPage.title.length > 0];
 }
 
 @end
