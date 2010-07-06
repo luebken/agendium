@@ -10,8 +10,7 @@
 {
     if (self = [super initWithFrame:aRect])
     {
-        console.log('PageView.initWithFrame');
-        
+        console.log('PageView.initWithFrame'); 
     }
     return self;
 }

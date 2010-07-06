@@ -38,7 +38,6 @@
 }
 
 - (void) rowSelected: (id)sender { 
-    console.log("handled about "  + row); 
     [[CPNotificationCenter defaultCenter] 
         postNotificationName:@"RowClickedNotification" 
         object:row];

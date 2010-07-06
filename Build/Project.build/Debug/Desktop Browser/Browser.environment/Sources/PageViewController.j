@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;7003;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;7108;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -24,7 +24,7 @@ page = newValue;
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("PageViewController").super_class }, "initWithCibName:bundle:", aCibNameOrNil, aCibBundleOrNil))
     {
-        console.log('PageViewController1 :' + scrollView);
+
 
     }
     return self;
@@ -62,7 +62,7 @@ page = newValue;
     objj_msgSend(scrollView, "setDocumentView:", table);
 
     objj_msgSend(deleteButton, "setEnabled:", NO);
-
+    objj_msgSend(backButton, "setEnabled:", NO);
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
 
@@ -71,7 +71,6 @@ page = newValue;
 },["void"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
-    console.log('numberOfRowsInTableView ' + objj_msgSend(objj_msgSend(page, "children"), "count"));
     return objj_msgSend(objj_msgSend(page, "children"), "count");
 }
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $PageViewController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
@@ -130,12 +129,16 @@ page = newValue;
     var row = objj_msgSend(notification, "object");
     page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
     objj_msgSend(table, "reloadData");
+    objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
+    objj_msgSend(table, "deselectAll");
 }
 },["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
 { with(self)
 {
     page = objj_msgSend(page, "ancestor");
     objj_msgSend(table, "reloadData");
+    objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
+    objj_msgSend(table, "deselectAll");
 }
 },["@action","id"])]);
 }

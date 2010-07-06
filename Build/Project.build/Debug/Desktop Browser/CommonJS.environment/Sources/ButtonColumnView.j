@@ -1,4 +1,4 @@
-@STATIC;1.0;I;15;AppKit/CPView.jt;2262;
+@STATIC;1.0;I;15;AppKit/CPView.jt;2221;
 
 
 objj_executeFile("AppKit/CPView.j", NO);
@@ -42,7 +42,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:andDelega
 },["void","CPCoder"]), new objj_method(sel_getUid("rowSelected:"), function $ButtonColumnView__rowSelected_(self, _cmd, sender)
 { with(self)
 {
-    console.log("handled about " + row);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "RowClickedNotification", row);
 }
 },["void","id"])]);

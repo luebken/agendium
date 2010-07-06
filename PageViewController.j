@@ -17,7 +17,7 @@
 {
     if (self = [super initWithCibName:aCibNameOrNil bundle:aCibBundleOrNil])
     {
-        console.log('PageViewController1 :' + scrollView);  
+        //console.log('PageViewController1 :' + scrollView);  
 
     }
     return self;
@@ -55,7 +55,7 @@
     [scrollView setDocumentView:table]; 
 
     [deleteButton setEnabled:NO];
-    //[backButton setEnabled:NO];
+    [backButton setEnabled:NO];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -79,7 +79,6 @@
 //table datasource method
 - (int)numberOfRowsInTableView:(CPTableView)tableView
 {
-    console.log('numberOfRowsInTableView ' +  [[page children] count]);
     return [[page children] count];
 }
 
@@ -147,12 +146,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     var row = [notification object];
     page = [[page children] objectAtIndex:row];
     [table reloadData];
+    [backButton setEnabled:page.ancestor != null];
+    [table deselectAll];
+
     //[table removeFromSuperview]
 }
 
 - (@action)backButtonClicked:(id)sender {
     page = [page ancestor];
     [table reloadData];
+    [backButton setEnabled:page.ancestor != null];
+    [table deselectAll];
 }
 
 
