@@ -11,6 +11,7 @@
     @outlet CPButton backButton;
     CPTableView table;
     @outlet CPTextField titleField;
+    boolean editing @accessors;
 }
 - (id) initWithCibName: (CPString) aCibNameOrNil
                 bundle: (CPBundle) aCibBundleOrNil
@@ -70,12 +71,31 @@
              object:nil];
 }
 
-/*
+
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
-    return YES;
+    [self toggleEditing];
+    return self.editing;
 }
-*/
+
+- (void) toggleEditing {
+    var field;
+    if(self.editing) {
+        field = [CPTextField labelWithTitle:@""];
+        [self setEditing:NO];
+        [self myRefresh];
+    } else {
+        field = [CPTextField textFieldWithStringValue:@"" 
+            placeholder:@"" 
+                  width:100];
+        [self setEditing:YES];
+    }
+    var cols = [table tableColumns];
+    [cols[0] setDataView:field];
+    [cols[1] setDataView:field];
+}
+
+
 //table datasource method
 - (int)numberOfRowsInTableView:(CPTableView)tableView
 {

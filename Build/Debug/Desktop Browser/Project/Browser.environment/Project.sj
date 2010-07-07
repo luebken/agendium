@@ -232,7 +232,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["id","CGRect"])]);
 }
 
-p;20;PageViewController.jt;6937;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;6869;
+p;20;PageViewController.jt;8217;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;8149;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -240,7 +240,7 @@ objj_executeFile("ButtonColumnView.j", YES);
 
 
 {var the_class = objj_allocateClassPair(CPViewController, "PageViewController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("table"), new objj_ivar("titleField")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("table"), new objj_ivar("titleField"), new objj_ivar("editing")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("page"), function $PageViewController__page(self, _cmd)
 { with(self)
@@ -252,6 +252,18 @@ new objj_method(sel_getUid("setPage:"), function $PageViewController__setPage_(s
 { with(self)
 {
 page = newValue;
+}
+},["void","id"]),
+new objj_method(sel_getUid("editing"), function $PageViewController__editing(self, _cmd)
+{ with(self)
+{
+return editing;
+}
+},["id"]),
+new objj_method(sel_getUid("setEditing:"), function $PageViewController__setEditing_(self, _cmd, newValue)
+{ with(self)
+{
+editing = newValue;
 }
 },["void","id"]), new objj_method(sel_getUid("initWithCibName:bundle:"), function $PageViewController__initWithCibName_bundle_(self, _cmd, aCibNameOrNil, aCibBundleOrNil)
 { with(self)
@@ -302,6 +314,28 @@ page = newValue;
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("rowClicked:"), "RowClickedNotification", nil);
 }
+},["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $PageViewController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
+{ with(self)
+{
+    objj_msgSend(self, "toggleEditing");
+    return self.editing;
+}
+},["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("toggleEditing"), function $PageViewController__toggleEditing(self, _cmd)
+{ with(self)
+{
+    var field;
+    if(self.editing) {
+        field = objj_msgSend(CPTextField, "labelWithTitle:", "");
+        objj_msgSend(self, "setEditing:", NO);
+        objj_msgSend(self, "myRefresh");
+    } else {
+        field = objj_msgSend(CPTextField, "textFieldWithStringValue:placeholder:width:", "", "", 100);
+        objj_msgSend(self, "setEditing:", YES);
+    }
+    var cols = objj_msgSend(table, "tableColumns");
+    objj_msgSend(cols[0], "setDataView:", field);
+    objj_msgSend(cols[1], "setDataView:", field);
+}
 },["void"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
@@ -328,6 +362,10 @@ page = newValue;
     } else {
         objj_msgSend(pageAtRow, "setSubtitle:", aValue);
     }
+
+
+
+
 }
 },["void","CPTableView","id","CPTableColumn","int"]), new objj_method(sel_getUid("tableViewSelectionDidChange:"), function $PageViewController__tableViewSelectionDidChange_(self, _cmd, notification)
 { with(self)
@@ -356,6 +394,7 @@ page = newValue;
     var row = objj_msgSend(notification, "object");
     page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
     objj_msgSend(self, "myRefresh");
+
 }
 },["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
 { with(self)
