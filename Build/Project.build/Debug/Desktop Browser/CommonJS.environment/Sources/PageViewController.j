@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;8149;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;8317;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -6,7 +6,7 @@ objj_executeFile("ButtonColumnView.j", YES);
 
 
 {var the_class = objj_allocateClassPair(CPViewController, "PageViewController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("table"), new objj_ivar("titleField"), new objj_ivar("editing")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("editButton"), new objj_ivar("table"), new objj_ivar("titleField"), new objj_ivar("editing")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("page"), function $PageViewController__page(self, _cmd)
 { with(self)
@@ -83,26 +83,30 @@ editing = newValue;
 },["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $PageViewController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
 { with(self)
 {
-    objj_msgSend(self, "toggleEditing");
+    objj_msgSend(self, "toggleEditing:", aTableView);
     return self.editing;
 }
-},["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("toggleEditing"), function $PageViewController__toggleEditing(self, _cmd)
+},["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("toggleEditing:"), function $PageViewController__toggleEditing_(self, _cmd, sender)
 { with(self)
 {
     var field;
     if(self.editing) {
         field = objj_msgSend(CPTextField, "labelWithTitle:", "");
         objj_msgSend(self, "setEditing:", NO);
-        objj_msgSend(self, "myRefresh");
+        objj_msgSend(editButton, "setTitle:", "Edit");
     } else {
         field = objj_msgSend(CPTextField, "textFieldWithStringValue:placeholder:width:", "", "", 100);
         objj_msgSend(self, "setEditing:", YES);
+        objj_msgSend(editButton, "setTitle:", "Done");
+
     }
     var cols = objj_msgSend(table, "tableColumns");
     objj_msgSend(cols[0], "setDataView:", field);
     objj_msgSend(cols[1], "setDataView:", field);
+
+    objj_msgSend(self, "myRefresh");
 }
-},["void"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
+},["@action","id"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(page, "children"), "count");

@@ -9,6 +9,7 @@
     Page page @accessors;
     @outlet CPButton deleteButton;
     @outlet CPButton backButton;
+    @outlet CPButton editButton;
     CPTableView table;
     @outlet CPTextField titleField;
     boolean editing @accessors;
@@ -74,25 +75,29 @@
 
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
-    [self toggleEditing];
+    [self toggleEditing:aTableView];
     return self.editing;
 }
 
-- (void) toggleEditing {
+- (@action) toggleEditing:(id)sender {
     var field;
     if(self.editing) {
         field = [CPTextField labelWithTitle:@""];
         [self setEditing:NO];
-        [self myRefresh];
+        [editButton setTitle:@"Edit"];
     } else {
         field = [CPTextField textFieldWithStringValue:@"" 
             placeholder:@"" 
                   width:100];
         [self setEditing:YES];
+        [editButton setTitle:@"Done"];
+
     }
     var cols = [table tableColumns];
     [cols[0] setDataView:field];
     [cols[1] setDataView:field];
+
+    [self myRefresh];
 }
 
 
