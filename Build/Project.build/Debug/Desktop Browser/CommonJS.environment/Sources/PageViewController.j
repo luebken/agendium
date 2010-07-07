@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;7108;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;6869;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -116,30 +116,31 @@ page = newValue;
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);
 }
-},["@action","id"]), new objj_method(sel_getUid("controlTextDidChange:"), function $PageViewController__controlTextDidChange_(self, _cmd, sender)
-{ with(self)
-{
-    var length = objj_msgSend(objj_msgSend(titleField, "objectValue"), "length");
-    objj_msgSend(page, "setTitle:", objj_msgSend(titleField, "objectValue"));
-    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "PageChangedNotification", page);
-}
-},["void","id"]), new objj_method(sel_getUid("rowClicked:"), function $PageViewController__rowClicked_(self, _cmd, notification)
+},["@action","id"]), new objj_method(sel_getUid("rowClicked:"), function $PageViewController__rowClicked_(self, _cmd, notification)
 { with(self)
 {
     var row = objj_msgSend(notification, "object");
     page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
-    objj_msgSend(table, "reloadData");
-    objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
-    objj_msgSend(table, "deselectAll");
+    objj_msgSend(self, "myRefresh");
 }
 },["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
 { with(self)
 {
     page = objj_msgSend(page, "ancestor");
+    objj_msgSend(self, "myRefresh");
+}
+},["@action","id"]), new objj_method(sel_getUid("myRefresh"), function $PageViewController__myRefresh(self, _cmd)
+{ with(self)
+{
     objj_msgSend(table, "reloadData");
     objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
     objj_msgSend(table, "deselectAll");
+    var title = page.title;
+    if(page.subtitle != null) {
+        title += " (" + page.subtitle + ")";
+    }
+    objj_msgSend(titleField, "setObjectValue:", title);
 }
-},["@action","id"])]);
+},["void"])]);
 }
 

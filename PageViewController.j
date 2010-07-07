@@ -133,31 +133,29 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 
-//CPTextField Delegate
-- (void)controlTextDidChange:(id)sender {
-    var length = [[titleField objectValue] length];
-    [page setTitle:[titleField objectValue]];
-    [[CPNotificationCenter defaultCenter] 
-        postNotificationName:@"PageChangedNotification" 
-        object:page]; 
-}
+
 
 - (void) rowClicked:(id)notification {
     var row = [notification object];
     page = [[page children] objectAtIndex:row];
-    [table reloadData];
-    [backButton setEnabled:page.ancestor != null];
-    [table deselectAll];
-
+    [self myRefresh];
     //[table removeFromSuperview]
 }
 
 - (@action)backButtonClicked:(id)sender {
     page = [page ancestor];
+    [self myRefresh];
+}
+
+- (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
     [table deselectAll];
+    var title = page.title;
+    if(page.subtitle != null) {
+        title += " (" + page.subtitle + ")";
+    }
+    [titleField setObjectValue:title];
 }
-
 
 @end

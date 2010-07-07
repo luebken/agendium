@@ -18,7 +18,9 @@
     @outlet CPButton saveButton;
     Page rootPage;
     @outlet CPTextField titleLabel;
+    @outlet CPTextField appnameField;
     @outlet CPView pageView;
+    PageViewController pageViewController;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -35,7 +37,7 @@
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]];  
 
-    var pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
+    pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
                                                         bundle:nil];
     [pageViewController setPage:rootPage];
     [[pageViewController view] setFrame:CPRectMake(1,1,500, 350)]
@@ -81,5 +83,23 @@
     [rootPage addChild:thursday];
     [rootPage addChild:friday];
 }
+//CPTextField Delegate
+- (void)controlTextDidChange:(id)sender {
+    var length = [[appnameField objectValue] length];
+    [rootPage setTitle:[appnameField objectValue]];
+
+    [self myRefresh];
+/*
+    [[CPNotificationCenter defaultCenter] 
+        postNotificationName:@"PageChangedNotification" 
+        object:page]; 
+*/
+}
+
+- (void) myRefresh {
+    [saveButton setEnabled:rootPage.title.length > 0];
+    [pageViewController myRefresh];
+}
+
 
 @end
