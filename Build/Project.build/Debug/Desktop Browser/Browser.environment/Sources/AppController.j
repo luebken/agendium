@@ -1,9 +1,9 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;4229;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;4692;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -24,6 +24,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(pageView, "addSubview:", objj_msgSend(pageViewController, "view"));
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("pageDidChange:"), "PageChangedNotification", rootPage);
     objj_msgSend(saveButton, "setEnabled:", NO);
+    objj_msgSend(loadButton, "setEnabled:", NO);
 }
 },["void"]), new objj_method(sel_getUid("pageDidChange:"), function $AppController__pageDidChange_(self, _cmd, notification)
 { with(self)
@@ -61,8 +62,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     objj_msgSend(saveButton, "setEnabled:", rootPage.title.length > 0);
+    objj_msgSend(loadButton, "setEnabled:", rootPage.title.length > 0);
     objj_msgSend(pageViewController, "myRefresh");
 }
-},["void"])]);
+},["void"]), new objj_method(sel_getUid("load:"), function $AppController__load_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("loading...");
+}
+},["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("saving...");
+}
+},["@action","id"])]);
 }
 

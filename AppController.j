@@ -16,6 +16,7 @@
     @outlet CPWindow    theWindow; //this "outlet" is connected automatically by the Cib
     @outlet CPBox box;
     @outlet CPButton saveButton;
+    @outlet CPButton loadButton;
     Page rootPage;
     @outlet CPTextField titleLabel;
     @outlet CPTextField appnameField;
@@ -52,6 +53,7 @@
              object:rootPage];
 
     [saveButton setEnabled:NO];
+    [loadButton setEnabled:NO];
 
     //[idField becomeFirstResponder] 
 
@@ -98,7 +100,15 @@
 
 - (void) myRefresh {
     [saveButton setEnabled:rootPage.title.length > 0];
+    [loadButton setEnabled:rootPage.title.length > 0];
     [pageViewController myRefresh];
+}
+
+- (@action) load:(id)sender {
+    console.log(@"loading...");
+}
+- (@action) save:(id)sender {
+    console.log(@"saving...");
 }
 
 
