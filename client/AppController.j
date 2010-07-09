@@ -30,7 +30,7 @@
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
-    baseURL = @"http://localhost:3000/json";
+    baseURL = @"http://localhost:3000/";
 }
 
 - (void)awakeFromCib
@@ -120,7 +120,7 @@
     console.log(@"DATA: " + data);
     var obj = JSON.parse(data);
     console.log(@"obj: " + obj);
-    console.log(@"obj[1].title: " + obj[1].title);
+    console.log(@"obj[1].title: " + obj[0].title);
 }
 - (@action) save:(id)sender {
     console.log(@"saving...");
