@@ -60,7 +60,6 @@
     [loadButton setEnabled:NO];
 
     //[idField becomeFirstResponder] 
-
     //[CPMenu setMenuBarVisible:YES];
 
 }
@@ -118,10 +117,13 @@
 
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log(@"DATA: " + data);
-    var obj = JSON.parse(data);
-    console.log(@"obj: " + obj);
-    console.log(@"obj[1].title: " + obj[0].title);
+    var obj = JSON.parse(data)[0];
+    var page = [Page initFromJSONObject:obj];
+    [pageViewController setPage:page];
+    [self myRefresh];
+
 }
+
 - (@action) save:(id)sender {
     console.log(@"saving...");
 }

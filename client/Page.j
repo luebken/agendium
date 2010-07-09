@@ -11,8 +11,10 @@
     Page ancestor @accessors;
 }
 
-+ (CPArray) initFromJSONObjects:(CPArray)jsonObjects {
-    
++ (Page) initFromJSONObject:(id)object {
+    var page = [[Page alloc] initWithTitle:object.title 
+                       andSubtitle:object.subtitle];
+    return page;
 }
 
 - (id) init {

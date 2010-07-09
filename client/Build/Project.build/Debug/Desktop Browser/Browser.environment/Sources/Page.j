@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;2720;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;2840;
 
 
 
@@ -87,10 +87,11 @@ ancestor = newValue;
     return title;
 }
 },["CPString"])]);
-class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObjects:"), function $Page__initFromJSONObjects_(self, _cmd, jsonObjects)
+class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"), function $Page__initFromJSONObject_(self, _cmd, object)
 { with(self)
 {
-
+    var page = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", object.title, object.subtitle);
+    return page;
 }
-},["CPArray","CPArray"])]);
+},["Page","id"])]);
 }

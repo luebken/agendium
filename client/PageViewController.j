@@ -158,8 +158,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 
-
-
 - (void) rowClicked:(id)notification {
     var row = [notification object];
     page = [[page children] objectAtIndex:row];

@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;5467;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5372;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;5544;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5449;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -79,9 +79,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     console.log("DATA: " + data);
-    var obj = JSON.parse(data);
-    console.log("obj: " + obj);
-    console.log("obj[1].title: " + obj[0].title);
+    var obj = JSON.parse(data)[0];
+    var page = objj_msgSend(Page, "initFromJSONObject:", obj);
+    objj_msgSend(pageViewController, "setPage:", page);
+    objj_msgSend(self, "myRefresh");
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
@@ -148,7 +149,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;6;Page.jt;2765;@STATIC;1.0;I;21;Foundation/CPObject.jt;2720;
+p;6;Page.jt;2885;@STATIC;1.0;I;21;Foundation/CPObject.jt;2840;
 
 
 
@@ -237,12 +238,13 @@ ancestor = newValue;
     return title;
 }
 },["CPString"])]);
-class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObjects:"), function $Page__initFromJSONObjects_(self, _cmd, jsonObjects)
+class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"), function $Page__initFromJSONObject_(self, _cmd, object)
 { with(self)
 {
-
+    var page = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", object.title, object.subtitle);
+    return page;
 }
-},["CPArray","CPArray"])]);
+},["Page","id"])]);
 }p;10;PageView.jt;583;@STATIC;1.0;I;15;AppKit/CPView.jt;545;
 
 
