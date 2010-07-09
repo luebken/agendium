@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5449;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5466;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -80,8 +80,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     console.log("DATA: " + data);
     var obj = JSON.parse(data)[0];
-    var page = objj_msgSend(Page, "initFromJSONObject:", obj);
-    objj_msgSend(pageViewController, "setPage:", page);
+    var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootPage);
+    objj_msgSend(pageViewController, "setPage:", rootPage);
     objj_msgSend(self, "myRefresh");
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)

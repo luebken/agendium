@@ -14,6 +14,10 @@
 + (Page) initFromJSONObject:(id)object {
     var page = [[Page alloc] initWithTitle:object.title 
                        andSubtitle:object.subtitle];
+    for (var i=0; i < object.children.length; i++) {
+        var child = [Page initFromJSONObject:object.children[i]];
+        [page addChild:child];
+    }
     return page;
 }
 

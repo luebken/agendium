@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;2840;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;3030;
 
 
 
@@ -91,6 +91,10 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"),
 { with(self)
 {
     var page = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", object.title, object.subtitle);
+    for (var i=0; i < object.children.length; i++) {
+        var child = objj_msgSend(Page, "initFromJSONObject:", object.children[i]);
+        objj_msgSend(page, "addChild:", child);
+    }
     return page;
 }
 },["Page","id"])]);

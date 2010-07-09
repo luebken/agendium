@@ -118,10 +118,9 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log(@"DATA: " + data);
     var obj = JSON.parse(data)[0];
-    var page = [Page initFromJSONObject:obj];
-    [pageViewController setPage:page];
+    var rootPage = [Page initFromJSONObject:obj.rootPage];
+    [pageViewController setPage:rootPage];
     [self myRefresh];
-
 }
 
 - (@action) save:(id)sender {
