@@ -22,11 +22,15 @@
     @outlet CPTextField appnameField;
     @outlet CPView pageView;
     PageViewController pageViewController;
+
+    CPString baseURL;
+    CPURLConnection listConnection;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
+    baseURL = @"http://localhost:3000/json";
 }
 
 - (void)awakeFromCib
@@ -99,13 +103,24 @@
 }
 
 - (void) myRefresh {
-    [saveButton setEnabled:rootPage.title.length > 0];
-    [loadButton setEnabled:rootPage.title.length > 0];
+    var enable = rootPage.title.length > 0;
+    [saveButton setEnabled:enable];
+    [loadButton setEnabled:enable];
     [pageViewController myRefresh];
 }
 
 - (@action) load:(id)sender {
     console.log(@"loading...");
+    var request = [CPURLRequest requestWithURL:baseURL];
+    [request setHTTPMethod:'GET'];
+    listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+-(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
+    console.log(@"DATA: " + data);
+    var obj = JSON.parse(data);
+    console.log(@"obj: " + obj);
+    console.log(@"obj[1].title: " + obj[1].title);
 }
 - (@action) save:(id)sender {
     console.log(@"saving...");

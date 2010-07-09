@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;2530;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;2720;
 
 
 
@@ -87,4 +87,10 @@ ancestor = newValue;
     return title;
 }
 },["CPString"])]);
+class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObjects:"), function $Page__initFromJSONObjects_(self, _cmd, jsonObjects)
+{ with(self)
+{
+
+}
+},["CPArray","CPArray"])]);
 }

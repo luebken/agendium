@@ -11,6 +11,10 @@
     Page ancestor @accessors;
 }
 
++ (CPArray) initFromJSONObjects:(CPArray)jsonObjects {
+    
+}
+
 - (id) init {
     self = [super init];
     children = [[CPArray alloc] init];

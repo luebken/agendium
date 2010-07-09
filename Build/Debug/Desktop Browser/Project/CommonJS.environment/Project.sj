@@ -1,14 +1,15 @@
-@STATIC;1.0;p;15;AppController.jt;4787;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;4692;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;5471;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5376;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("listConnection")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(titleLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 24.0));
+    baseURL = "http://localhost:3000/json";
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
@@ -61,16 +62,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","id"]), new objj_method(sel_getUid("myRefresh"), function $AppController__myRefresh(self, _cmd)
 { with(self)
 {
-    objj_msgSend(saveButton, "setEnabled:", rootPage.title.length > 0);
-    objj_msgSend(loadButton, "setEnabled:", rootPage.title.length > 0);
+    var enable = rootPage.title.length > 0;
+    objj_msgSend(saveButton, "setEnabled:", enable);
+    objj_msgSend(loadButton, "setEnabled:", enable);
     objj_msgSend(pageViewController, "myRefresh");
 }
 },["void"]), new objj_method(sel_getUid("load:"), function $AppController__load_(self, _cmd, sender)
 { with(self)
 {
     console.log("loading...");
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL);
+    objj_msgSend(request, "setHTTPMethod:", 'GET');
+    listConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
+},["@action","id"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $AppController__connection_didReceiveData_(self, _cmd, connection, data)
+{ with(self)
+{
+    console.log("DATA: " + data);
+    var obj = JSON.parse(data);
+    console.log("obj: " + obj);
+    console.log("obj[1].title: " + obj[1].title);
+}
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
 {
     console.log("saving...");
@@ -135,7 +148,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;6;Page.jt;2575;@STATIC;1.0;I;21;Foundation/CPObject.jt;2530;
+p;6;Page.jt;2765;@STATIC;1.0;I;21;Foundation/CPObject.jt;2720;
 
 
 
@@ -224,6 +237,12 @@ ancestor = newValue;
     return title;
 }
 },["CPString"])]);
+class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObjects:"), function $Page__initFromJSONObjects_(self, _cmd, jsonObjects)
+{ with(self)
+{
+
+}
+},["CPArray","CPArray"])]);
 }p;10;PageView.jt;583;@STATIC;1.0;I;15;AppKit/CPView.jt;545;
 
 
