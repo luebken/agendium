@@ -10,6 +10,7 @@ configure(function(){
   use(MethodOverride);
   use(ContentLength);
   use(Logger);
+  use(Static);
   set('root', __dirname);
 })
 
@@ -34,5 +35,28 @@ post('/agenda', function(){
       self.respond(200, JSON.stringify(data2));            
   });
 });
+
+get('/a/*', function(id){
+    var idx = pageProvider.findIndexById(id);
+    var data = pageProvider.dummyData[0];
+    sys.print("get('/a/" + id + ")\n");
+    sys.print("idx:" + idx + "\n");
+    sys.print("data:" + data + "\n");
+    
+    var self = this;
+    this.render('index.html.haml', {
+      locals: {
+        appid: id,
+        title: data.rootpage.title
+      }
+    })
+})
+
+/*
+get('/*.css', function(file){
+  this.render(file + '.css.sass', { layout: false })
+})
+*/
+
 
 run();

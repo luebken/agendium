@@ -21,7 +21,7 @@ PageProvider.prototype.findByName = function(name, callback) {
   callback(null, result);
 };
 
-PageProvider.prototype.findIndexById = function(id, callback) {
+PageProvider.prototype.findIndexById = function(id) {
   var index = undefined;
   for(var i=0;i<this.dummyData.length;i++) {
     if( this.dummyData[i]._id == id ) {
