@@ -1,15 +1,13 @@
-@STATIC;1.0;p;15;AppController.jt;6246;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6151;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7007;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6912;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("previewButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
 {
-    objj_msgSend(titleLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 24.0));
-    baseURL = "http://localhost:3000/";
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("resetData"), function $AppController__resetData(self, _cmd)
 { with(self)
@@ -22,6 +20,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
 {
+    objj_msgSend(titleLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 24.0));
+    baseURL = "http://localhost:3000/";
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
@@ -30,9 +30,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(objj_msgSend(pageViewController, "view"), "setFrame:", CPRectMake(1,1,500, 350))
     objj_msgSend(pageView, "addSubview:", objj_msgSend(pageViewController, "view"));
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("pageDidChange:"), "PageChangedNotification", rootPage);
-    objj_msgSend(saveButton, "setEnabled:", NO);
-    objj_msgSend(loadButton, "setEnabled:", NO);
+    objj_msgSend(previewButton, "setBordered:", NO);
+    previewButton._DOMElement.style.textDecoration = "underline";
+    objj_msgSend(previewButton, "setTextColor:", objj_msgSend(CPColor, "blueColor"));
+    objj_msgSend(previewButton, "setTarget:", self);
+    objj_msgSend(previewButton, "setAction:", sel_getUid("setWindowLocation"));
+    previewButton._DOMElement.style.cursor = "pointer";
     objj_msgSend(self, "resetData");
+    objj_msgSend(self, "myRefresh");
+}
+},["void"]), new objj_method(sel_getUid("setWindowLocation"), function $AppController__setWindowLocation(self, _cmd)
+{ with(self)
+{
+    var applink = baseURL + "a/" + appId;
+    window.location = applink;
 }
 },["void"]), new objj_method(sel_getUid("pageDidChange:"), function $AppController__pageDidChange_(self, _cmd, notification)
 { with(self)
@@ -53,6 +64,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(saveButton, "setEnabled:", enable);
     objj_msgSend(loadButton, "setEnabled:", enable);
     objj_msgSend(pageViewController, "myRefresh");
+    var applink = baseURL + "a/" + appId;
+    if(appId){
+        objj_msgSend(previewButton, "setTitle:", applink);
+    } else {
+        objj_msgSend(previewButton, "setTitle:", "");
+    }
 }
 },["void"]), new objj_method(sel_getUid("load:"), function $AppController__load_(self, _cmd, sender)
 { with(self)

@@ -17,6 +17,7 @@
     @outlet CPBox box;
     @outlet CPButton saveButton;
     @outlet CPButton loadButton;
+    @outlet CPButton previewButton;
     Page rootPage;
     @outlet CPTextField titleLabel;
     @outlet CPTextField appnameField;
@@ -30,8 +31,6 @@
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
-    baseURL = @"http://localhost:3000/";
 }
 
 - (void)resetData {
@@ -43,6 +42,9 @@
 
 - (void)awakeFromCib
 {
+    [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
+    baseURL = @"http://localhost:3000/";
+
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]];  
@@ -61,14 +63,24 @@
                name:@"PageChangedNotification"
              object:rootPage];
 
-    [saveButton setEnabled:NO];
-    [loadButton setEnabled:NO];
+    [previewButton setBordered:NO]; 
+    previewButton._DOMElement.style.textDecoration = "underline";
+    [previewButton setTextColor:[CPColor blueColor]]; 
+    [previewButton setTarget:self]; 
+    [previewButton setAction:@selector(setWindowLocation)]; 
+    previewButton._DOMElement.style.cursor = "pointer"; 
 
     [self resetData];
+    [self myRefresh];
 
     //[idField becomeFirstResponder] 
     //[CPMenu setMenuBarVisible:YES];
 
+}
+
+- (void) setWindowLocation {
+    var applink = baseURL + "a/" + appId;
+    window.location = applink;
 }
 
 - (void) pageDidChange: (CPNotification) notification {
@@ -94,6 +106,13 @@
     [saveButton setEnabled:enable];
     [loadButton setEnabled:enable];
     [pageViewController myRefresh];
+    var applink = baseURL + "a/" + appId;
+    if(appId){
+        [previewButton setTitle:applink]; 
+    } else {
+        [previewButton setTitle:""]; 
+    }
+
 }
 
 - (@action) load:(id)sender {
