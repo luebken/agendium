@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;7175;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7080;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;5926;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5831;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -35,22 +35,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","CPNotification"]), new objj_method(sel_getUid("loadData"), function $AppController__loadData(self, _cmd)
 { with(self)
 {
-    var monday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Monday", "Sessions on Monday");
-    var mSession1 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "First Session", "9:00-11:00");
-    var mSession2 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Second Session", "11:15-12:00");
-    var mSession3 = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Third Session", "13:00-15:00");
-    objj_msgSend(monday, "addChild:", mSession1);
-    objj_msgSend(monday, "addChild:", mSession2);
-    objj_msgSend(monday, "addChild:", mSession3);
-    var tuesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Tuesday", "Sessions on Tuesday");
-    var wednesday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Wednesday", "Sessions on Wednesday");
-    var thursday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Thursday", "Sessions on Thursday");
-    var friday = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "Friday", "Sessions on Friday");
-    objj_msgSend(rootPage, "addChild:", monday);
-    objj_msgSend(rootPage, "addChild:", tuesday);
-    objj_msgSend(rootPage, "addChild:", wednesday);
-    objj_msgSend(rootPage, "addChild:", thursday);
-    objj_msgSend(rootPage, "addChild:", friday);
 }
 },["void"]), new objj_method(sel_getUid("controlTextDidChange:"), function $AppController__controlTextDidChange_(self, _cmd, sender)
 { with(self)
@@ -71,7 +55,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     console.log("loading...");
-    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL+"agenda/"+rootPage.title);
     objj_msgSend(request, "setHTTPMethod:", 'GET');
     listConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
@@ -90,9 +74,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["@action","id"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $AppController__connection_didReceiveData_(self, _cmd, connection, data)
 { with(self)
 {
-    console.log("didReceiveData: " + data);
+    console.log("didReceiveData: '" + data + "'");
     if(connection == listConnection) {
-        objj_msgSend(self, "didReceiveLoadData:", data);
+        if(data != '') {
+            objj_msgSend(self, "didReceiveLoadData:", data);
+        } else {
+            alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
+        }
     }
     if(connection == saveConnection) {
         alert(data);
@@ -102,7 +90,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     try {
-        var obj = JSON.parse(data)[0];
+        var obj = JSON.parse(data);
         var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootPage);
         objj_msgSend(pageViewController, "setPage:", rootPage);
         objj_msgSend(self, "myRefresh");

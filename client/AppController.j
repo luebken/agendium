@@ -72,6 +72,7 @@
 
 - (void) loadData {
     //Sample Data
+/*
     var monday = [[Page alloc] initWithTitle:"Monday" andSubtitle:"Sessions on Monday"];
     var mSession1 = [[Page alloc] initWithTitle:"First Session" andSubtitle:"9:00-11:00"];
     var mSession2 = [[Page alloc] initWithTitle:"Second Session" andSubtitle:"11:15-12:00"];
@@ -88,6 +89,7 @@
     [rootPage addChild:wednesday];
     [rootPage addChild:thursday];
     [rootPage addChild:friday];
+*/
 }
 //CPTextField Delegate
 - (void)controlTextDidChange:(id)sender {
@@ -111,7 +113,7 @@
 
 - (@action) load:(id)sender {
     console.log(@"loading...");
-    var request = [CPURLRequest requestWithURL:baseURL];
+    var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+rootPage.title];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
@@ -129,9 +131,13 @@
 
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
-    console.log("didReceiveData: " + data);
+    console.log("didReceiveData: '" + data + "'");
     if(connection == listConnection) {
-        [self didReceiveLoadData:data];
+        if(data != '') {
+            [self didReceiveLoadData:data];
+        } else {
+            alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
+        }
     }
     if(connection == saveConnection) {
         alert(data);
@@ -140,7 +146,7 @@
 
 -(void)didReceiveLoadData:(CPString)data {
     try {
-        var obj = JSON.parse(data)[0];
+        var obj = JSON.parse(data);
         var rootPage = [Page initFromJSONObject:obj.rootPage];
         [pageViewController setPage:rootPage];
         [self myRefresh];

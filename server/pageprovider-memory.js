@@ -9,6 +9,18 @@ PageProvider.prototype.findAll = function(callback) {
   callback( null, this.dummyData )
 };
 
+PageProvider.prototype.findByName = function(name, callback) {
+  sys.print('findByName:' + name + '\n')
+  var result = null;
+  for(var i =0;i<this.dummyData.length;i++) {
+    if( this.dummyData[i].rootPage.title == name ) {
+      result = this.dummyData[i];
+      break;
+    }
+  }
+  callback(null, result);
+};
+
 PageProvider.prototype.save = function(pages, callback) {
   var page = null;
 
@@ -30,8 +42,8 @@ new PageProvider().save(
   { 
     id : '4711',
     rootPage: { 
-        title: 'A sample App',
-        subtitle: '',
+        title: 'test',
+        subtitle: 'A Test Agenda',
         children : [{
             title: 'Day 1',
             subtitle: 'Sessions on the first day',

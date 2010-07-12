@@ -14,12 +14,17 @@ configure(function(){
 })
 
 var pageProvider= new PageProvider();
-get('/', function(){
-  var self = this;
-  pageProvider.findAll(function(error, docs){
-      self.contentType('json');
-      self.respond(200, JSON.stringify(docs));
-  })
+get('/agenda/*', function(name){
+    sys.print("get('/agenda/"+name+")");
+    var self = this;
+    pageProvider.findByName(name, function(error, docs){
+        self.contentType('json');
+        if(docs != null) {
+            self.respond(200, JSON.stringify(docs));            
+        } else {
+            self.respond(404, null);                        
+        }
+    })
 })
 
 post('/new', function(){
