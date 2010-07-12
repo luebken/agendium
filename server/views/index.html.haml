@@ -1,11 +1,13 @@
 #home.current
   .toolbar
-    %h1= title
+    %h1= rootpage.title
   %ul.rounded
     %li.arrow
-      %a{href: 'http://www.google.de'} Hello, World!
-    %li.arrow
-      %a{href: 'http://www.google.de'} Hello, World again
+      %a{href: 'http://www.google.de'}= rootpage.children[0].title
+      .small= rootpage.children[0].subtitle
+      %li.arrow
+        %a{href: 'http://www.google.de'}= rootpage.children[1].title
+        .small= rootpage.children[1].subtitle
   Appid: 
   %span= appid
   .info

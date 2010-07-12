@@ -38,7 +38,7 @@ post('/agenda', function(){
 
 get('/a/*', function(id){
     var idx = pageProvider.findIndexById(id);
-    var data = pageProvider.dummyData[0];
+    var data = pageProvider.dummyData[idx];
     sys.print("get('/a/" + id + ")\n");
     sys.print("idx:" + idx + "\n");
     sys.print("data:" + data + "\n");
@@ -47,7 +47,7 @@ get('/a/*', function(id){
     this.render('index.html.haml', {
       locals: {
         appid: id,
-        title: data.rootpage.title
+        rootpage: data.rootpage
       }
     })
 })

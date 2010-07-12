@@ -24,12 +24,14 @@ PageProvider.prototype.findByName = function(name, callback) {
 PageProvider.prototype.findIndexById = function(id) {
   var index = undefined;
   for(var i=0;i<this.dummyData.length;i++) {
+    //sys.print('i:' + i + '\n');
     if( this.dummyData[i]._id == id ) {
         index = i;
         break;
     }
   }
-  if(!index) {
+  sys.print('index:' + index + '\n');
+  if(index + '' === 'undefined') {
       index = idCounter++
   }
   sys.print('findIndexById:' + id + ' returning index:' +  index + '\n')
