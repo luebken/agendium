@@ -1,9 +1,9 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5877;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5920;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -65,7 +65,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     console.log("saving...");
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL + "agenda");
     objj_msgSend(request, "setHTTPMethod:", 'POST');
-    var jsonData = '{"id":"4711", "rootpage":'+ objj_msgSend(rootPage, "toJSON") + '}';
+    var jsonData = '{"_id":"' + appId + '", "rootpage":'+ objj_msgSend(rootPage, "toJSON") + '}';
     console.log("Saving JSON: " + jsonData);
     objj_msgSend(request, "setHTTPBody:", jsonData);
     objj_msgSend(request, "setValue:forHTTPHeaderField:", 'application/json', "Accept");
@@ -76,15 +76,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     console.log("didReceiveData: '" + data + "'");
-    if(connection == listConnection) {
-        if(data != '') {
-            objj_msgSend(self, "didReceiveLoadData:", data);
-        } else {
-            alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
-        }
-    }
     if(connection == saveConnection) {
         alert(data);
+    }
+    if(data != '') {
+        objj_msgSend(self, "didReceiveLoadData:", data);
+    } else {
+        alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
     }
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("didReceiveLoadData:"), function $AppController__didReceiveLoadData_(self, _cmd, data)
@@ -93,6 +91,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     try {
         var obj = JSON.parse(data);
         var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootpage);
+        self.appId = obj._id;
+        console.log('data._id:' + obj._id);
         objj_msgSend(pageViewController, "setPage:", rootPage);
         objj_msgSend(self, "myRefresh");
     } catch (e) {

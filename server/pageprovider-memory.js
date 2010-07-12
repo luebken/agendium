@@ -1,6 +1,6 @@
 sys = require('sys')
 
-var pageCounter = 1;
+var idCounter = 0;
 
 PageProvider = function(){};
 PageProvider.prototype.dummyData = [];
@@ -12,8 +12,8 @@ PageProvider.prototype.findAll = function(callback) {
 PageProvider.prototype.findByName = function(name, callback) {
   sys.print('findByName:' + name + '\n')
   var result = null;
-  for(var i =0;i<this.dummyData.length;i++) {
-    if( this.dummyData[i].rootpage.title == name ) {
+  for(var i=0;i<this.dummyData.length;i++) {
+    if(this.dummyData[i].rootpage.title == name ) {
       result = this.dummyData[i];
       break;
     }
@@ -21,25 +21,36 @@ PageProvider.prototype.findByName = function(name, callback) {
   callback(null, result);
 };
 
-PageProvider.prototype.save = function(pages, callback) {
-  var page = null;
-  if( typeof(pages.length)=="undefined")
-    pages = [pages];
-
-  for( var i =0;i< pages.length;i++ ) {
-    page = pages[i];
-    //page._id = pageCounter++;
-    //article.created_at = new Date();
-    this.dummyData[this.dummyData.length] = page;
+PageProvider.prototype.findIndexById = function(id, callback) {
+  var index = undefined;
+  for(var i=0;i<this.dummyData.length;i++) {
+    if( this.dummyData[i]._id == id ) {
+        index = i;
+        break;
+    }
   }
-  callback(null, pages);
+  if(!index) {
+      index = idCounter++
+  }
+  sys.print('findIndexById:' + id + ' returning index:' +  index + '\n')
+  return index;
+};
+
+PageProvider.prototype.save = function(data, callback) {
+    var index = this.findIndexById(data._id);
+    if(!data._id || data._id == 'null' || data._id == 'undefined') {
+        data._id = "" + index;
+    }
+    this.dummyData[index] = data;
+    
+    sys.print('now we have data: ' + this.dummyData.length + ' \n');
+    callback(null, data);
 };
 
 /* Lets bootstrap with dummy data */
 new PageProvider().save(
-[
   { 
-    id : '4711',
+    _id : '0',
     rootpage: { 
         title: 'test',
         subtitle: 'A Test Agenda',
@@ -64,7 +75,6 @@ new PageProvider().save(
                 children : []
             }]
     }
-  }
-], function(error, pages){});
+  }, function(error, pages){});
 
 exports.PageProvider = PageProvider;

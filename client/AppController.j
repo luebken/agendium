@@ -22,8 +22,8 @@
     @outlet CPTextField appnameField;
     @outlet CPView pageView;
     PageViewController pageViewController;
-
     CPString baseURL;
+    CPString appId;
     CPURLConnection listConnection;
     CPURLConnection saveConnection;
 }
@@ -122,7 +122,7 @@
     console.log(@"saving...");
     var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];
-    var jsonData = '{"id":"4711", "rootpage":'+ [rootPage toJSON] + '}';
+    var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
     console.log("Saving JSON: " + jsonData);
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
@@ -133,15 +133,14 @@
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
-    if(connection == listConnection) {
-        if(data != '') {
-            [self didReceiveLoadData:data];
-        } else {
-            alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
-        }
-    }
     if(connection == saveConnection) {
         alert(data);
+    }
+
+    if(data != '') {
+        [self didReceiveLoadData:data];
+    } else {
+        alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
     }
 }
 
@@ -149,6 +148,8 @@
     try {
         var obj = JSON.parse(data);
         var rootPage = [Page initFromJSONObject:obj.rootpage];
+        self.appId = obj._id;
+        console.log('data._id:' + obj._id);
         [pageViewController setPage:rootPage];
         [self myRefresh];
     } catch (e) {
