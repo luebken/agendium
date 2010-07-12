@@ -34,11 +34,15 @@
     baseURL = @"http://localhost:3000/";
 }
 
+- (void)resetData {
+    rootPage = [[Page alloc] init];
+    [rootPage setTitle:[appnameField objectValue]];
+    pageViewController.page = rootPage;
+    appId = null;
+}
+
 - (void)awakeFromCib
 {
-    rootPage = [[Page alloc] init];
-    [self loadData];
-
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]];  
@@ -60,6 +64,8 @@
     [saveButton setEnabled:NO];
     [loadButton setEnabled:NO];
 
+    [self resetData];
+
     //[idField becomeFirstResponder] 
     //[CPMenu setMenuBarVisible:YES];
 
@@ -70,27 +76,6 @@
     [saveButton setEnabled:rootPage.title.length > 0];
 }
 
-- (void) loadData {
-    //Sample Data
-/*
-    var monday = [[Page alloc] initWithTitle:"Monday" andSubtitle:"Sessions on Monday"];
-    var mSession1 = [[Page alloc] initWithTitle:"First Session" andSubtitle:"9:00-11:00"];
-    var mSession2 = [[Page alloc] initWithTitle:"Second Session" andSubtitle:"11:15-12:00"];
-    var mSession3 = [[Page alloc] initWithTitle:"Third Session" andSubtitle:"13:00-15:00"];
-    [monday addChild:mSession1];
-    [monday addChild:mSession2];
-    [monday addChild:mSession3];
-    var tuesday = [[Page alloc] initWithTitle:"Tuesday" andSubtitle:"Sessions on Tuesday"];
-    var wednesday = [[Page alloc] initWithTitle:"Wednesday" andSubtitle:"Sessions on Wednesday"];
-    var thursday = [[Page alloc] initWithTitle:"Thursday" andSubtitle:"Sessions on Thursday"];
-    var friday = [[Page alloc] initWithTitle:"Friday" andSubtitle:"Sessions on Friday"];
-    [rootPage addChild:monday];
-    [rootPage addChild:tuesday];
-    [rootPage addChild:wednesday];
-    [rootPage addChild:thursday];
-    [rootPage addChild:friday];
-*/
-}
 //CPTextField Delegate
 - (void)controlTextDidChange:(id)sender {
     var length = [[appnameField objectValue] length];
@@ -134,13 +119,15 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        alert(data);
+        alert("Saved!");
     }
 
     if(data != '') {
         [self didReceiveLoadData:data];
     } else {
-        alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
+        alert('Couldn\'t find Agenda: "' + rootPage.title + '"');    
+        [self resetData];
+        [self myRefresh]
     }
 }
 
@@ -165,7 +152,7 @@
 }
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    console.log("didReceiveResponse for URL" + [response URL]);
+    console.log("didReceiveResponse for URL:" + [response URL]);
 }
 
 

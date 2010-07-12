@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;6015;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5920;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;6246;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6151;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -11,11 +11,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(titleLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 24.0));
     baseURL = "http://localhost:3000/";
 }
-},["void","CPNotification"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
+},["void","CPNotification"]), new objj_method(sel_getUid("resetData"), function $AppController__resetData(self, _cmd)
 { with(self)
 {
     rootPage = objj_msgSend(objj_msgSend(Page, "alloc"), "init");
-    objj_msgSend(self, "loadData");
+    objj_msgSend(rootPage, "setTitle:", objj_msgSend(appnameField, "objectValue"));
+    pageViewController.page = rootPage;
+    appId = null;
+}
+},["void"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
+{ with(self)
+{
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
     objj_msgSend(box, "setBorderColor:", objj_msgSend(CPColor, "grayColor"));
@@ -26,17 +32,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("pageDidChange:"), "PageChangedNotification", rootPage);
     objj_msgSend(saveButton, "setEnabled:", NO);
     objj_msgSend(loadButton, "setEnabled:", NO);
+    objj_msgSend(self, "resetData");
 }
 },["void"]), new objj_method(sel_getUid("pageDidChange:"), function $AppController__pageDidChange_(self, _cmd, notification)
 { with(self)
 {
     objj_msgSend(saveButton, "setEnabled:", rootPage.title.length > 0);
 }
-},["void","CPNotification"]), new objj_method(sel_getUid("loadData"), function $AppController__loadData(self, _cmd)
-{ with(self)
-{
-}
-},["void"]), new objj_method(sel_getUid("controlTextDidChange:"), function $AppController__controlTextDidChange_(self, _cmd, sender)
+},["void","CPNotification"]), new objj_method(sel_getUid("controlTextDidChange:"), function $AppController__controlTextDidChange_(self, _cmd, sender)
 { with(self)
 {
     var length = objj_msgSend(objj_msgSend(appnameField, "objectValue"), "length");
@@ -77,12 +80,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        alert(data);
+        alert("Saved!");
     }
     if(data != '') {
         objj_msgSend(self, "didReceiveLoadData:", data);
     } else {
         alert('Couldn\'t find Agenda: "' + rootPage.title + '"');
+        objj_msgSend(self, "resetData");
+        objj_msgSend(self, "myRefresh")
     }
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("didReceiveLoadData:"), function $AppController__didReceiveLoadData_(self, _cmd, data)
@@ -109,7 +114,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","CPURLConnection","id"]), new objj_method(sel_getUid("connection:didReceiveResponse:"), function $AppController__connection_didReceiveResponse_(self, _cmd, connection, response)
 { with(self)
 {
-    console.log("didReceiveResponse for URL" + objj_msgSend(response, "URL"));
+    console.log("didReceiveResponse for URL:" + objj_msgSend(response, "URL"));
 }
 },["void","CPURLConnection","CPHTTPURLResponse"])]);
 }
