@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5831;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5877;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -63,9 +63,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 { with(self)
 {
     console.log("saving...");
-    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL + "new");
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL + "agenda");
     objj_msgSend(request, "setHTTPMethod:", 'POST');
-    var jsonData = '{"id":"4711", "rootPage":{ "title":"A sample App", "subtitle":"" }}';
+    var jsonData = '{"id":"4711", "rootpage":'+ objj_msgSend(rootPage, "toJSON") + '}';
+    console.log("Saving JSON: " + jsonData);
     objj_msgSend(request, "setHTTPBody:", jsonData);
     objj_msgSend(request, "setValue:forHTTPHeaderField:", 'application/json', "Accept");
     objj_msgSend(request, "setValue:forHTTPHeaderField:", 'application/json', "Content-Type");
@@ -91,7 +92,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     try {
         var obj = JSON.parse(data);
-        var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootPage);
+        var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootpage);
         objj_msgSend(pageViewController, "setPage:", rootPage);
         objj_msgSend(self, "myRefresh");
     } catch (e) {

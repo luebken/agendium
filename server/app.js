@@ -27,19 +27,18 @@ get('/agenda/*', function(name){
     })
 })
 
-post('/new', function(){
+post('/agenda', function(){
   var self = this;
   var data = JSON.parse(this.body); 
-  sys.print("saving "  + data.id);
-  self.respond(200, '');
-  /*
-  articleProvider.save({
-    title: this.param('title'),
-    body: this.param('body')
-  }, function(error, docs) {
-    self.redirect('/')
+  sys.print("saving:\n");
+  sys.print(" data.id:"  + data.id + "\n");
+  sys.print(" data.rootpage.title:"  + data.rootpage.title + "\n");
+  if(data.rootpage.children && data.rootpage.children.length > 0 ) {
+      sys.print(" data.rootpage.children[0].title:"  + data.rootpage.children[0].title + "\n");
+  }
+  pageProvider.save(data, function(error, docs) {
+     self.respond(200, '');
   });
-  */
 });
 
 run();

@@ -13,7 +13,7 @@ PageProvider.prototype.findByName = function(name, callback) {
   sys.print('findByName:' + name + '\n')
   var result = null;
   for(var i =0;i<this.dummyData.length;i++) {
-    if( this.dummyData[i].rootPage.title == name ) {
+    if( this.dummyData[i].rootpage.title == name ) {
       result = this.dummyData[i];
       break;
     }
@@ -23,7 +23,6 @@ PageProvider.prototype.findByName = function(name, callback) {
 
 PageProvider.prototype.save = function(pages, callback) {
   var page = null;
-
   if( typeof(pages.length)=="undefined")
     pages = [pages];
 
@@ -41,7 +40,7 @@ new PageProvider().save(
 [
   { 
     id : '4711',
-    rootPage: { 
+    rootpage: { 
         title: 'test',
         subtitle: 'A Test Agenda',
         children : [{

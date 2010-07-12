@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;3030;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;3519;
 
 
 
@@ -81,7 +81,20 @@ ancestor = newValue;
 {
     objj_msgSend(children, "removeObjectAtIndex:", index);
 }
-},["id","int"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
+},["id","int"]), new objj_method(sel_getUid("toJSON"), function $Page__toJSON(self, _cmd)
+{ with(self)
+{
+    var childrenJSON = '';
+    for (var i=0; i < children.length; i++) {
+        childrenJSON += objj_msgSend(children[i], "toJSON");
+        childrenJSON += ',';
+    }
+    if(childrenJSON.length > 0) {
+        childrenJSON = childrenJSON.substring(0, childrenJSON.length - 1);
+    }
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + ']}';
+}
+},["id"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)
 {
     return title;

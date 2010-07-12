@@ -120,9 +120,10 @@
 
 - (@action) save:(id)sender {
     console.log(@"saving...");
-    var request = [CPURLRequest requestWithURL:baseURL + "new"];
+    var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];
-    var jsonData = '{"id":"4711", "rootPage":{ "title":"A sample App", "subtitle":"" }}';
+    var jsonData = '{"id":"4711", "rootpage":'+ [rootPage toJSON] + '}';
+    console.log("Saving JSON: " + jsonData);
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
@@ -147,7 +148,7 @@
 -(void)didReceiveLoadData:(CPString)data {
     try {
         var obj = JSON.parse(data);
-        var rootPage = [Page initFromJSONObject:obj.rootPage];
+        var rootPage = [Page initFromJSONObject:obj.rootpage];
         [pageViewController setPage:rootPage];
         [self myRefresh];
     } catch (e) {

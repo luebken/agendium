@@ -44,6 +44,18 @@
     [children removeObjectAtIndex:index];
 }
 
+- (id) toJSON {
+    var childrenJSON = '';
+    for (var i=0; i < children.length; i++) {
+        childrenJSON += [children[i] toJSON];
+        childrenJSON += ',';
+    }
+    if(childrenJSON.length > 0) {
+        childrenJSON = childrenJSON.substring(0, childrenJSON.length - 1);
+    }        
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + ']}';
+}
+
 -(CPString) description {
     return title;
 }
