@@ -22,5 +22,19 @@ get('/', function(){
   })
 })
 
+post('/new', function(){
+  var self = this;
+  var data = JSON.parse(this.body); 
+  sys.print("saving "  + data.id);
+  self.respond(200, '');
+  /*
+  articleProvider.save({
+    title: this.param('title'),
+    body: this.param('body')
+  }, function(error, docs) {
+    self.redirect('/')
+  });
+  */
+});
 
 run();

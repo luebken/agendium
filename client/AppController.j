@@ -25,6 +25,7 @@
 
     CPString baseURL;
     CPURLConnection listConnection;
+    CPURLConnection saveConnection;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -115,16 +116,48 @@
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
--(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
-    console.log(@"DATA: " + data);
-    var obj = JSON.parse(data)[0];
-    var rootPage = [Page initFromJSONObject:obj.rootPage];
-    [pageViewController setPage:rootPage];
-    [self myRefresh];
-}
-
 - (@action) save:(id)sender {
     console.log(@"saving...");
+    var request = [CPURLRequest requestWithURL:baseURL + "new"];
+    [request setHTTPMethod:'POST'];
+    var jsonData = '{"id":"4711", "rootPage":{ "title":"A sample App", "subtitle":"" }}';
+    [request setHTTPBody:jsonData];
+    [request setValue:'application/json' forHTTPHeaderField:"Accept"];
+    [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
+    saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+//CPURLConnection delegate
+-(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
+    console.log("didReceiveData: " + data);
+    if(connection == listConnection) {
+        [self didReceiveLoadData:data];
+    }
+    if(connection == saveConnection) {
+        alert(data);
+    }
+}
+
+-(void)didReceiveLoadData:(CPString)data {
+    try {
+        var obj = JSON.parse(data)[0];
+        var rootPage = [Page initFromJSONObject:obj.rootPage];
+        [pageViewController setPage:rootPage];
+        [self myRefresh];
+    } catch (e) {
+        console.log(@"Error in didReceiveData. " + e);
+        alert(e);
+    } 
+}
+
+//CPURLConnection delegate
+-(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
+    console.log("didFailWithError: " + error);
+    alert(error);
+}
+//CPURLConnection delegate
+-(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
+    console.log("didReceiveResponse for URL" + [response URL]);
 }
 
 

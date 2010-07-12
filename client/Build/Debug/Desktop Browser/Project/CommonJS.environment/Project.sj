@@ -1,9 +1,9 @@
-@STATIC;1.0;p;15;AppController.jt;5561;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;5466;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7175;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7080;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("listConnection")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -75,21 +75,54 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(request, "setHTTPMethod:", 'GET');
     listConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["@action","id"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $AppController__connection_didReceiveData_(self, _cmd, connection, data)
-{ with(self)
-{
-    console.log("DATA: " + data);
-    var obj = JSON.parse(data)[0];
-    var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootPage);
-    objj_msgSend(pageViewController, "setPage:", rootPage);
-    objj_msgSend(self, "myRefresh");
-}
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
+},["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
 {
     console.log("saving...");
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL + "new");
+    objj_msgSend(request, "setHTTPMethod:", 'POST');
+    var jsonData = '{"id":"4711", "rootPage":{ "title":"A sample App", "subtitle":"" }}';
+    objj_msgSend(request, "setHTTPBody:", jsonData);
+    objj_msgSend(request, "setValue:forHTTPHeaderField:", 'application/json', "Accept");
+    objj_msgSend(request, "setValue:forHTTPHeaderField:", 'application/json', "Content-Type");
+    saveConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["@action","id"])]);
+},["@action","id"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $AppController__connection_didReceiveData_(self, _cmd, connection, data)
+{ with(self)
+{
+    console.log("didReceiveData: " + data);
+    if(connection == listConnection) {
+        objj_msgSend(self, "didReceiveLoadData:", data);
+    }
+    if(connection == saveConnection) {
+        alert(data);
+    }
+}
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("didReceiveLoadData:"), function $AppController__didReceiveLoadData_(self, _cmd, data)
+{ with(self)
+{
+    try {
+        var obj = JSON.parse(data)[0];
+        var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootPage);
+        objj_msgSend(pageViewController, "setPage:", rootPage);
+        objj_msgSend(self, "myRefresh");
+    } catch (e) {
+        console.log("Error in didReceiveData. " + e);
+        alert(e);
+    }
+}
+},["void","CPString"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $AppController__connection_didFailWithError_(self, _cmd, connection, error)
+{ with(self)
+{
+    console.log("didFailWithError: " + error);
+    alert(error);
+}
+},["void","CPURLConnection","id"]), new objj_method(sel_getUid("connection:didReceiveResponse:"), function $AppController__connection_didReceiveResponse_(self, _cmd, connection, response)
+{ with(self)
+{
+    console.log("didReceiveResponse for URL" + objj_msgSend(response, "URL"));
+}
+},["void","CPURLConnection","CPHTTPURLResponse"])]);
 }
 
 p;18;ButtonColumnView.jt;2260;@STATIC;1.0;I;15;AppKit/CPView.jt;2221;
