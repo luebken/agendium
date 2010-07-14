@@ -2,13 +2,22 @@
   .toolbar
     %h1= rootpage.title
   %ul.rounded
-    %li.arrow
-      %a{href: 'http://www.google.de'}= rootpage.children[0].title
-      .small= rootpage.children[0].subtitle
+    - for (var i = 0; i < rootpage.children.length; ++i)
       %li.arrow
-        %a{href: 'http://www.google.de'}= rootpage.children[1].title
-        .small= rootpage.children[1].subtitle
-  Appid: 
-  %span= appid
+        %a{href: '#child'+i}= rootpage.children[i].title
+        .small= rootpage.children[i].subtitle
+  =appid
   .info
     #p Add this page to your home screen to view the custom icon, startup screen, and full screen mode.
+
+- for (var i = 0; i < rootpage.children.length; ++i)
+  - page = rootpage.children[i]
+  %div{id: "child"+i}
+    .toolbar
+      %h1= page.title
+      %a{href: '#'}.back Back
+    %ul.rounded
+      - for (var j = 0; j < page.children.length; ++j)
+        %li.arrow
+          %a{href: '#childchild'+j}= page.children[j].title
+          .small= page.children[j].subtitle
