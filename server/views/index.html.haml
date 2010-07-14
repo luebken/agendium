@@ -1,23 +1,32 @@
-#home.current
-  .toolbar
-    %h1= rootpage.title
-  %ul.rounded
-    - for (var i = 0; i < rootpage.children.length; ++i)
-      %li.arrow
-        %a{href: '#child'+i}= rootpage.children[i].title
-        .small= rootpage.children[i].subtitle
-  =appid
-  .info
-    #p Add this page to your home screen to view the custom icon, startup screen, and full screen mode.
-
-- for (var i = 0; i < rootpage.children.length; ++i)
-  - page = rootpage.children[i]
-  %div{id: "child"+i}
-    .toolbar
-      %h1= page.title
-      %a{href: '#'}.back Back
-    %ul.rounded
-      - for (var j = 0; j < page.children.length; ++j)
-        %li.arrow
-          %a{href: '#childchild'+j}= page.children[j].title
-          .small= page.children[j].subtitle
+%html{ xmlns: 'http://www.w3.org/1999/xhtml'}
+  %head
+    %title Agendium
+    %script{ src: '/public/js/jquery-1.4.2.min.js' }
+    %script{ src: '/public/js/jqtouch.js' }
+    %script{ src: '/public/js/app.js' }
+    %script{ src: '/data/'+ rootpage.title }
+    %link{ rel: 'stylesheet', href: '/public/js/jqtouch.css' }
+    %link{ rel: 'stylesheet', href: '/public/themes/jqt/theme.css' }
+  %body
+    #jqt
+      #home.current
+        .toolbar
+          %h1= rootpage.title
+        %ul.rounded
+          - for (var i = 0; i < rootpage.children.length; ++i)
+            %li.arrow
+              %a{href: '#child'+i}= rootpage.children[i].title
+              .small= rootpage.children[i].subtitle
+        .info
+          #p Add this page to your home screen to view the custom icon, startup screen, and full screen mode.
+      - for (var i = 0; i < rootpage.children.length; ++i)
+        - page = rootpage.children[i]
+        %div{id: "child"+i}
+          .toolbar
+            %h1= page.title
+            %a{href: '#'}.back Back
+          %ul.rounded
+            - for (var j = 0; j < page.children.length; ++j)
+              %li.arrow
+                %a{href: '#childchild'+j}= page.children[j].title
+                .small= page.children[j].subtitle

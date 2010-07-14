@@ -15,13 +15,13 @@ configure(function(){
 })
 
 var pageProvider= new PageProvider();
+
 get('/agenda/*', function(name){
-    sys.print("get('/agenda/"+name+")");
     var self = this;
-    pageProvider.findByName(name, function(error, data2){
+    pageProvider.findByName(name, function(error, data){
         self.contentType('json');
-        if(data2 != null) {
-            self.respond(200, JSON.stringify(data2));            
+        if(data != null) {
+            self.respond(200, JSON.stringify(data));            
         } else {
             self.respond(404, null);                        
         }
@@ -38,17 +38,27 @@ post('/agenda', function(){
 
 get('/a/*', function(id){
     var idx = pageProvider.findIndexById(id);
-    var data = pageProvider.dummyData[idx];
-    sys.print("get('/a/" + id + ")\n");
-    sys.print("idx:" + idx + "\n");
-    sys.print("data:" + data + "\n");
-    
+    var data = pageProvider.dummyData[idx];    
     var self = this;
     this.render('index.html.haml', {
+      layout: false,
       locals: {
         appid: id,
         rootpage: data.rootpage
       }
+    })
+})
+
+//FIXME why not use get('/agenda/*' just because auf "var data"
+get('/data/*', function(name){
+    var self = this;
+    pageProvider.findByName(name, function(error, data){
+        self.contentType('json');
+        if(data != null) {
+            self.respond(200, 'var data = ' + JSON.stringify(data));            
+        } else {
+            self.respond(404, null);                        
+        }
     })
 })
 
