@@ -5,19 +5,21 @@ var jQT = new $.jQTouch({
     statusBar: 'black'
 });
 
-var app = {
-
-/*	
-	createPage:function(page) {
-		var $page = $('<div id="' + page.title + '">');
-		$page.append('<div class="toolbar"><a class="back">Back</a><h1>'+ page.title+'</h1></div>');
-		$page.insertAfter($("#otherpages"));
-		return $page;		
-	}
-
-*/
+var createAndInsertPage = function(page, pageid) {
+ 	var $page = $('<div id="' + pageid + '">');
+ 	$page.append('<div class="toolbar"><a class="back">Back</a><h1>' + page.title + '</h1></div>');
+ 	var $ul = $('<ul class="rounded">'); 
+    for(var i=0; i < page.children.length; i++) {
+        var childpageid = pageid + 'c' + i;
+        var child = page.children[i];
+        $ul.append('<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a><div class="small">'+ child.subtitle+'</div></li>');
+        createAndInsertPage(child, childpageid);
+    }
+    $page.append($ul);
+    $page.insertAfter($("#otherpages"));	
 }
 
+
 $(function(){
-    console.log('myfunction(data): ' + data.rootpage.children[0].title);
+    createAndInsertPage(data.rootpage, "r");
 });
