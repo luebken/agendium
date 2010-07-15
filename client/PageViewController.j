@@ -8,10 +8,14 @@
     @outlet CPScrollView scrollView;
     Page page @accessors;
     @outlet CPButton deleteButton;
+    @outlet CPButton addButton;
     @outlet CPButton backButton;
     @outlet CPButton editButton;
+    @outlet CPPopUpButton pagetypeButton;
     CPTableView table;
     @outlet CPTextField titleField;
+    @outlet CPTextField itemsLabel;
+
     boolean editing @accessors;
 }
 - (id) initWithCibName: (CPString) aCibNameOrNil
@@ -25,7 +29,7 @@
     return self;
 }
 - (void) awakeFromCib {    
-    table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 500.0)];
+    table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 600.0)];
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"title"];
     [[column1 headerView] setStringValue:"Title"];
@@ -58,6 +62,8 @@
 
     [deleteButton setEnabled:NO];
     [backButton setEnabled:NO];
+    [pagetypeButton removeAllItems];
+    [pagetypeButton addItemsWithTitles: ['List', 'Detail']];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -170,9 +176,29 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [self myRefresh];
 }
 
+- (@action) pageTypeClicked:(id)sender {
+    var title = [[sender selectedItem] title];
+    page.type = title;
+    if(title == "List") {
+        console.log('Selected Pagetype: List');
+        [scrollView setDocumentView:table]; 
+    } 
+    if(title == "Detail") {
+        console.log('Selected Pagetype: Detail');
+        var imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,500,500)];    
+        [imageView setBackgroundColor:[CPColor redColor]]; 
+        [scrollView setDocumentView:imageView]; 
+    } 
+    [self myRefresh];
+}
+
 - (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
+    [addButton setEnabled:page.type == 'List'];
+    var color = page.type == 'List' ? [CPColor blackColor] : [CPColor grayColor]; 
+    [itemsLabel setTextColor:color];
+
     [table deselectAll];
     var title = page.title;
     if(page.subtitle != null) {

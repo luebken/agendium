@@ -9,6 +9,7 @@
     CPString subtitle @accessors;
     Page[] children @accessors;
     Page ancestor @accessors;
+    CPString type @accessors;
 }
 
 + (Page) initFromJSONObject:(id)object {
@@ -24,6 +25,7 @@
 - (id) init {
     self = [super init];
     children = [[CPArray alloc] init];
+    type = "List";
     return self;
 }
            
