@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;3519;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;3810;
 
 
 
@@ -6,7 +6,7 @@ objj_executeFile("Foundation/CPObject.j", NO);
 
 
 {var the_class = objj_allocateClassPair(CPObject, "Page"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children"), new objj_ivar("ancestor")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children"), new objj_ivar("ancestor"), new objj_ivar("type")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("title"), function $Page__title(self, _cmd)
 { with(self)
@@ -55,11 +55,24 @@ new objj_method(sel_getUid("setAncestor:"), function $Page__setAncestor_(self, _
 {
 ancestor = newValue;
 }
+},["void","id"]),
+new objj_method(sel_getUid("type"), function $Page__type(self, _cmd)
+{ with(self)
+{
+return type;
+}
+},["id"]),
+new objj_method(sel_getUid("setType:"), function $Page__setType_(self, _cmd, newValue)
+{ with(self)
+{
+type = newValue;
+}
 },["void","id"]), new objj_method(sel_getUid("init"), function $Page__init(self, _cmd)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("Page").super_class }, "init");
     children = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+    type = "List";
     return self;
 }
 },["id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:"), function $Page__initWithTitle_andSubtitle_(self, _cmd, newtitle, newsubtitle)

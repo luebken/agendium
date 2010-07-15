@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;8317;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;9557;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -6,7 +6,7 @@ objj_executeFile("ButtonColumnView.j", YES);
 
 
 {var the_class = objj_allocateClassPair(CPViewController, "PageViewController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("backButton"), new objj_ivar("editButton"), new objj_ivar("table"), new objj_ivar("titleField"), new objj_ivar("editing")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("scrollView"), new objj_ivar("page"), new objj_ivar("deleteButton"), new objj_ivar("addButton"), new objj_ivar("backButton"), new objj_ivar("editButton"), new objj_ivar("pagetypeButton"), new objj_ivar("table"), new objj_ivar("titleField"), new objj_ivar("itemsLabel"), new objj_ivar("editing")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("page"), function $PageViewController__page(self, _cmd)
 { with(self)
@@ -44,7 +44,7 @@ editing = newValue;
 },["id","CPString","CPBundle"]), new objj_method(sel_getUid("awakeFromCib"), function $PageViewController__awakeFromCib(self, _cmd)
 { with(self)
 {
-    table = objj_msgSend(objj_msgSend(CPTableView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 200.0, 500.0));
+    table = objj_msgSend(objj_msgSend(CPTableView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 200.0, 600.0));
 
     var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "title");
     objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Title");
@@ -75,6 +75,8 @@ editing = newValue;
 
     objj_msgSend(deleteButton, "setEnabled:", NO);
     objj_msgSend(backButton, "setEnabled:", NO);
+    objj_msgSend(pagetypeButton, "removeAllItems");
+    objj_msgSend(pagetypeButton, "addItemsWithTitles:",  ['List', 'Detail']);
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
 
@@ -172,11 +174,32 @@ editing = newValue;
     page = objj_msgSend(page, "ancestor");
     objj_msgSend(self, "myRefresh");
 }
+},["@action","id"]), new objj_method(sel_getUid("pageTypeClicked:"), function $PageViewController__pageTypeClicked_(self, _cmd, sender)
+{ with(self)
+{
+    var title = objj_msgSend(objj_msgSend(sender, "selectedItem"), "title");
+    page.type = title;
+    if(title == "List") {
+        console.log('Selected Pagetype: List');
+        objj_msgSend(scrollView, "setDocumentView:", table);
+    }
+    if(title == "Detail") {
+        console.log('Selected Pagetype: Detail');
+        var imageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(0,0,500,500));
+        objj_msgSend(imageView, "setBackgroundColor:", objj_msgSend(CPColor, "redColor"));
+        objj_msgSend(scrollView, "setDocumentView:", imageView);
+    }
+    objj_msgSend(self, "myRefresh");
+}
 },["@action","id"]), new objj_method(sel_getUid("myRefresh"), function $PageViewController__myRefresh(self, _cmd)
 { with(self)
 {
     objj_msgSend(table, "reloadData");
     objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
+    objj_msgSend(addButton, "setEnabled:", page.type == 'List');
+    var color = page.type == 'List' ? objj_msgSend(CPColor, "blackColor") : objj_msgSend(CPColor, "grayColor");
+    objj_msgSend(itemsLabel, "setTextColor:", color);
+
     objj_msgSend(table, "deselectAll");
     var title = page.title;
     if(page.subtitle != null) {
