@@ -3,6 +3,7 @@ require('express')
 require('express/plugins')
 sys = require('sys')
 
+//FIXME: MongoDB Implementierung einbinden
 //var ArticleProvider= require('./articleprovider-mongodb').ArticleProvider;
 var PageProvider = require('./pageprovider-memory').PageProvider;
 
@@ -16,6 +17,7 @@ configure(function(){
 
 var pageProvider= new PageProvider();
 
+//Serves the agenda data as JSON for the desktop client 
 get('/agenda/*', function(name){
     var self = this;
     pageProvider.findByName(name, function(error, data){
@@ -28,6 +30,7 @@ get('/agenda/*', function(name){
     })
 })
 
+//Saves the agenda from the desktop client. Accepts JSON
 post('/agenda', function(){
   var self = this;
   var data = JSON.parse(this.body); 
@@ -36,6 +39,7 @@ post('/agenda', function(){
   });
 });
 
+//Serves the mobile client
 get('/a/*', function(id){
     var idx = pageProvider.findIndexById(id);
     var data = pageProvider.dummyData[idx];    
@@ -49,6 +53,7 @@ get('/a/*', function(id){
     })
 })
 
+//Serves the agenda data as JSON for the mobile client 
 //FIXME why not use get('/agenda/*' just because auf "var data"
 get('/data/*', function(name){
     var self = this;

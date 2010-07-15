@@ -1,19 +1,20 @@
 Server
 ------
 * Install node.js
-* Run >node app.js
+* Run 'node app.js'
+* Give it a try http://localhost:3000/a/0
 
 Client
 ------
-* Install Atlas
+* Open index.html in Safari
+* Enter 'test' as app name and hit load
+
+Client Development
+------
+* Install Atlas http://280atlas.com/
 * Click Run
 
 TODOs
 =====
-Stand 12.07.2010:
-
-* make make subpages in index.haml
-
-* mobile client fertig machen
-* mongo.db benutzen
-* auf heroku deployen
+* mongo.db 
+* heroku

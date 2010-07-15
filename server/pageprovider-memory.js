@@ -24,17 +24,15 @@ PageProvider.prototype.findByName = function(name, callback) {
 PageProvider.prototype.findIndexById = function(id) {
   var index = undefined;
   for(var i=0;i<this.dummyData.length;i++) {
-    //sys.print('i:' + i + '\n');
     if( this.dummyData[i]._id == id ) {
         index = i;
         break;
     }
   }
-  sys.print('index:' + index + '\n');
   if(index + '' === 'undefined') {
       index = idCounter++
   }
-  sys.print('findIndexById:' + id + ' returning index:' +  index + '\n')
+  //sys.print('findIndexById:' + id + ' returning index:' +  index + '\n')
   return index;
 };
 
@@ -45,7 +43,7 @@ PageProvider.prototype.save = function(data, callback) {
     }
     this.dummyData[index] = data;
     
-    sys.print('now we have data: ' + this.dummyData.length + ' \n');
+    sys.print('Saved! Now we have ' + this.dummyData.length + ' data sets.\n');
     callback(null, data);
 };
 
