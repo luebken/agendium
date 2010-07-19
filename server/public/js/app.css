@@ -1,0 +1,19 @@
+.details{
+    background-color: #222;
+    margin: 10px 10px 10px 10px;    
+    padding: 10px 10px 10px 10px;    
+    -webkit-border-radius: 11px;
+}
+
+.details * {
+    font: 18px "Helvetica Neue", Helvetica;
+    color: #DDD;
+    margin: 10px 10px 10px 10px;    
+}
+
+.details .title {
+    font: bold 22px "Helvetica Neue", Helvetica;
+}
+.details .subtitle {
+    font: bold 18px "Helvetica Neue", Helvetica;
+}

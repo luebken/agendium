@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6916;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6842;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -82,7 +82,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
 {
-    console.log("saving...");
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL + "agenda");
     objj_msgSend(request, "setHTTPMethod:", 'POST');
     var jsonData = '{"_id":"' + appId + '", "rootpage":'+ objj_msgSend(rootPage, "toJSON") + '}';
@@ -114,7 +113,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
         var obj = JSON.parse(data);
         var rootPage = objj_msgSend(Page, "initFromJSONObject:", obj.rootpage);
         self.appId = obj._id;
-        console.log('data._id:' + obj._id);
         objj_msgSend(pageViewController, "setPage:", rootPage);
         objj_msgSend(self, "myRefresh");
     } catch (e) {

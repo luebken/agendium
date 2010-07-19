@@ -8,6 +8,16 @@ var jQT = new $.jQTouch({
 var createAndInsertPage = function(page, pageid) {
  	var $page = $('<div id="' + pageid + '">');
  	$page.append('<div class="toolbar"><a class="back">Back</a><h1>' + page.title + '</h1></div>');
+ 	if(page.type === 'List') {
+        $page.append(createList(page, pageid));
+    }
+    if(page.type === 'Detail') {
+        $page.append(createDetails(page, pageid));
+    }
+    $page.insertAfter($("#otherpages"));	
+}
+
+var createList = function(page, pageid) {
  	var $ul = $('<ul class="rounded">'); 
     for(var i=0; i < page.children.length; i++) {
         var childpageid = pageid + 'c' + i;
@@ -15,8 +25,16 @@ var createAndInsertPage = function(page, pageid) {
         $ul.append('<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a><div class="small">'+ child.subtitle+'</div></li>');
         createAndInsertPage(child, childpageid);
     }
-    $page.append($ul);
-    $page.insertAfter($("#otherpages"));	
+    return $ul;
+}
+var createDetails = function(page, pageid) {
+    var $details = $('<div class="details">');
+    $details.append('<div class="title">' + page.title + '</div>');
+    $details.append('<div class="subtitle">' + page.subtitle + '</div>');
+    for(var key in page.attributes) {
+        $details.append('<div class="attribute">' + key + ': ' + page.attributes[key] + '</div>');        
+    }
+    return $details;
 }
 
 
