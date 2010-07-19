@@ -31,13 +31,13 @@
 - (void) awakeFromCib {    
     table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 600.0)];
  
-    var column1 = [[CPTableColumn alloc] initWithIdentifier:"title"];
+    var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
     [column1 setWidth:200.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
-    var column2 = [[CPTableColumn alloc] initWithIdentifier:"subtitle"]; 
+    var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
     [[column2 headerView] setStringValue:@"Subtitle"];
     [column2 setWidth:260.0];
     [column2 setEditable:YES];
@@ -56,7 +56,7 @@
     [table setRowHeight:50];
     [table setDataSource:self];
     [table setDelegate:self];
-    [table setAllowsColumnSelection:YES];
+    [table setAllowsColumnSelection:NO];
     
     [scrollView setDocumentView:table]; 
 
@@ -110,7 +110,11 @@
 //table datasource method
 - (int)numberOfRowsInTableView:(CPTableView)tableView
 {
-    return [[page children] count];
+    if([page isListType]) {
+        return [[page children] count];
+    } else {
+        return [[[page attributes] allKeys] count];
+    }
 }
 
 //table datasource method
@@ -118,13 +122,23 @@
 objectValueForTableColumn:(CPTableColumn)tableColumn
                     row:(int)row
 {
-    var pageAtRow = [[page children] objectAtIndex:row];
-    if([[tableColumn identifier] isEqual:"title"]) {
-        return [pageAtRow title];
-    } else if([[tableColumn identifier] isEqual:"subtitle"]) {
-        return [pageAtRow subtitle];
+    if([page isListType]) {
+        var pageAtRow = [[page children] objectAtIndex:row];
+        if([[tableColumn identifier] isEqual:"first"]) {
+            return [pageAtRow title];
+        } else if([[tableColumn identifier] isEqual:"second"]) {
+            return [pageAtRow subtitle];
+        } else {
+            return row + "";
+        }
     } else {
-        return row + "";
+        var key = [[page attributes] allKeys][row];
+        var value = [[page attributes] objectForKey:key];
+        if([[tableColumn identifier] isEqual:"first"]) {
+            return key;
+        } else if([[tableColumn identifier] isEqual:"second"]) {
+            return value;
+        } 
     }
 }
 
@@ -133,11 +147,24 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
-    var pageAtRow = [[page children] objectAtIndex:row];
-    if([[tableColumn identifier] isEqual:"title"]) {
-        [pageAtRow setTitle:aValue];
+    if([page isListType]) {
+        var pageAtRow = [[page children] objectAtIndex:row];
+        if([[tableColumn identifier] isEqual:"first"]) {
+            [pageAtRow setTitle:aValue];
+        } else {
+            [pageAtRow setSubtitle:aValue];
+        }
     } else {
-        [pageAtRow setSubtitle:aValue];
+        var col0 = [table tableColumns][0];
+        var col1 = [table tableColumns][1]
+        var oldAttributeKey = [self tableView:table objectValueForTableColumn:col0 row:row];
+        var oldValue = [self tableView:table objectValueForTableColumn:col1 row:row];
+        if([[tableColumn identifier] isEqual:"first"]) {
+            [[page attributes] removeObjectForKey:oldAttributeKey];
+            [[page attributes] setValue:oldValue forKey:aValue];
+        } else {
+            [[page attributes] setValue:aValue forKey:oldAttributeKey];
+        }
     }
     //[table reloadData];
     //[table setSelectedRow:0];
@@ -151,13 +178,23 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action)addItemToList:(id)sender {
-    var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
-    [page addChild:newpage];
+    if([page isListType]) {
+        var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
+        [page addChild:newpage];
+    } else {
+        [[page attributes] setValue:"A value" forKey:"A attribute"];
+    }
     [table reloadData];
 }
 
 - (@action)deleteItemFromList:(id)sender {
-    [page removeChild:[table selectedRow]];
+    var row = [table selectedRow];
+    if([page isListType]) {
+        [page removeChild:row];
+    } else {
+        var key = [[page attributes] allKeys][row];
+        [[page attributes] removeObjectForKey:key];
+    }
     [table deselectAll];
     [table reloadData];
     [self tableViewSelectionDidChange:null];
@@ -165,9 +202,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 
 - (void) rowClicked:(id)notification {
-    var row = [notification object];
-    page = [[page children] objectAtIndex:row];
-    [self myRefresh];
+    //FIXME remove/hide column 
+    if([page isListType]) {
+        var row = [notification object];
+        page = [[page children] objectAtIndex:row];
+        [self myRefresh];
+    }
     //[table removeFromSuperview]
 }
 
@@ -179,15 +219,16 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 - (@action) pageTypeClicked:(id)sender {
     var title = [[sender selectedItem] title];
     page.type = title;
+    var header1 = [[table tableColumns][0] headerView];
+    var header2 = [[table tableColumns][1] headerView];
+
     if(title == "List") {
-        console.log('Selected Pagetype: List');
-        [scrollView setDocumentView:table]; 
+        [header1 setStringValue:@"Title"];
+        [header2 setStringValue:@"Subtitle"];
     } 
     if(title == "Detail") {
-        console.log('Selected Pagetype: Detail');
-        var imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,500,500)];    
-        [imageView setBackgroundColor:[CPColor redColor]]; 
-        [scrollView setDocumentView:imageView]; 
+        [header1 setStringValue:@"Attribute"];
+        [header2 setStringValue:@"Value"];
     } 
     [self myRefresh];
 }
@@ -195,7 +236,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 - (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
-    [addButton setEnabled:page.type == 'List'];
     var color = page.type == 'List' ? [CPColor blackColor] : [CPColor grayColor]; 
     [itemsLabel setTextColor:color];
 

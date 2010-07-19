@@ -10,6 +10,7 @@
     Page[] children @accessors;
     Page ancestor @accessors;
     CPString type @accessors;
+    CPDictionary attributes @accessors;
 }
 
 + (Page) initFromJSONObject:(id)object {
@@ -25,6 +26,7 @@
 - (id) init {
     self = [super init];
     children = [[CPArray alloc] init];
+    attributes = [CPDictionary dictionary];
     type = "List";
     return self;
 }
@@ -46,6 +48,7 @@
     [children removeObjectAtIndex:index];
 }
 
+//FIXME OK this looks stupid. How would Objective-J guys do this
 - (id) toJSON {
     var childrenJSON = '';
     for (var i=0; i < children.length; i++) {
@@ -55,9 +58,24 @@
     if(childrenJSON.length > 0) {
         childrenJSON = childrenJSON.substring(0, childrenJSON.length - 1);
     }        
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + ']}';
+    var attributesJSON = '';
+    for (var i=0; i < [attributes allKeys].length; i++) {
+        var key = [attributes allKeys][0];
+        var value = [attributes objectForKey:key];
+        attributesJSON += JSON.stringify(key) + ":" +  JSON.stringify(value);
+        attributesJSON += ',';
+    }
+    if(attributesJSON.length > 0) {
+        attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
+    }  
+
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
 }
 
 -(CPString) description {
     return title;
+}
+
+- (boolean) isListType {
+    return type === "List";
 }

@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;3810;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;4829;
 
 
 
@@ -6,7 +6,7 @@ objj_executeFile("Foundation/CPObject.j", NO);
 
 
 {var the_class = objj_allocateClassPair(CPObject, "Page"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children"), new objj_ivar("ancestor"), new objj_ivar("type")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("title"), new objj_ivar("subtitle"), new objj_ivar("children"), new objj_ivar("ancestor"), new objj_ivar("type"), new objj_ivar("attributes")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("title"), function $Page__title(self, _cmd)
 { with(self)
@@ -67,11 +67,24 @@ new objj_method(sel_getUid("setType:"), function $Page__setType_(self, _cmd, new
 {
 type = newValue;
 }
+},["void","id"]),
+new objj_method(sel_getUid("attributes"), function $Page__attributes(self, _cmd)
+{ with(self)
+{
+return attributes;
+}
+},["id"]),
+new objj_method(sel_getUid("setAttributes:"), function $Page__setAttributes_(self, _cmd, newValue)
+{ with(self)
+{
+attributes = newValue;
+}
 },["void","id"]), new objj_method(sel_getUid("init"), function $Page__init(self, _cmd)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("Page").super_class }, "init");
     children = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+    attributes = objj_msgSend(CPDictionary, "dictionary");
     type = "List";
     return self;
 }
@@ -105,14 +118,30 @@ type = newValue;
     if(childrenJSON.length > 0) {
         childrenJSON = childrenJSON.substring(0, childrenJSON.length - 1);
     }
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + ']}';
+    var attributesJSON = '';
+    for (var i=0; i < objj_msgSend(attributes, "allKeys").length; i++) {
+        var key = objj_msgSend(attributes, "allKeys")[0];
+        var value = objj_msgSend(attributes, "objectForKey:", key);
+        attributesJSON += JSON.stringify(key) + ":" + JSON.stringify(value);
+        attributesJSON += ',';
+    }
+    if(attributesJSON.length > 0) {
+        attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
+    }
+
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
 }
 },["id"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)
 {
     return title;
 }
-},["CPString"])]);
+},["CPString"]), new objj_method(sel_getUid("isListType"), function $Page__isListType(self, _cmd)
+{ with(self)
+{
+    return type === "List";
+}
+},["boolean"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"), function $Page__initFromJSONObject_(self, _cmd, object)
 { with(self)
 {

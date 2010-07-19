@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;9557;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11470;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -46,13 +46,13 @@ editing = newValue;
 {
     table = objj_msgSend(objj_msgSend(CPTableView, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, 200.0, 600.0));
 
-    var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "title");
+    var column1 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "first");
     objj_msgSend(objj_msgSend(column1, "headerView"), "setStringValue:", "Title");
     objj_msgSend(column1, "setWidth:", 200.0);
     objj_msgSend(column1, "setEditable:", YES);
     objj_msgSend(table, "addTableColumn:", column1);
 
-    var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "subtitle");
+    var column2 = objj_msgSend(objj_msgSend(CPTableColumn, "alloc"), "initWithIdentifier:", "second");
     objj_msgSend(objj_msgSend(column2, "headerView"), "setStringValue:", "Subtitle");
     objj_msgSend(column2, "setWidth:", 260.0);
     objj_msgSend(column2, "setEditable:", YES);
@@ -69,7 +69,7 @@ editing = newValue;
     objj_msgSend(table, "setRowHeight:", 50);
     objj_msgSend(table, "setDataSource:", self);
     objj_msgSend(table, "setDelegate:", self);
-    objj_msgSend(table, "setAllowsColumnSelection:", YES);
+    objj_msgSend(table, "setAllowsColumnSelection:", NO);
 
     objj_msgSend(scrollView, "setDocumentView:", table);
 
@@ -111,28 +111,55 @@ editing = newValue;
 },["@action","id"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
-    return objj_msgSend(objj_msgSend(page, "children"), "count");
+    if(objj_msgSend(page, "isListType")) {
+        return objj_msgSend(objj_msgSend(page, "children"), "count");
+    } else {
+        return objj_msgSend(objj_msgSend(objj_msgSend(page, "attributes"), "allKeys"), "count");
+    }
 }
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $PageViewController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
 { with(self)
 {
-    var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
-    if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
-        return objj_msgSend(pageAtRow, "title");
-    } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "subtitle")) {
-        return objj_msgSend(pageAtRow, "subtitle");
+    if(objj_msgSend(page, "isListType")) {
+        var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
+        if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
+            return objj_msgSend(pageAtRow, "title");
+        } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "second")) {
+            return objj_msgSend(pageAtRow, "subtitle");
+        } else {
+            return row + "";
+        }
     } else {
-        return row + "";
+        var key = objj_msgSend(objj_msgSend(page, "attributes"), "allKeys")[row];
+        var value = objj_msgSend(objj_msgSend(page, "attributes"), "objectForKey:", key);
+        if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
+            return key;
+        } else if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "second")) {
+            return value;
+        }
     }
 }
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $PageViewController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
 { with(self)
 {
-    var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
-    if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "title")) {
-        objj_msgSend(pageAtRow, "setTitle:", aValue);
+    if(objj_msgSend(page, "isListType")) {
+        var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
+        if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
+            objj_msgSend(pageAtRow, "setTitle:", aValue);
+        } else {
+            objj_msgSend(pageAtRow, "setSubtitle:", aValue);
+        }
     } else {
-        objj_msgSend(pageAtRow, "setSubtitle:", aValue);
+        var col0 = objj_msgSend(table, "tableColumns")[0];
+        var col1 = objj_msgSend(table, "tableColumns")[1]
+        var oldAttributeKey = objj_msgSend(self, "tableView:objectValueForTableColumn:row:", table, col0, row);
+        var oldValue = objj_msgSend(self, "tableView:objectValueForTableColumn:row:", table, col1, row);
+        if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
+            objj_msgSend(objj_msgSend(page, "attributes"), "removeObjectForKey:", oldAttributeKey);
+            objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", oldValue, aValue);
+        } else {
+            objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", aValue, oldAttributeKey);
+        }
     }
 
 
@@ -148,14 +175,24 @@ editing = newValue;
 },["void","CPNotification"]), new objj_method(sel_getUid("addItemToList:"), function $PageViewController__addItemToList_(self, _cmd, sender)
 { with(self)
 {
-    var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
-    objj_msgSend(page, "addChild:", newpage);
+    if(objj_msgSend(page, "isListType")) {
+        var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
+        objj_msgSend(page, "addChild:", newpage);
+    } else {
+        objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", "A value", "A attribute");
+    }
     objj_msgSend(table, "reloadData");
 }
 },["@action","id"]), new objj_method(sel_getUid("deleteItemFromList:"), function $PageViewController__deleteItemFromList_(self, _cmd, sender)
 { with(self)
 {
-    objj_msgSend(page, "removeChild:", objj_msgSend(table, "selectedRow"));
+    var row = objj_msgSend(table, "selectedRow");
+    if(objj_msgSend(page, "isListType")) {
+        objj_msgSend(page, "removeChild:", row);
+    } else {
+        var key = objj_msgSend(objj_msgSend(page, "attributes"), "allKeys")[row];
+        objj_msgSend(objj_msgSend(page, "attributes"), "removeObjectForKey:", key);
+    }
     objj_msgSend(table, "deselectAll");
     objj_msgSend(table, "reloadData");
     objj_msgSend(self, "tableViewSelectionDidChange:", null);
@@ -163,9 +200,12 @@ editing = newValue;
 },["@action","id"]), new objj_method(sel_getUid("rowClicked:"), function $PageViewController__rowClicked_(self, _cmd, notification)
 { with(self)
 {
-    var row = objj_msgSend(notification, "object");
-    page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
-    objj_msgSend(self, "myRefresh");
+
+    if(objj_msgSend(page, "isListType")) {
+        var row = objj_msgSend(notification, "object");
+        page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
+        objj_msgSend(self, "myRefresh");
+    }
 
 }
 },["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
@@ -179,15 +219,16 @@ editing = newValue;
 {
     var title = objj_msgSend(objj_msgSend(sender, "selectedItem"), "title");
     page.type = title;
+    var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
+    var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
+
     if(title == "List") {
-        console.log('Selected Pagetype: List');
-        objj_msgSend(scrollView, "setDocumentView:", table);
+        objj_msgSend(header1, "setStringValue:", "Title");
+        objj_msgSend(header2, "setStringValue:", "Subtitle");
     }
     if(title == "Detail") {
-        console.log('Selected Pagetype: Detail');
-        var imageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(0,0,500,500));
-        objj_msgSend(imageView, "setBackgroundColor:", objj_msgSend(CPColor, "redColor"));
-        objj_msgSend(scrollView, "setDocumentView:", imageView);
+        objj_msgSend(header1, "setStringValue:", "Attribute");
+        objj_msgSend(header2, "setStringValue:", "Value");
     }
     objj_msgSend(self, "myRefresh");
 }
@@ -196,7 +237,6 @@ editing = newValue;
 {
     objj_msgSend(table, "reloadData");
     objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
-    objj_msgSend(addButton, "setEnabled:", page.type == 'List');
     var color = page.type == 'List' ? objj_msgSend(CPColor, "blackColor") : objj_msgSend(CPColor, "grayColor");
     objj_msgSend(itemsLabel, "setTextColor:", color);
 
