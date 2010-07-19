@@ -89,6 +89,9 @@
     var field;
     if(self.editing) {
         field = [CPTextField labelWithTitle:@""];
+        //FIXME funktioniert nicht
+        //[field setFrame:CGRectMake(10.0, 10.0, 100, 29.0)];
+        [field setValue:CPCenterVerticalTextAlignment forThemeAttribute:@"vertical-alignment"];
         [self setEditing:NO];
         [editButton setTitle:@"Edit"];
     } else {
@@ -102,7 +105,6 @@
     var cols = [table tableColumns];
     [cols[0] setDataView:field];
     [cols[1] setDataView:field];
-
     [self myRefresh];
 }
 
