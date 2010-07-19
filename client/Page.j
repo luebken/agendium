@@ -15,10 +15,14 @@
 
 + (Page) initFromJSONObject:(id)object {
     var page = [[Page alloc] initWithTitle:object.title 
-                       andSubtitle:object.subtitle];
+                               andSubtitle:object.subtitle
+                                   andType:object.type];
     for (var i=0; i < object.children.length; i++) {
         var child = [Page initFromJSONObject:object.children[i]];
         [page addChild:child];
+    }
+    for (var key in object.attributes){
+        [[page attributes] setValue:object.attributes[key] forKey:key];
     }
     return page;
 }
@@ -32,10 +36,12 @@
 }
            
 - (id) initWithTitle:(CPString) newtitle 
-         andSubtitle:(CPString) newsubtitle {
+         andSubtitle:(CPString) newsubtitle
+             andType:(CPString) newtype {
     self = [self init];
     title = newtitle;
     subtitle = newsubtitle;
+    type = newtype;
     return self;
 }
            
@@ -60,7 +66,7 @@
     }        
     var attributesJSON = '';
     for (var i=0; i < [attributes allKeys].length; i++) {
-        var key = [attributes allKeys][0];
+        var key = [attributes allKeys][i];
         var value = [attributes objectForKey:key];
         attributesJSON += JSON.stringify(key) + ":" +  JSON.stringify(value);
         attributesJSON += ',';
@@ -69,7 +75,7 @@
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }  
 
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
 }
 
 -(CPString) description {

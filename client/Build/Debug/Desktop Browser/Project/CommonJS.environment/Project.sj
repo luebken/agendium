@@ -193,7 +193,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;6;Page.jt;4874;@STATIC;1.0;I;21;Foundation/CPObject.jt;4829;
+p;6;Page.jt;5124;@STATIC;1.0;I;21;Foundation/CPObject.jt;5079;
 
 
 
@@ -283,15 +283,16 @@ attributes = newValue;
     type = "List";
     return self;
 }
-},["id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:"), function $Page__initWithTitle_andSubtitle_(self, _cmd, newtitle, newsubtitle)
+},["id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:andType:"), function $Page__initWithTitle_andSubtitle_andType_(self, _cmd, newtitle, newsubtitle, newtype)
 { with(self)
 {
     self = objj_msgSend(self, "init");
     title = newtitle;
     subtitle = newsubtitle;
+    type = newtype;
     return self;
 }
-},["id","CPString","CPString"]), new objj_method(sel_getUid("addChild:"), function $Page__addChild_(self, _cmd, child)
+},["id","CPString","CPString","CPString"]), new objj_method(sel_getUid("addChild:"), function $Page__addChild_(self, _cmd, child)
 { with(self)
 {
     objj_msgSend(child, "setAncestor:", self);
@@ -315,7 +316,7 @@ attributes = newValue;
     }
     var attributesJSON = '';
     for (var i=0; i < objj_msgSend(attributes, "allKeys").length; i++) {
-        var key = objj_msgSend(attributes, "allKeys")[0];
+        var key = objj_msgSend(attributes, "allKeys")[i];
         var value = objj_msgSend(attributes, "objectForKey:", key);
         attributesJSON += JSON.stringify(key) + ":" + JSON.stringify(value);
         attributesJSON += ',';
@@ -324,7 +325,7 @@ attributes = newValue;
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }
 
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    return '{"title":"' + title + '","subtitle":"' + subtitle + '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
 }
 },["id"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)
@@ -340,10 +341,13 @@ attributes = newValue;
 class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"), function $Page__initFromJSONObject_(self, _cmd, object)
 { with(self)
 {
-    var page = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", object.title, object.subtitle);
+    var page = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:andType:", object.title, object.subtitle, object.type);
     for (var i=0; i < object.children.length; i++) {
         var child = objj_msgSend(Page, "initFromJSONObject:", object.children[i]);
         objj_msgSend(page, "addChild:", child);
+    }
+    for (var key in object.attributes){
+        objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", object.attributes[key], key);
     }
     return page;
 }
@@ -368,7 +372,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["id","CGRect"])]);
 }
 
-p;20;PageViewController.jt;11539;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11470;
+p;20;PageViewController.jt;11440;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11371;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -589,17 +593,6 @@ editing = newValue;
 {
     var title = objj_msgSend(objj_msgSend(sender, "selectedItem"), "title");
     page.type = title;
-    var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
-    var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
-
-    if(title == "List") {
-        objj_msgSend(header1, "setStringValue:", "Title");
-        objj_msgSend(header2, "setStringValue:", "Subtitle");
-    }
-    if(title == "Detail") {
-        objj_msgSend(header1, "setStringValue:", "Attribute");
-        objj_msgSend(header2, "setStringValue:", "Value");
-    }
     objj_msgSend(self, "myRefresh");
 }
 },["@action","id"]), new objj_method(sel_getUid("myRefresh"), function $PageViewController__myRefresh(self, _cmd)
@@ -607,8 +600,8 @@ editing = newValue;
 {
     objj_msgSend(table, "reloadData");
     objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
-    var color = page.type == 'List' ? objj_msgSend(CPColor, "blackColor") : objj_msgSend(CPColor, "grayColor");
-    objj_msgSend(itemsLabel, "setTextColor:", color);
+
+
 
     objj_msgSend(table, "deselectAll");
     var title = page.title;
@@ -616,6 +609,17 @@ editing = newValue;
         title += " (" + page.subtitle + ")";
     }
     objj_msgSend(titleField, "setObjectValue:", title);
+
+    var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
+    var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
+    if(objj_msgSend(page, "isListType")) {
+        objj_msgSend(header1, "setStringValue:", "Title");
+        objj_msgSend(header2, "setStringValue:", "Subtitle");
+    } else {
+        objj_msgSend(header1, "setStringValue:", "Attribute");
+        objj_msgSend(header2, "setStringValue:", "Value");
+    }
+    objj_msgSend(pagetypeButton, "selectItemWithTitle:", page.type);
 }
 },["void"])]);
 }

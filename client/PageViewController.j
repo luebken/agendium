@@ -219,25 +219,14 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 - (@action) pageTypeClicked:(id)sender {
     var title = [[sender selectedItem] title];
     page.type = title;
-    var header1 = [[table tableColumns][0] headerView];
-    var header2 = [[table tableColumns][1] headerView];
-
-    if(title == "List") {
-        [header1 setStringValue:@"Title"];
-        [header2 setStringValue:@"Subtitle"];
-    } 
-    if(title == "Detail") {
-        [header1 setStringValue:@"Attribute"];
-        [header2 setStringValue:@"Value"];
-    } 
     [self myRefresh];
 }
 
 - (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
-    var color = page.type == 'List' ? [CPColor blackColor] : [CPColor grayColor]; 
-    [itemsLabel setTextColor:color];
+    //var color = [page isListType] ? [CPColor blackColor] : [CPColor grayColor]; 
+    //[itemsLabel setTextColor:color];
 
     [table deselectAll];
     var title = page.title;
@@ -245,6 +234,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         title += " (" + page.subtitle + ")";
     }
     [titleField setObjectValue:title];
+
+    var header1 = [[table tableColumns][0] headerView];
+    var header2 = [[table tableColumns][1] headerView];
+    if([page isListType]) {
+        [header1 setStringValue:@"Title"];
+        [header2 setStringValue:@"Subtitle"];
+    } else {
+        [header1 setStringValue:@"Attribute"];
+        [header2 setStringValue:@"Value"];
+    } 
+    [pagetypeButton selectItemWithTitle:page.type];
 }
 
 @end

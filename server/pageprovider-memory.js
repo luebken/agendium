@@ -52,26 +52,43 @@ new PageProvider().save(
   { 
     _id : '0',
     rootpage: { 
+        type: 'List',
         title: 'test',
         subtitle: 'A Test Agenda',
+        attributes : {},
         children : [{
+            type: 'List',
             title: 'Day 1',
             subtitle: 'Sessions on the first day',
+            attributes : {},
             children : [{
+                type: 'List',
                 title: 'The first session',
                 subtitle: '9:00-11:00',
+                attributes : {},
                 children : []
             },
             {
+                type: 'List',
                 title: 'The second session',
                 subtitle: '12:00-13:00',
+                attributes : {},
                 children : []
             }
             ]
             }, 
             {
+                type: 'List',
                 title: 'Day 2',
                 subtitle: 'Sessions on the second day',
+                attributes : {},
+                children : []
+            }, 
+            {
+                type: 'Detail',
+                title: 'Some title of the Detail page',
+                subtitle: 'Some Subtitle',
+                attributes : {'key1':'value1', 'key2':'value2'},
                 children : []
             }]
     }

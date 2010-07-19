@@ -123,7 +123,6 @@
 }
 
 - (@action) save:(id)sender {
-    console.log(@"saving...");
     var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];
     var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
@@ -155,7 +154,6 @@
         var obj = JSON.parse(data);
         var rootPage = [Page initFromJSONObject:obj.rootpage];
         self.appId = obj._id;
-        console.log('data._id:' + obj._id);
         [pageViewController setPage:rootPage];
         [self myRefresh];
     } catch (e) {

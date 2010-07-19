@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11470;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11371;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -219,17 +219,6 @@ editing = newValue;
 {
     var title = objj_msgSend(objj_msgSend(sender, "selectedItem"), "title");
     page.type = title;
-    var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
-    var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
-
-    if(title == "List") {
-        objj_msgSend(header1, "setStringValue:", "Title");
-        objj_msgSend(header2, "setStringValue:", "Subtitle");
-    }
-    if(title == "Detail") {
-        objj_msgSend(header1, "setStringValue:", "Attribute");
-        objj_msgSend(header2, "setStringValue:", "Value");
-    }
     objj_msgSend(self, "myRefresh");
 }
 },["@action","id"]), new objj_method(sel_getUid("myRefresh"), function $PageViewController__myRefresh(self, _cmd)
@@ -237,8 +226,8 @@ editing = newValue;
 {
     objj_msgSend(table, "reloadData");
     objj_msgSend(backButton, "setEnabled:", page.ancestor != null);
-    var color = page.type == 'List' ? objj_msgSend(CPColor, "blackColor") : objj_msgSend(CPColor, "grayColor");
-    objj_msgSend(itemsLabel, "setTextColor:", color);
+
+
 
     objj_msgSend(table, "deselectAll");
     var title = page.title;
@@ -246,6 +235,17 @@ editing = newValue;
         title += " (" + page.subtitle + ")";
     }
     objj_msgSend(titleField, "setObjectValue:", title);
+
+    var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
+    var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
+    if(objj_msgSend(page, "isListType")) {
+        objj_msgSend(header1, "setStringValue:", "Title");
+        objj_msgSend(header2, "setStringValue:", "Subtitle");
+    } else {
+        objj_msgSend(header1, "setStringValue:", "Attribute");
+        objj_msgSend(header2, "setStringValue:", "Value");
+    }
+    objj_msgSend(pagetypeButton, "selectItemWithTitle:", page.type);
 }
 },["void"])]);
 }
