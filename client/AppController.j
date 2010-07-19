@@ -71,9 +71,15 @@
     previewButton._DOMElement.style.cursor = "pointer"; 
 
     [self resetData];
-    [self myRefresh];
+ 
+    //Dummy Start
+    [rootPage setTitle:"FOWA2010"]
+    [appnameField setObjectValue:"FOWA2010"];
+    //Dummy END
 
-    //[idField becomeFirstResponder] 
+
+    [self myRefresh]
+    //[idField bectEnabled:YESo;der] 
     //[CPMenu setMenuBarVisible:YES];
 
 }

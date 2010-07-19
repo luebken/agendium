@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;6937;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6842;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7051;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6956;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -37,7 +37,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(previewButton, "setAction:", sel_getUid("setWindowLocation"));
     previewButton._DOMElement.style.cursor = "pointer";
     objj_msgSend(self, "resetData");
-    objj_msgSend(self, "myRefresh");
+    objj_msgSend(rootPage, "setTitle:", "FOWA2010")
+    objj_msgSend(appnameField, "setObjectValue:", "FOWA2010");
+    objj_msgSend(self, "myRefresh")
 }
 },["void"]), new objj_method(sel_getUid("setWindowLocation"), function $AppController__setWindowLocation(self, _cmd)
 { with(self)
