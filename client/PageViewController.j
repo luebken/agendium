@@ -1,6 +1,7 @@
 
 @import <Foundation/CPObject.j>
 @import "ButtonColumnView.j"
+@import "CPPropertyAnimation.j"
 
 
 @implementation PageViewController : CPViewController
@@ -81,8 +82,9 @@
 
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
+    [self setEditing:NO];//so switch always back to YES
     [self toggleEditing:aTableView];
-    return self.editing;
+    return YES;
 }
 
 - (@action) toggleEditing:(id)sender {
@@ -97,7 +99,7 @@
     } else {
         field = [CPTextField textFieldWithStringValue:@"" 
             placeholder:@"" 
-                  width:100];
+              width:100];
         [self setEditing:YES];
         [editButton setTitle:@"Done"];
 
@@ -106,6 +108,7 @@
     [cols[0] setDataView:field];
     [cols[1] setDataView:field];
     [self myRefresh];
+
 }
 
 
@@ -208,12 +211,21 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isListType]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
+    
+        [[CPPropertyAnimation slideLeft:self view:scrollView] startAnimation];
+
         [self myRefresh];
     }
     //[table removeFromSuperview]
 }
 
+-(void)animationDidEnd:(CPAnimation)animation {
+    console.log("animationDidEnd");
+}
+
 - (@action)backButtonClicked:(id)sender {
+    [[CPPropertyAnimation slideRight:self view:scrollView] startAnimation];
+
     page = [page ancestor];
     [self myRefresh];
 }

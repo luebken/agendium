@@ -1,8 +1,9 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.jt;11371;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12007;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("ButtonColumnView.j", YES);
+objj_executeFile("CPPropertyAnimation.j", YES);
 
 
 {var the_class = objj_allocateClassPair(CPViewController, "PageViewController"),
@@ -85,8 +86,9 @@ editing = newValue;
 },["void"]), new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"), function $PageViewController__tableView_shouldEditTableColumn_row_(self, _cmd, aTableView, tableColumn, row)
 { with(self)
 {
+    objj_msgSend(self, "setEditing:", NO);
     objj_msgSend(self, "toggleEditing:", aTableView);
-    return self.editing;
+    return YES;
 }
 },["BOOL","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("toggleEditing:"), function $PageViewController__toggleEditing_(self, _cmd, sender)
 { with(self)
@@ -94,6 +96,9 @@ editing = newValue;
     var field;
     if(self.editing) {
         field = objj_msgSend(CPTextField, "labelWithTitle:", "");
+
+
+        objj_msgSend(field, "setValue:forThemeAttribute:", CPCenterVerticalTextAlignment, "vertical-alignment");
         objj_msgSend(self, "setEditing:", NO);
         objj_msgSend(editButton, "setTitle:", "Edit");
     } else {
@@ -105,8 +110,8 @@ editing = newValue;
     var cols = objj_msgSend(table, "tableColumns");
     objj_msgSend(cols[0], "setDataView:", field);
     objj_msgSend(cols[1], "setDataView:", field);
-
     objj_msgSend(self, "myRefresh");
+
 }
 },["@action","id"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
@@ -176,7 +181,7 @@ editing = newValue;
 { with(self)
 {
     if(objj_msgSend(page, "isListType")) {
-        var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:", "A title", "A subtitle");
+        var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:andType:", "A title", "A subtitle",  "List");
         objj_msgSend(page, "addChild:", newpage);
     } else {
         objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", "A value", "A attribute");
@@ -204,13 +209,23 @@ editing = newValue;
     if(objj_msgSend(page, "isListType")) {
         var row = objj_msgSend(notification, "object");
         page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
+
+        objj_msgSend(objj_msgSend(CPPropertyAnimation, "slideLeft:view:", self, scrollView), "startAnimation");
+
         objj_msgSend(self, "myRefresh");
     }
 
 }
-},["void","id"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("animationDidEnd:"), function $PageViewController__animationDidEnd_(self, _cmd, animation)
 { with(self)
 {
+    console.log("animationDidEnd");
+}
+},["void","CPAnimation"]), new objj_method(sel_getUid("backButtonClicked:"), function $PageViewController__backButtonClicked_(self, _cmd, sender)
+{ with(self)
+{
+    objj_msgSend(objj_msgSend(CPPropertyAnimation, "slideRight:view:", self, scrollView), "startAnimation");
+
     page = objj_msgSend(page, "ancestor");
     objj_msgSend(self, "myRefresh");
 }
