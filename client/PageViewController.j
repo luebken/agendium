@@ -181,7 +181,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)addItemToList:(id)sender {
     if([page isListType]) {
-        var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle"];
+        var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle" andType: "List"];
         [page addChild:newpage];
     } else {
         [[page attributes] setValue:"A value" forKey:"A attribute"];
