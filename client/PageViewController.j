@@ -91,9 +91,12 @@
     var field;
     if(self.editing) {
         field = [CPTextField labelWithTitle:@""];
-        //FIXME funktioniert nicht
+        //FIXME funktioniert nicht. custom cpview
         //[field setFrame:CGRectMake(10.0, 10.0, 100, 29.0)];
-        [field setValue:CPCenterVerticalTextAlignment forThemeAttribute:@"vertical-alignment"];
+        //[field setAlignment:CPCenterTextAlignment];
+        [field setVerticalAlignment:CPCenterTextAlignment];
+        //[field setFont:[CPFont systemFontOfSize:14.0]];
+
         [self setEditing:NO];
         [editButton setTitle:@"Edit"];
     } else {
