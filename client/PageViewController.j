@@ -95,17 +95,20 @@
         //[field setFrame:CGRectMake(10.0, 10.0, 100, 29.0)];
         //[field setAlignment:CPCenterTextAlignment];
         [field setVerticalAlignment:CPCenterTextAlignment];
+
         //[field setFont:[CPFont systemFontOfSize:14.0]];
 
         [self setEditing:NO];
         [editButton setTitle:@"Edit"];
+        [editButton unsetThemeState:CPThemeStateDefault];
+
     } else {
         field = [CPTextField textFieldWithStringValue:@"" 
             placeholder:@"" 
               width:100];
         [self setEditing:YES];
         [editButton setTitle:@"Done"];
-
+        [editButton setThemeState:CPThemeStateDefault];
     }
     var cols = [table tableColumns];
     [cols[0] setDataView:field];

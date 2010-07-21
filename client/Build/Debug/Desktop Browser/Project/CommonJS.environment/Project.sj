@@ -563,7 +563,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["id","CGRect"])]);
 }
 
-p;20;PageViewController.jt;12069;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;11974;
+p;20;PageViewController.jt;12218;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12123;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -667,13 +667,16 @@ editing = newValue;
         objj_msgSend(field, "setVerticalAlignment:", CPCenterTextAlignment);
 
 
+
         objj_msgSend(self, "setEditing:", NO);
         objj_msgSend(editButton, "setTitle:", "Edit");
+        objj_msgSend(editButton, "unsetThemeState:", CPThemeStateDefault);
+
     } else {
         field = objj_msgSend(CPTextField, "textFieldWithStringValue:placeholder:width:", "", "", 100);
         objj_msgSend(self, "setEditing:", YES);
         objj_msgSend(editButton, "setTitle:", "Done");
-
+        objj_msgSend(editButton, "setThemeState:", CPThemeStateDefault);
     }
     var cols = objj_msgSend(table, "tableColumns");
     objj_msgSend(cols[0], "setDataView:", field);
