@@ -128,6 +128,13 @@
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
+- (@action) new:(id)sender {
+    console.log(@"new");
+    [appnameField setObjectValue:""];
+    [self resetData];
+    [self myRefresh];
+}
+
 - (@action) save:(id)sender {
     var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];

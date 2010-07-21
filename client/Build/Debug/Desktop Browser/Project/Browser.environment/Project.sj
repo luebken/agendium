@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;7051;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;6956;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7328;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7233;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -80,6 +80,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", baseURL+"agenda/"+rootPage.title);
     objj_msgSend(request, "setHTTPMethod:", 'GET');
     listConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+}
+},["@action","id"]), new objj_method(sel_getUid("new:"), function $AppController__new_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("new");
+    objj_msgSend(appnameField, "setObjectValue:", "");
+    objj_msgSend(self, "resetData");
+    objj_msgSend(self, "myRefresh");
 }
 },["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
