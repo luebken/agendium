@@ -68,8 +68,9 @@
     [previewButton setBordered:NO]; 
     previewButton._DOMElement.style.textDecoration = "underline";
     [previewButton setTextColor:[CPColor blueColor]]; 
+    [previewButton setAlignment:CPLeftTextAlignment];
     [previewButton setTarget:self]; 
-    [previewButton setAction:@selector(setWindowLocation)]; 
+    [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
 
     [self resetData];
@@ -82,9 +83,9 @@
     [self myRefresh]
 }
 
-- (void) setWindowLocation {
+- (void) openMobileApp {
     var applink = baseURL + "a/" + appId;
-    window.location = applink;
+    window.open (applink,"mywindow");
 }
 
 - (void) pageDidChange: (CPNotification) notification {
