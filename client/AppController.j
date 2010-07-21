@@ -107,6 +107,12 @@
 */
 }
 
+/* TODO: Wie ist das Handling mit Load/Save?
+- (void)controlTextDidEndEditing:(id)sender {
+    [self load:sender];
+}
+*/
+
 - (void) myRefresh {
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
