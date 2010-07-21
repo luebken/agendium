@@ -1,9 +1,9 @@
-@STATIC;1.0;p;15;AppController.jt;7755;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7660;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7484;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7389;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("previewButton"), new objj_ivar("rootPage"), new objj_ivar("titleLabel"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("previewButton"), new objj_ivar("rootPage"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
@@ -20,7 +20,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void"]), new objj_method(sel_getUid("awakeFromCib"), function $AppController__awakeFromCib(self, _cmd)
 { with(self)
 {
-    objj_msgSend(titleLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 24.0));
     baseURL = "http://localhost:3000/";
     objj_msgSend(box, "setBorderType:", CPLineBorder);
     objj_msgSend(box, "setBorderWidth:", 1);
@@ -106,13 +105,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        var alert = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
-        var theme = objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD");
-        objj_msgSend(alert, "setWindowStyle:", CPHUDBackgroundWindowMask);
-        objj_msgSend(alert, "setAlertStyle:", CPInformationalAlertStyle);
-        objj_msgSend(alert, "setMessageText:", "Saved!");
-        objj_msgSend(alert, "addButtonWithTitle:", "OK");
-        objj_msgSend(alert, "runModal");
+        var popup = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
+        objj_msgSend(popup, "setAlertStyle:", CPInformationalAlertStyle);
+        objj_msgSend(popup, "setMessageText:", "Saved!");
+        objj_msgSend(popup, "addButtonWithTitle:", "OK");
+        objj_msgSend(popup, "runModal");
     }
     if(data != '') {
         objj_msgSend(self, "didReceiveLoadData:", data);
