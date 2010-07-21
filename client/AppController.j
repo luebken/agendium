@@ -156,7 +156,12 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        alert("Saved!");
+        var alert = [[CPAlert alloc] init];
+        [alert setWindowStyle:CPHUDBackgroundWindowMask];
+        [alert setAlertStyle:CPInformationalAlertStyle];
+        [alert setMessageText:"Saved!"];
+        [alert addButtonWithTitle:@"OK"];
+        [alert runModal];
     }
 
     if(data != '') {

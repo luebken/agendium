@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;7328;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7233;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;p;15;AppController.jt;7755;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7660;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -106,7 +106,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        alert("Saved!");
+        var alert = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
+        var theme = objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD");
+        objj_msgSend(alert, "setWindowStyle:", CPHUDBackgroundWindowMask);
+        objj_msgSend(alert, "setAlertStyle:", CPInformationalAlertStyle);
+        objj_msgSend(alert, "setMessageText:", "Saved!");
+        objj_msgSend(alert, "addButtonWithTitle:", "OK");
+        objj_msgSend(alert, "runModal");
     }
     if(data != '') {
         objj_msgSend(self, "didReceiveLoadData:", data);
