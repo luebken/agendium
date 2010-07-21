@@ -379,7 +379,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;6;Page.jt;5124;@STATIC;1.0;I;21;Foundation/CPObject.jt;5079;
+p;6;Page.jt;5196;@STATIC;1.0;I;21;Foundation/CPObject.jt;5151;
 
 
 
@@ -511,7 +511,12 @@ attributes = newValue;
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }
 
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    var json = '{"title":"' + title;
+    if(subtitle) {
+        json += '","subtitle":"' + subtitle;
+    }
+    json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    return json;
 }
 },["id"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)
@@ -558,7 +563,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["id","CGRect"])]);
 }
 
-p;20;PageViewController.jt;12102;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12007;
+p;20;PageViewController.jt;12069;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;11974;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -658,7 +663,10 @@ editing = newValue;
         field = objj_msgSend(CPTextField, "labelWithTitle:", "");
 
 
-        objj_msgSend(field, "setValue:forThemeAttribute:", CPCenterVerticalTextAlignment, "vertical-alignment");
+
+        objj_msgSend(field, "setVerticalAlignment:", CPCenterTextAlignment);
+
+
         objj_msgSend(self, "setEditing:", NO);
         objj_msgSend(editButton, "setTitle:", "Edit");
     } else {

@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;5079;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;5151;
 
 
 
@@ -130,7 +130,12 @@ attributes = newValue;
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }
 
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    var json = '{"title":"' + title;
+    if(subtitle) {
+        json += '","subtitle":"' + subtitle;
+    }
+    json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    return json;
 }
 },["id"]), new objj_method(sel_getUid("description"), function $Page__description(self, _cmd)
 { with(self)

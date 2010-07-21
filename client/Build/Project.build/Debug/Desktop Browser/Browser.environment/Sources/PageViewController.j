@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12007;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;11974;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -98,7 +98,10 @@ editing = newValue;
         field = objj_msgSend(CPTextField, "labelWithTitle:", "");
 
 
-        objj_msgSend(field, "setValue:forThemeAttribute:", CPCenterVerticalTextAlignment, "vertical-alignment");
+
+        objj_msgSend(field, "setVerticalAlignment:", CPCenterTextAlignment);
+
+
         objj_msgSend(self, "setEditing:", NO);
         objj_msgSend(editButton, "setTitle:", "Edit");
     } else {
