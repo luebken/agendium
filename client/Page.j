@@ -75,7 +75,12 @@
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }  
 
-    return '{"title":"' + title + '","subtitle":"' + subtitle + '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    var json = '{"title":"' + title;
+    if(subtitle) {
+        json += '","subtitle":"' + subtitle;
+    }
+    json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    return json;
 }
 
 -(CPString) description {

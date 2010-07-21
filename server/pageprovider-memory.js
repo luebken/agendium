@@ -54,7 +54,6 @@ new PageProvider().save(
     rootpage: { 
         type: 'List',
         title: 'FOWA2010',
-        subtitle: 'Future Of Web Apps 2010',
         attributes : {},
         children : [{
             type: 'List',

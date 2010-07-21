@@ -22,7 +22,12 @@ var createList = function(page, pageid) {
     for(var i=0; i < page.children.length; i++) {
         var childpageid = pageid + 'c' + i;
         var child = page.children[i];
-        $ul.append('<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a><div class="small">'+ child.subtitle+'</div></li>');
+        var li = '<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a>';
+        if(child.subtitle) {
+            li += '<div class="small">'+ child.subtitle+'</div>';
+        }
+        li += '</li>';
+        $ul.append(li);
         createAndInsertPage(child, childpageid);
     }
     return $ul;

@@ -17,7 +17,8 @@
           - for (var i = 0; i < rootpage.children.length; ++i)
             %li.arrow
               %a{href: '#rc'+i}= rootpage.children[i].title
-              .small= rootpage.children[i].subtitle
+              - if(rootpage.children[i].subtitle)
+                .small= rootpage.children[i].subtitle
         .info
           #p Add this page to your home screen to view the custom icon, startup screen, and full screen mode.
       #otherpages
