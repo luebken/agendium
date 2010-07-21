@@ -54,7 +54,7 @@
     pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
                                                         bundle:nil];
     [pageViewController setPage:rootPage];
-    [[pageViewController view] setFrame:CPRectMake( 1 , 1, 500, 395)]
+    [[pageViewController view] setFrame:CPRectMake( 1 , 1, 500, 443)]
     [pageView addSubview:[pageViewController view]];
 
     //[scrollView setDocumentView:[pageViewController view]];
