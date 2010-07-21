@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7389;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7455;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -32,19 +32,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(previewButton, "setBordered:", NO);
     previewButton._DOMElement.style.textDecoration = "underline";
     objj_msgSend(previewButton, "setTextColor:", objj_msgSend(CPColor, "blueColor"));
+    objj_msgSend(previewButton, "setAlignment:", CPLeftTextAlignment);
     objj_msgSend(previewButton, "setTarget:", self);
-    objj_msgSend(previewButton, "setAction:", sel_getUid("setWindowLocation"));
+    objj_msgSend(previewButton, "setAction:", sel_getUid("openMobileApp"));
     previewButton._DOMElement.style.cursor = "pointer";
     objj_msgSend(self, "resetData");
     objj_msgSend(rootPage, "setTitle:", "FOWA2010")
     objj_msgSend(appnameField, "setObjectValue:", "FOWA2010");
     objj_msgSend(self, "myRefresh")
 }
-},["void"]), new objj_method(sel_getUid("setWindowLocation"), function $AppController__setWindowLocation(self, _cmd)
+},["void"]), new objj_method(sel_getUid("openMobileApp"), function $AppController__openMobileApp(self, _cmd)
 { with(self)
 {
     var applink = baseURL + "a/" + appId;
-    window.location = applink;
+    window.open (applink,"mywindow");
 }
 },["void"]), new objj_method(sel_getUid("pageDidChange:"), function $AppController__pageDidChange_(self, _cmd, notification)
 { with(self)
