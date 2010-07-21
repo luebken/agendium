@@ -19,7 +19,6 @@
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     Page rootPage;
-    @outlet CPTextField titleLabel;
     @outlet CPTextField appnameField;
     @outlet CPView pageView;
     PageViewController pageViewController;
@@ -42,7 +41,10 @@
 
 - (void)awakeFromCib
 {
-    [titleLabel setFont:[CPFont boldSystemFontOfSize:24.0]]; 
+    //[titleLabel setFont:[CPFont systemFontOfSize:18.0]];
+    //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
+    //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
+    //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
     baseURL = @"http://localhost:3000/";
 
     [box setBorderType:CPLineBorder]; 
@@ -77,11 +79,7 @@
     [appnameField setObjectValue:"FOWA2010"];
     //Dummy END
 
-
     [self myRefresh]
-    //[idField bectEnabled:YESo;der] 
-    //[CPMenu setMenuBarVisible:YES];
-
 }
 
 - (void) setWindowLocation {
@@ -156,12 +154,12 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        var alert = [[CPAlert alloc] init];
-        [alert setWindowStyle:CPHUDBackgroundWindowMask];
-        [alert setAlertStyle:CPInformationalAlertStyle];
-        [alert setMessageText:"Saved!"];
-        [alert addButtonWithTitle:@"OK"];
-        [alert runModal];
+        var popup = [[CPAlert alloc] init];
+        //[alert setWindowStyle:CPHUDBackgroundWindowMask];
+        [popup setAlertStyle:CPInformationalAlertStyle];
+        [popup setMessageText:"Saved!"];
+        [popup addButtonWithTitle:@"OK"];
+        [popup runModal];
     }
 
     if(data != '') {
