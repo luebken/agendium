@@ -70,7 +70,7 @@
  
 - (id)initWithView:(CPView)aView
 {
-	self = [super initWithDuration:0.6 animationCurve:CPAnimationEaseOut];
+	self = [super initWithDuration:0.4 animationCurve:CPAnimationEaseOut];
 
 	if (self)
 	{

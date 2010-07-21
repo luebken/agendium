@@ -211,7 +211,7 @@ direction = newValue;
 },["void","id"]), new objj_method(sel_getUid("initWithView:"), function $CPPropertyAnimation__initWithView_(self, _cmd, aView)
 { with(self)
 {
- self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPropertyAnimation").super_class }, "initWithDuration:animationCurve:", 0.6, CPAnimationEaseOut);
+ self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPropertyAnimation").super_class }, "initWithDuration:animationCurve:", 0.4, CPAnimationEaseOut);
  if (self)
  {
   view = aView;
