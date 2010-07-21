@@ -19,9 +19,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+ 
+ //from here http://gist.github.com/151545
+ 
 
 @import <AppKit/CPAnimation.j>
-
 
 /*
   A VERY basic, but functional, property animation for Cappuccino. This is not CoreAnimation,
