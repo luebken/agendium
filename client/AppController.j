@@ -10,6 +10,7 @@
 @import "Page.j"
 @import "PageView.j"
 @import "PageViewController.j"
+@import "LoginPanel.j"
 
 @implementation AppController : CPObject
 {
@@ -131,6 +132,18 @@
     var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+rootPage.title];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+- (@action) login:(id)sender {
+    [[[LoginPanel alloc] init:self] orderFront:nil];
+}
+//LoginPanel Delegate
+- (void) panelDidClose:(id)tag {
+    if(tag == 1) {
+        console.log(@"login success");
+    } else {
+        console.log(@"login canceled");
+    }
 }
 
 - (@action) new:(id)sender {

@@ -1,7 +1,8 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.jt;7455;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.jt;8012;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
+objj_executeFile("LoginPanel.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("previewButton"), new objj_ivar("rootPage"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
@@ -81,7 +82,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(request, "setHTTPMethod:", 'GET');
     listConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["@action","id"]), new objj_method(sel_getUid("new:"), function $AppController__new_(self, _cmd, sender)
+},["@action","id"]), new objj_method(sel_getUid("login:"), function $AppController__login_(self, _cmd, sender)
+{ with(self)
+{
+    console.log("try to login...");
+    objj_msgSend(objj_msgSend(objj_msgSend(LoginPanel, "alloc"), "init:", self), "orderFront:", nil);
+}
+},["@action","id"]), new objj_method(sel_getUid("panelDidClose:"), function $AppController__panelDidClose_(self, _cmd, tag)
+{ with(self)
+{
+    if(tag == 1) {
+        console.log("login success");
+    } else {
+        console.log("login canceld");
+    }
+}
+},["void","id"]), new objj_method(sel_getUid("new:"), function $AppController__new_(self, _cmd, sender)
 { with(self)
 {
     console.log("new");
