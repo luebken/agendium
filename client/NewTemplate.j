@@ -26,7 +26,6 @@
               subtitle: '-----------------',
               children : []
             },
-            
             {
               type: 'Navigation',
               title: 'Day 01',
@@ -208,7 +207,19 @@
                 }
               ]
             }
-          ]
+          ,
+          {
+            type: 'Separator',
+            title: '-----------------',
+            subtitle: '-----------------',
+            children : []
+          },
+          {
+            type: 'Navigation',
+            title: 'Infos',
+            subtitle: 'General information',
+            children : []
+          }]
       }
     };
     return JSON.stringify(data2);
