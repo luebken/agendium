@@ -32,15 +32,21 @@
 - (void) awakeFromCib {    
     table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 600.0)];
  
+    var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
+    [[column0 headerView] setStringValue:""];
+    [column0 setWidth:50.0];
+    [column0 setEditable:NO];
+    [table addTableColumn:column0];
+ 
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
-    [column1 setWidth:200.0];
+    [column1 setWidth:170.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
     [[column2 headerView] setStringValue:@"Subtitle"];
-    [column2 setWidth:260.0];
+    [column2 setWidth:240.0];
     [column2 setEditable:YES];
     [table addTableColumn:column2]; 
 
@@ -49,7 +55,7 @@
                     andDelegate:self];
     var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
     [column3 setDataView:button];
-    [column3 setWidth:20.0];
+    [column3 setWidth:24.0];
     [column3 setEditable:YES];
     [table addTableColumn:column3];
 
@@ -68,6 +74,7 @@
     [itemtypeButton removeAllItems];
     [itemtypeButton addItemsWithTitles: ['Subpage', 'Spacer']];
 
+    editing = NO;
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -114,10 +121,9 @@
         [editButton setThemeState:CPThemeStateDefault];
     }
     var cols = [table tableColumns];
-    [cols[0] setDataView:field];
     [cols[1] setDataView:field];
+    [cols[2] setDataView:field];
     [self myRefresh];
-
 }
 
 
@@ -138,21 +144,28 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 {
     if([page isNavigationType]) {
         var pageAtRow = [[page children] objectAtIndex:row];
-        if([[tableColumn identifier] isEqual:"first"]) {
+        if([[tableColumn identifier] isEqual:"zero"]) {
+            return pageAtRow.type;
+        } else if([[tableColumn identifier] isEqual:"first"]) {
             return [pageAtRow title];
         } else if([[tableColumn identifier] isEqual:"second"]) {
             return [pageAtRow subtitle];
         } else {
-            return row + "";
+            var show = pageAtRow.type === 'Spacer' ? NO : YES;
+            return {row:row, show:show, editing:editing};
         }
     } else {
         var key = [[page attributes] allKeys][row];
         var value = [[page attributes] objectForKey:key];
-        if([[tableColumn identifier] isEqual:"first"]) {
+        if([[tableColumn identifier] isEqual:"zero"]) {
+            return "";
+        } else if([[tableColumn identifier] isEqual:"first"]) {
             return key;
         } else if([[tableColumn identifier] isEqual:"second"]) {
             return value;
-        } 
+        } else {
+            return {show:NO, editing:editing}
+        }
     }
 }
 
@@ -200,8 +213,8 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
                                       andSubtitle:"The optional subtitle of a subpage" 
                                           andType: "Navigation"];
         } else {
-            newpage = [[Page alloc] initWithTitle:"--------------" 
-                                          andSubtitle:"--------------" 
+            newpage = [[Page alloc] initWithTitle:"A group title" 
+                                          andSubtitle:"" 
                                               andType:"Spacer"];
         }
         [page addChild:newpage atIndex:[table selectedRow]];            
@@ -267,18 +280,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         title += " (" + page.subtitle + ")";
     }
     [titleField setObjectValue:title];
-
-    var header1 = [[table tableColumns][0] headerView];
-    var header2 = [[table tableColumns][1] headerView];
+    [itemtypeButton removeAllItems];
+    var header1 = [[table tableColumns][1] headerView];
+    var header2 = [[table tableColumns][2] headerView];
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
-        //[itemsLabel setStringValue:"Subpage:"];
+        [itemtypeButton addItemsWithTitles: ['Subpage', 'Spacer']];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        //[itemsLabel setStringValue:"Attribute:"];
-
+        [itemtypeButton addItemsWithTitles: ['Attribute']];
     } 
     [pagetypeButton selectItemWithTitle:page.type];
 }

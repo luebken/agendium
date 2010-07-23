@@ -15,10 +15,13 @@
           title: '',
           children : [
             {
-              type: 'Navigation',
+              type: 'Detail',
               title: 'News',
               subtitle: 'Update: 12.12. / 9:00',
-              children : []
+              children : [],
+              attributes : {
+                  Info: 'This is a perfect place to put in some information about agenda changes.'
+              }
             },
             {
               type: 'Spacer',

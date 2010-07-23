@@ -12,18 +12,26 @@
 - (id)initWithFrame:(CGRect)rect andDelegate:(id)delegate2  { 
         self = [super initWithFrame:rect]; 
         button = [CPButton buttonWithTitle:@">"]; 
-        [button setCenter:CPPointMake(10, 25)]; 
         //[nameField setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin]; 
-        [self addSubview:button]; 
-        [button setTarget:self];
         [button setAction:@selector(rowSelected:)];  
+        [button setTarget:self];
+        
+        [self addSubview:button]; 
         self.delegate = delegate2;
         return self; 
 }   
 
 - (void)setObjectValue:(Object)anObject { 
-    row = anObject;
-    [button setTitle:">"]; 
+    //console.log('anObject.editing:' + anObject.editing);
+    if(anObject.show) {
+        row = anObject.row;
+        [button setTitle:">"]; 
+        [button setFrame:CGRectMake(0,0,20,24)];
+        [button setCenter:CPPointMake(10, 25)]; 
+    } else {
+        row = -1;
+        [button setFrame:CGRectMakeZero()];
+    }
 } 
 
 - (id)initWithCoder:(CPCoder)aCoder { 
@@ -42,4 +50,9 @@
         postNotificationName:@"RowClickedNotification" 
         object:row];
 }
+
+//Bugfix / workaround for double click on "empty" row
+- (void) setAction:(id)sender { }
+- (void) setTarget:(id)sender { }
+
 @end
