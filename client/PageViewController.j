@@ -274,11 +274,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
-        [itemsLabel setStringValue:"Subpages:"];
+        [itemsLabel setStringValue:"Subpage:"];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemsLabel setStringValue:"Attributes:"];
+        [itemsLabel setStringValue:"Attributs:"];
 
     } 
     [pagetypeButton selectItemWithTitle:page.type];
