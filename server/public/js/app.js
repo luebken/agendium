@@ -52,10 +52,10 @@ var createDetails = function(page, pageid) {
 }
 
 var adaptHomepage = function() {
-    //$('#home').removeClass('current');
-    //$('#r').addClass('current');
-    //$('#r .toolbar .back').remove();
-    //$('#home .toolbar').append('<a href="#about" class="button slideup">About</a>')
+    jQT.goTo("#r");
+    $('#r .toolbar .back').remove();
+    $('#r .toolbar').append('<a href="#about" class="button slideup">About</a>')
+    $('#r').append('<div class="info"><p> Add this page to your home screen to view the custom icon, startup screen, and full screen mode.</p></div>');
 }
 
 
