@@ -21,9 +21,9 @@
               children : []
             },
             {
-              type: 'Separator',
-              title: '-----------------',
-              subtitle: '-----------------',
+              type: 'Spacer',
+              title: 'Conference',
+              subtitle: '',
               children : []
             },
             {
@@ -209,9 +209,9 @@
             }
           ,
           {
-            type: 'Separator',
-            title: '-----------------',
-            subtitle: '-----------------',
+            type: 'Spacer',
+            title: '',
+            subtitle: '',
             children : []
           },
           {

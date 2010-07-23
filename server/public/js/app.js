@@ -18,11 +18,13 @@ var createAndInsertPage = function(page, pageid) {
 }
 
 var createList = function(page, pageid) {
- 	var ul = '<ul class="rounded">'; 
+    var ul = '';
+    if(page.subtitle) ul += '<h2>'+page.subtitle+'</h2>';
+ 	ul += '<ul class="rounded">'; 
     for(var i=0; i < page.children.length; i++) {
         var childpageid = pageid + 'c' + i;
         var child = page.children[i];
-        if(child.type !== 'Separator'){
+        if(child.type !== 'Spacer'){
             var li = '<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a>';
             if(child.subtitle) {
                 li += '<div class="small">'+ child.subtitle+'</div>';
@@ -30,7 +32,7 @@ var createList = function(page, pageid) {
             li += '</li>';
             ul += li;            
         } else {
-            ul += '</ul><ul class="rounded">';
+            ul += '</ul><h2>'+child.title+'</h2><ul class="rounded">';
         }
         createAndInsertPage(child, childpageid);
     }

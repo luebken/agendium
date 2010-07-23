@@ -13,10 +13,10 @@
     @outlet CPButton backButton;
     @outlet CPButton editButton;
     @outlet CPPopUpButton pagetypeButton;
+    @outlet CPPopUpButton itemtypeButton;
+
     CPTableView table;
     @outlet CPTextField titleField;
-    @outlet CPTextField itemsLabel;
-
     boolean editing @accessors;
 }
 - (id) initWithCibName: (CPString) aCibNameOrNil
@@ -65,6 +65,9 @@
     [backButton setEnabled:NO];
     [pagetypeButton removeAllItems];
     [pagetypeButton addItemsWithTitles: ['Navigation', 'Detail']];
+    [itemtypeButton removeAllItems];
+    [itemtypeButton addItemsWithTitles: ['Subpage', 'Spacer']];
+
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -190,25 +193,22 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)addItemToList:(id)sender {
     if([page isNavigationType]) {
-        var newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
+        var itemtype = [[itemtypeButton selectedItem] title];
+        var newpage;
+        if(itemtype == 'Subpage') {
+            newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
                                       andSubtitle:"The optional subtitle of a subpage" 
                                           andType: "Navigation"];
-        [page addChild:newpage atIndex:[table selectedRow]];
+        } else {
+            newpage = [[Page alloc] initWithTitle:"--------------" 
+                                          andSubtitle:"--------------" 
+                                              andType:"Spacer"];
+        }
+        [page addChild:newpage atIndex:[table selectedRow]];            
     } else {
         [[page attributes] setValue:"A value" forKey:"A attribute"];
     }
     [table reloadData];
-}
-
-- (@action)addSeparator:(id)sender {
-    if([page isNavigationType]) {
-        var newpage = [[Page alloc] initWithTitle:"--------------" 
-                                      andSubtitle:"--------------" 
-                                          andType:"Separator"];
-        [page addChild:newpage atIndex:[table selectedRow]];
-        [table reloadData];
-    }
-
 }
 
 - (@action)deleteItemFromList:(id)sender {
@@ -273,11 +273,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
-        [itemsLabel setStringValue:"Subpage:"];
+        //[itemsLabel setStringValue:"Subpage:"];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemsLabel setStringValue:"Attribute:"];
+        //[itemsLabel setStringValue:"Attribute:"];
 
     } 
     [pagetypeButton selectItemWithTitle:page.type];
