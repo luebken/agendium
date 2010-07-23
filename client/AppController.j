@@ -77,11 +77,7 @@
 
     [self resetData];
  
-    //Dummy Start
-    [rootPage setTitle:"FOWA2010"]
-    [appnameField setObjectValue:"FOWA2010"];
-    //Dummy END
-
+    [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
     [self myRefresh]
 }
 
@@ -99,7 +95,6 @@
 - (void)controlTextDidChange:(id)sender {
     var length = [[appnameField objectValue] length];
     [rootPage setTitle:[appnameField objectValue]];
-
     [self myRefresh];
 /*
     [[CPNotificationCenter defaultCenter] 
@@ -114,6 +109,7 @@
 }
 */
 
+
 - (void) myRefresh {
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
@@ -125,7 +121,6 @@
     } else {
         [previewButton setTitle:""]; 
     }
-
 }
 
 - (@action) load:(id)sender {
