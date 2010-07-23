@@ -1,6 +1,6 @@
 /*
  * AppController.j
- * test2
+ * 
  *
  * Created by You on May 26, 2010.
  * Copyright 2010, Your Company All rights reserved.
@@ -11,6 +11,7 @@
 @import "PageView.j"
 @import "PageViewController.j"
 @import "LoginPanel.j"
+@import "NewTemplate.j"
 
 @implementation AppController : CPObject
 {
@@ -147,10 +148,11 @@
 }
 
 - (@action) new:(id)sender {
-    console.log(@"new");
     [appnameField setObjectValue:""];
     [self resetData];
-    [self myRefresh];
+    var data = [NewTemplate data];
+    [self didReceiveLoadData:data];
+    console.log(@"new");
 }
 
 - (@action) save:(id)sender {

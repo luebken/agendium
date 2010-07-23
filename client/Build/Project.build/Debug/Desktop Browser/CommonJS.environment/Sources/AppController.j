@@ -1,8 +1,9 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.jt;7977;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;13;NewTemplate.jt;8083;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
 objj_executeFile("LoginPanel.j", YES);
+objj_executeFile("NewTemplate.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theWindow"), new objj_ivar("box"), new objj_ivar("saveButton"), new objj_ivar("loadButton"), new objj_ivar("previewButton"), new objj_ivar("rootPage"), new objj_ivar("appnameField"), new objj_ivar("pageView"), new objj_ivar("pageViewController"), new objj_ivar("baseURL"), new objj_ivar("appId"), new objj_ivar("listConnection"), new objj_ivar("saveConnection")]);
 objj_registerClassPair(the_class);
@@ -99,10 +100,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["void","id"]), new objj_method(sel_getUid("new:"), function $AppController__new_(self, _cmd, sender)
 { with(self)
 {
-    console.log("new");
     objj_msgSend(appnameField, "setObjectValue:", "");
     objj_msgSend(self, "resetData");
-    objj_msgSend(self, "myRefresh");
+    var data = objj_msgSend(NewTemplate, "data");
+    objj_msgSend(self, "didReceiveLoadData:", data);
+    console.log("new");
 }
 },["@action","id"]), new objj_method(sel_getUid("save:"), function $AppController__save_(self, _cmd, sender)
 { with(self)
