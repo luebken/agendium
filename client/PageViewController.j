@@ -193,7 +193,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         var newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
                                       andSubtitle:"The optional subtitle of a subpage" 
                                           andType: "Navigation"];
-        [page addChild:newpage];
+        [page addChild:newpage atIndex:[table selectedRow]];
     } else {
         [[page attributes] setValue:"A value" forKey:"A attribute"];
     }
@@ -201,12 +201,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action)addSeparator:(id)sender {
-    console.log('addSeparator');
     if([page isNavigationType]) {
         var newpage = [[Page alloc] initWithTitle:"--------------" 
                                       andSubtitle:"--------------" 
                                           andType:"Separator"];
-        [page addChild:newpage];
+        [page addChild:newpage atIndex:[table selectedRow]];
         [table reloadData];
     }
 

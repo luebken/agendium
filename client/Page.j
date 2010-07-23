@@ -19,7 +19,7 @@
                                    andType:object.type];
     for (var i=0; i < object.children.length; i++) {
         var child = [Page initFromJSONObject:object.children[i]];
-        [page addChild:child];
+        [page addChild:child atIndex:-1];
     }
     for (var key in object.attributes){
         [[page attributes] setValue:object.attributes[key] forKey:key];
@@ -45,9 +45,10 @@
     return self;
 }
            
-- (id) addChild:(Page) child {
+- (id) addChild:(Page) child atIndex:(int)index {
     [child setAncestor:self];
-    [children addObject:child];
+    if(index < 0) index = children.length;
+    [children insertObject:child atIndex:index];
 }
 
 - (id) removeChild: (int) index {
