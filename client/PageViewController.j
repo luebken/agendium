@@ -278,7 +278,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemsLabel setStringValue:"Attributs:"];
+        [itemsLabel setStringValue:"Attribute:"];
 
     } 
     [pagetypeButton selectItemWithTitle:page.type];
