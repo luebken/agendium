@@ -16,6 +16,19 @@
           children : [
             {
               type: 'Navigation',
+              title: 'News',
+              subtitle: 'Update: 12.12. / 9:00',
+              children : []
+            },
+            {
+              type: 'Separator',
+              title: '-----------------',
+              subtitle: '-----------------',
+              children : []
+            },
+            
+            {
+              type: 'Navigation',
               title: 'Day 01',
               subtitle: '04 October, 2010',
               children : [

@@ -14,23 +14,27 @@ var createAndInsertPage = function(page, pageid) {
     if(page.type === 'Detail') {
         $page.append(createDetails(page, pageid));
     }
-    $page.insertAfter($("#otherpages"));	
+    $("#jqt").prepend($page);	
 }
 
 var createList = function(page, pageid) {
- 	var $ul = $('<ul class="rounded">'); 
+ 	var ul = '<ul class="rounded">'; 
     for(var i=0; i < page.children.length; i++) {
         var childpageid = pageid + 'c' + i;
         var child = page.children[i];
-        var li = '<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a>';
-        if(child.subtitle) {
-            li += '<div class="small">'+ child.subtitle+'</div>';
+        if(child.type !== 'Separator'){
+            var li = '<li class="arrow"><a href=#'+ childpageid +'>'  + child.title + '</a>';
+            if(child.subtitle) {
+                li += '<div class="small">'+ child.subtitle+'</div>';
+            }
+            li += '</li>';
+            ul += li;            
+        } else {
+            ul += '</ul><ul class="rounded">';
         }
-        li += '</li>';
-        $ul.append(li);
         createAndInsertPage(child, childpageid);
     }
-    return $ul;
+    return ul + '</ul>';
 }
 var createDetails = function(page, pageid) {
     var $details = $('<div class="details">');
@@ -47,7 +51,15 @@ var createDetails = function(page, pageid) {
     return $details;
 }
 
+var adaptHomepage = function() {
+    //$('#home').removeClass('current');
+    //$('#r').addClass('current');
+    //$('#r .toolbar .back').remove();
+    //$('#home .toolbar').append('<a href="#about" class="button slideup">About</a>')
+}
+
 
 $(function(){
     createAndInsertPage(data.rootpage, "r");
+    adaptHomepage();
 });

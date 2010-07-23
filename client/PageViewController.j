@@ -200,6 +200,18 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [table reloadData];
 }
 
+- (@action)addSeparator:(id)sender {
+    console.log('addSeparator');
+    if([page isNavigationType]) {
+        var newpage = [[Page alloc] initWithTitle:"--------------" 
+                                      andSubtitle:"--------------" 
+                                          andType:"Separator"];
+        [page addChild:newpage];
+        [table reloadData];
+    }
+
+}
+
 - (@action)deleteItemFromList:(id)sender {
     var row = [table selectedRow];
     if([page isNavigationType]) {

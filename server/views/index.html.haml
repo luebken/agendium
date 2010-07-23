@@ -15,11 +15,8 @@
           %h1= rootpage.title
           %a{href: '#about', class:'button slideup'}= 'About'          
         %ul.rounded
-          - for (var i = 0; i < rootpage.children.length; ++i)
-            %li.arrow
-              %a{href: '#rc'+i}= rootpage.children[i].title
-              - if(rootpage.children[i].subtitle)
-                .small= rootpage.children[i].subtitle
+          %li.arrow
+            %a{href: '#r'}= 'Start'
         .info
           #p Add this page to your home screen to view the custom icon, startup screen, and full screen mode.
       #about
