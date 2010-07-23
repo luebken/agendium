@@ -13,6 +13,7 @@ Client Development
 ------
 * Install Atlas http://280atlas.com/
 * Click Run
+* Or install Jake run 'jake run'
 
 MAIN TODOs
 =====
