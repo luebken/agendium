@@ -8,7 +8,7 @@ var jQT = new $.jQTouch({
 var createAndInsertPage = function(page, pageid) {
  	var $page = $('<div id="' + pageid + '">');
  	$page.append('<div class="toolbar"><a class="back">Back</a><h1>' + page.title + '</h1></div>');
- 	if(page.type === 'List') {
+ 	if(page.type === 'Navigation') {
         $page.append(createList(page, pageid));
     }
     if(page.type === 'Detail') {
