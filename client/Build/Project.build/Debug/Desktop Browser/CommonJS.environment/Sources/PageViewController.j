@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12123;
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.jt;12351;
 
 
 objj_executeFile("Foundation/CPObject.j", NO);
@@ -77,7 +77,7 @@ editing = newValue;
     objj_msgSend(deleteButton, "setEnabled:", NO);
     objj_msgSend(backButton, "setEnabled:", NO);
     objj_msgSend(pagetypeButton, "removeAllItems");
-    objj_msgSend(pagetypeButton, "addItemsWithTitles:",  ['List', 'Detail']);
+    objj_msgSend(pagetypeButton, "addItemsWithTitles:",  ['Navigation', 'Detail']);
 
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("tableViewSelectionDidChange:"), CPTableViewSelectionDidChangeNotification, nil);
 
@@ -122,7 +122,7 @@ editing = newValue;
 },["@action","id"]), new objj_method(sel_getUid("numberOfRowsInTableView:"), function $PageViewController__numberOfRowsInTableView_(self, _cmd, tableView)
 { with(self)
 {
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         return objj_msgSend(objj_msgSend(page, "children"), "count");
     } else {
         return objj_msgSend(objj_msgSend(objj_msgSend(page, "attributes"), "allKeys"), "count");
@@ -131,7 +131,7 @@ editing = newValue;
 },["int","CPTableView"]), new objj_method(sel_getUid("tableView:objectValueForTableColumn:row:"), function $PageViewController__tableView_objectValueForTableColumn_row_(self, _cmd, tableView, tableColumn, row)
 { with(self)
 {
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
         if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
             return objj_msgSend(pageAtRow, "title");
@@ -153,7 +153,7 @@ editing = newValue;
 },["id","CPTableView","CPTableColumn","int"]), new objj_method(sel_getUid("tableView:setObjectValue:forTableColumn:row:"), function $PageViewController__tableView_setObjectValue_forTableColumn_row_(self, _cmd, aTableView, aValue, tableColumn, row)
 { with(self)
 {
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         var pageAtRow = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
         if(objj_msgSend(objj_msgSend(tableColumn, "identifier"), "isEqual:", "first")) {
             objj_msgSend(pageAtRow, "setTitle:", aValue);
@@ -186,8 +186,8 @@ editing = newValue;
 },["void","CPNotification"]), new objj_method(sel_getUid("addItemToList:"), function $PageViewController__addItemToList_(self, _cmd, sender)
 { with(self)
 {
-    if(objj_msgSend(page, "isListType")) {
-        var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:andType:", "A title", "A subtitle",  "List");
+    if(objj_msgSend(page, "isNavigationType")) {
+        var newpage = objj_msgSend(objj_msgSend(Page, "alloc"), "initWithTitle:andSubtitle:andType:", "The title of a subpage", "The optional subtitle of a subpage",  "Navigation");
         objj_msgSend(page, "addChild:", newpage);
     } else {
         objj_msgSend(objj_msgSend(page, "attributes"), "setValue:forKey:", "A value", "A attribute");
@@ -198,7 +198,7 @@ editing = newValue;
 { with(self)
 {
     var row = objj_msgSend(table, "selectedRow");
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         objj_msgSend(page, "removeChild:", row);
     } else {
         var key = objj_msgSend(objj_msgSend(page, "attributes"), "allKeys")[row];
@@ -212,7 +212,7 @@ editing = newValue;
 { with(self)
 {
 
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         var row = objj_msgSend(notification, "object");
         page = objj_msgSend(objj_msgSend(page, "children"), "objectAtIndex:", row);
 
@@ -259,12 +259,15 @@ editing = newValue;
 
     var header1 = objj_msgSend(objj_msgSend(table, "tableColumns")[0], "headerView");
     var header2 = objj_msgSend(objj_msgSend(table, "tableColumns")[1], "headerView");
-    if(objj_msgSend(page, "isListType")) {
+    if(objj_msgSend(page, "isNavigationType")) {
         objj_msgSend(header1, "setStringValue:", "Title");
         objj_msgSend(header2, "setStringValue:", "Subtitle");
+        objj_msgSend(itemsLabel, "setStringValue:", "Subpages:");
     } else {
         objj_msgSend(header1, "setStringValue:", "Attribute");
         objj_msgSend(header2, "setStringValue:", "Value");
+        objj_msgSend(itemsLabel, "setStringValue:", "Attributes:");
+
     }
     objj_msgSend(pagetypeButton, "selectItemWithTitle:", page.type);
 }

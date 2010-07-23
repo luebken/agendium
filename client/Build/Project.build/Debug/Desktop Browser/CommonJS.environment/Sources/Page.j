@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;5151;
+@STATIC;1.0;I;21;Foundation/CPObject.jt;5175;
 
 
 
@@ -85,7 +85,7 @@ attributes = newValue;
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("Page").super_class }, "init");
     children = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
     attributes = objj_msgSend(CPDictionary, "dictionary");
-    type = "List";
+    type = "Navigation";
     return self;
 }
 },["id"]), new objj_method(sel_getUid("initWithTitle:andSubtitle:andType:"), function $Page__initWithTitle_andSubtitle_andType_(self, _cmd, newtitle, newsubtitle, newtype)
@@ -142,10 +142,10 @@ attributes = newValue;
 {
     return title;
 }
-},["CPString"]), new objj_method(sel_getUid("isListType"), function $Page__isListType(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("isNavigationType"), function $Page__isNavigationType(self, _cmd)
 { with(self)
 {
-    return type === "List";
+    return type === "Navigation";
 }
 },["boolean"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initFromJSONObject:"), function $Page__initFromJSONObject_(self, _cmd, object)

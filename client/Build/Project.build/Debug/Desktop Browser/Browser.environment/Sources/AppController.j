@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.jt;8012;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.jt;7977;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("Page.j", YES);
 objj_executeFile("PageView.j", YES);
 objj_executeFile("PageViewController.j", YES);
@@ -85,7 +85,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
 },["@action","id"]), new objj_method(sel_getUid("login:"), function $AppController__login_(self, _cmd, sender)
 { with(self)
 {
-    console.log("try to login...");
     objj_msgSend(objj_msgSend(objj_msgSend(LoginPanel, "alloc"), "init:", self), "orderFront:", nil);
 }
 },["@action","id"]), new objj_method(sel_getUid("panelDidClose:"), function $AppController__panelDidClose_(self, _cmd, tag)
@@ -94,7 +93,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     if(tag == 1) {
         console.log("login success");
     } else {
-        console.log("login canceld");
+        console.log("login canceled");
     }
 }
 },["void","id"]), new objj_method(sel_getUid("new:"), function $AppController__new_(self, _cmd, sender)
