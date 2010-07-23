@@ -64,7 +64,7 @@
     [deleteButton setEnabled:NO];
     [backButton setEnabled:NO];
     [pagetypeButton removeAllItems];
-    [pagetypeButton addItemsWithTitles: ['List', 'Detail']];
+    [pagetypeButton addItemsWithTitles: ['Navigation', 'Detail']];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -121,7 +121,7 @@
 //table datasource method
 - (int)numberOfRowsInTableView:(CPTableView)tableView
 {
-    if([page isListType]) {
+    if([page isNavigationType]) {
         return [[page children] count];
     } else {
         return [[[page attributes] allKeys] count];
@@ -133,7 +133,7 @@
 objectValueForTableColumn:(CPTableColumn)tableColumn
                     row:(int)row
 {
-    if([page isListType]) {
+    if([page isNavigationType]) {
         var pageAtRow = [[page children] objectAtIndex:row];
         if([[tableColumn identifier] isEqual:"first"]) {
             return [pageAtRow title];
@@ -158,7 +158,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
-    if([page isListType]) {
+    if([page isNavigationType]) {
         var pageAtRow = [[page children] objectAtIndex:row];
         if([[tableColumn identifier] isEqual:"first"]) {
             [pageAtRow setTitle:aValue];
@@ -189,8 +189,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action)addItemToList:(id)sender {
-    if([page isListType]) {
-        var newpage = [[Page alloc] initWithTitle:"A title" andSubtitle:"A subtitle" andType: "List"];
+    if([page isNavigationType]) {
+        var newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
+                                      andSubtitle:"The optional subtitle of a subpage" 
+                                          andType: "Navigation"];
         [page addChild:newpage];
     } else {
         [[page attributes] setValue:"A value" forKey:"A attribute"];
@@ -200,7 +202,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)deleteItemFromList:(id)sender {
     var row = [table selectedRow];
-    if([page isListType]) {
+    if([page isNavigationType]) {
         [page removeChild:row];
     } else {
         var key = [[page attributes] allKeys][row];
@@ -214,7 +216,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (void) rowClicked:(id)notification {
     //FIXME remove/hide column 
-    if([page isListType]) {
+    if([page isNavigationType]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
     
@@ -257,12 +259,15 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
     var header1 = [[table tableColumns][0] headerView];
     var header2 = [[table tableColumns][1] headerView];
-    if([page isListType]) {
+    if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
+        [itemsLabel setStringValue:"Subpages:"];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
+        [itemsLabel setStringValue:"Attributes:"];
+
     } 
     [pagetypeButton selectItemWithTitle:page.type];
 }

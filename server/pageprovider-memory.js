@@ -10,7 +10,6 @@ PageProvider.prototype.findAll = function(callback) {
 };
 
 PageProvider.prototype.findByName = function(name, callback) {
-  sys.print('findByName:' + name + '\n')
   var result = null;
   for(var i=0;i<this.dummyData.length;i++) {
     if(this.dummyData[i].rootpage.title == name ) {
@@ -52,11 +51,11 @@ new PageProvider().save(
   { 
     _id : '0',
     rootpage: { 
-        type: 'List',
+        type: 'Navigation',
         title: 'FOWA2010',
         attributes : {},
         children : [{
-            type: 'List',
+            type: 'Navigation',
             title: 'Conference Day 01',
             subtitle: '04 October, 2010',
             attributes : {},
@@ -165,14 +164,14 @@ new PageProvider().save(
             ]
         },
         {
-            type: 'List',
+            type: 'Navigation',
             title: 'Conference Day 02',
             subtitle: '05 October, 2010',
             attributes : {},
             children : []
         },
         {
-            type: 'List',
+            type: 'Navigation',
             title: 'Workshops Day',
             subtitle: '06 October, 2010',
             attributes : {},

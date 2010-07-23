@@ -31,7 +31,7 @@
     self = [super init];
     children = [[CPArray alloc] init];
     attributes = [CPDictionary dictionary];
-    type = "List";
+    type = "Navigation";
     return self;
 }
            
@@ -87,6 +87,6 @@
     return title;
 }
 
-- (boolean) isListType {
-    return type === "List";
+- (boolean) isNavigationType {
+    return type === "Navigation";
 }
