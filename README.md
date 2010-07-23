@@ -14,7 +14,19 @@ Client Development
 * Install Atlas http://280atlas.com/
 * Click Run
 
-TODOs
+MAIN TODOs
 =====
 * mongo.db 
-* heroku
+* heroku deployment
+
+Features / Bugs
+=====
+* New-Template
+* iphone preview
+* nach Safe nicht zurück springen
+* New Wizard from Dates
+* Pagetyp: Tweetwall
+* Tweet from Details 
+* Favourites
+* Notes
+* Pagetype: rss-feed
