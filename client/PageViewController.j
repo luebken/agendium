@@ -46,7 +46,7 @@
 
     var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
     [[column2 headerView] setStringValue:@"Subtitle"];
-    [column2 setWidth:240.0];
+    [column2 setWidth:230.0];
     [column2 setEditable:YES];
     [table addTableColumn:column2]; 
 
@@ -55,7 +55,7 @@
                     andDelegate:self];
     var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
     [column3 setDataView:button];
-    [column3 setWidth:24.0];
+    [column3 setWidth:30.0];
     [column3 setEditable:YES];
     [table addTableColumn:column3];
 
@@ -87,6 +87,14 @@
            selector:@selector(rowClicked:)
                name:@"RowClickedNotification"
              object:nil];
+             
+    /*
+    [addButton setTheme:nil];
+    var plusImg = [[CPImage alloc] initWithContentsOfFile:@"Resources/plus.png"]; 
+    [addButton setImage:plusImg]; 
+    var plusAltImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/plus_down.png"]; 
+    [addButton setAlternateImage: plusAltImage];     
+    */
 }
 
 
@@ -198,6 +206,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     //var textfield = [tableColumn dataView];
     //[textfield setSelectedRange:CPMakeRange(0, 0)];
 }
+- (id)tableView:(CPTableView)table2 isGroupRow:(id)row {
+    console.log("isGroupRow:" + row);
+    return YES;
+}
 - (void)tableViewSelectionDidChange:(CPNotification)notification
 {    
     var chosenRow = [[table selectedRowIndexes] firstIndex];
@@ -224,8 +236,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [table reloadData];
 }
 
-- (@action)deleteItemFromList:(id)sender {
-    var row = [table selectedRow];
+- (void)deleteItemFromList:(id)row {
     if([page isNavigationType]) {
         [page removeChild:row];
     } else {
@@ -240,13 +251,15 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (void) rowClicked:(id)notification {
     //FIXME remove/hide column 
-    if([page isNavigationType]) {
+    if(![self editing]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
     
         [[CPPropertyAnimation slideLeft:self view:scrollView] startAnimation];
 
         [self myRefresh];
+    } else {
+        [self deleteItemFromList:[notification object]];
     }
     //[table removeFromSuperview]
 }
