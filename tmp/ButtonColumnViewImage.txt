@@ -1,0 +1,76 @@
+
+@import <AppKit/CPView.j>
+
+
+@implementation ButtonColumnView : CPView
+{
+    CPButton button;
+    CPString row;
+    id delegate;
+    CPImage delImg;
+    CPImage delAltImg;
+}
+
+- (id)initWithFrame:(CGRect)rect andDelegate:(id)delegate2  { 
+        self = [super initWithFrame:rect]; 
+        button = [CPButton buttonWithTitle:@">"]; 
+        //[nameField setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin]; 
+        [button setAction:@selector(rowSelected:)];  
+        [button setTarget:self];
+        
+        [self addSubview:button]; 
+        self.delegate = delegate2;
+        
+        delImg = [[CPImage alloc] initWithContentsOfFile:@"Resources/minus.png"]; 
+        delAltImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/minus_down.png"]; 
+
+        
+        return self; 
+}   
+
+- (void)setObjectValue:(Object)anObject { 
+    //console.log('anObject.editing:' + anObject.editing);
+    if(anObject.editing) {
+        [button setTitle:""]; 
+        [button setTheme:nil];
+        [button setFrame:CGRectMake(2, 2,30,30)];
+        [button setImage:delImg]; 
+        [button setAlternateImage:delAltImage];     
+        [button setImagePosition:CPImageAbove];    
+        [button setNeedsDisplay:YES];
+        [self setNeedsDisplay:YES];
+        [button layoutSubviews];
+        
+    } else if(anObject.show) {
+        row = anObject.row;
+        [button setTitle:">"]; 
+        [button setFrame:CGRectMake(0,0,20,24)];
+        [button setCenter:CPPointMake(10, 25)]; 
+    } else {
+        row = -1;
+        [button setFrame:CGRectMakeZero()];
+    }
+} 
+
+- (id)initWithCoder:(CPCoder)aCoder { 
+        self = [super initWithCoder:aCoder]; 
+        button = [aCoder decodeObjectForKey:"button"]; 
+        return self; 
+} 
+
+- (void)encodeWithCoder:(CPCoder)aCoder { 
+        [super encodeWithCoder:aCoder]; 
+        [aCoder encodeObject:button forKey:"button"]; 
+}
+
+- (void) rowSelected: (id)sender { 
+    [[CPNotificationCenter defaultCenter] 
+        postNotificationName:@"RowClickedNotification" 
+        object:row];
+}
+
+//Bugfix / workaround for double click on "empty" row
+- (void) setAction:(id)sender { }
+- (void) setTarget:(id)sender { }
+
+@end
