@@ -63,11 +63,22 @@ body {
     border-left: 1px solid #969696;
     border-right: 1px solid #969696;
     border-top: 1px solid #969696;
+}
+
+#contentapp {
+    width: 750px;
+    height: 650px;
+    border-left: 1px solid #969696;
+    border-right: 1px solid #969696;
+    border-top: 1px solid #969696;
+    border-bottom: 1px solid #969696;
     
 }
+
 #content .title {
     position: relative;
-    left: 20px;
+    left: 0px;
+    padding : 0 0 0 20;
     top: -520px;
     text-shadow: #243445 0px 1px 1px;
     letter-spacing: -2px;
@@ -78,18 +89,21 @@ body {
 
 #content .desc1 {
     position: relative;
-    left: 20px;
+    left: 0px;
+    padding : 0 0 0 20;
     top: -460px;
     width: 280px;
     font-size: 24px;
     color: #CCCCCC;
     font-weight: bold;
     letter-spacing: -1px;
+    display: block;
 }
 
 #content .desc2 {
     position: relative;
-    left: 20px;
+    left: 0px;
+    padding : 0 0 0 20;
     top: -400px;
     width: 280px;
     font-size: 18px;
@@ -154,12 +168,12 @@ body {
     text-align: center;
 }
 
+
 #footer-nav {
     text-align: left;
     vertical-align: middle;
     margin: 0px auto;
     padding: 0px;
-    width: 750px;
     text-shadow: rgba(255, 255, 255, 0.597656) 0px 1px 0px;
 }
 
