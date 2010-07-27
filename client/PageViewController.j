@@ -41,8 +41,7 @@
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
     var fieldColumn = [[TextFieldColumnView alloc] 
-                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)
-                    andTable:table];
+                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
     [column1 setDataView:fieldColumn];
     [column1 setWidth:170.0];
     [column1 setEditable:YES];

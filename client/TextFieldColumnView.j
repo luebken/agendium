@@ -2,70 +2,30 @@
 @import <AppKit/CPView.j>
 
 
-@implementation TextFieldColumnView : CPView
+@implementation TextFieldColumnView : CPTextField
 {
-    CPTextField field;
+}
+- (id)initWithFrame:(CGRect)aFrame
+{
+    self = [super initWithFrame:aFrame];
+    [self setValue:CPCenterVerticalTextAlignment forThemeAttribute:@"vertical-alignment"];
+    return self;
 }
 
-- (id)initWithFrame:(CGRect)rect andTable:(id)table  { 
-    self = [super initWithFrame:rect]; 
-    field = [CPTextField textFieldWithStringValue:@"" 
-                       placeholder:@"" 
-                            width:100];
-    [field setEditable:NO];
-    [field setBordered:NO];
-    [field setBezeled:NO];
-    [field setDelegate:self];
-    
-    [field setFrame:CGRectMake(5,9,10,26)];
-    [field setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable | CPViewMaxYMargin | CPViewMinYMargin]; 
-    [self addSubview:field]; 
-    
-    [field setTarget:table];
-    [field setAction:@selector(_commitDataViewObjectValue:)];
-    return self; 
-}
-
-
-//a custom object containing information about visibility and the data
 - (void)setObjectValue:(Object)value { 
+    var s = value ? value.title : "";
+    [super setObjectValue:s];
     if(!value.visible) {
-        [field setStringValue:""];
-        [field setEditable:NO];
-        [field setBordered:NO];
-        [field setBezeled:NO];
-        [field setAutoresizingMask:CPViewWidthSizable]; 
+        [self setEditable:NO];
+        [self setBordered:NO];
+        [self setBezeled:NO];
+        [self setAutoresizingMask:CPViewWidthSizable]; 
     } else {
-        [field setAutoresizingMask:CPViewWidthSizable]; 
-        [field setStringValue:value.title];
-        [field setEditable:value.editing];
-        [field setBordered:value.editing];
-        [field setBezeled:value.editing];  
+        [self setAutoresizingMask:CPViewWidthSizable]; 
+        [self setEditable:value.editing];
+        [self setBordered:value.editing];
+        [self setBezeled:value.editing];  
     }
-    
 }
-
-
-- (id)initWithCoder:(CPCoder)aCoder { 
-    self = [super initWithCoder:aCoder]; 
-    field = [aCoder decodeObjectForKey:"field"]; 
-    return self; 
-} 
-
-- (void)encodeWithCoder:(CPCoder)aCoder { 
-    [super encodeWithCoder:aCoder]; 
-    [aCoder encodeObject:field forKey:"field"]; 
-}
-
-//get called when editing starts
-- (void) setAction:(id)sender { 
-    console.log('setAction sender ' + sender);
-    [field setAction:sender];
-}
-- (void) setTarget:(id)sender { 
-    console.log('setTarget sender ' + sender);
-    [field setTarget:sender];
-}
-
 
 @end
