@@ -155,11 +155,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         if([[tableColumn identifier] isEqual:"zero"]) {
             return "";
         } else if([[tableColumn identifier] isEqual:"first"]) {
-            return key;
+            return {title: key, row:row, visible:YES, editing:editing};
         } else if([[tableColumn identifier] isEqual:"second"]) {
-            return value;
+            return {title: value, row:row, visible:YES, editing:editing};
         } else {
-            return {show:NO, editing:editing}
+            return {visible:NO, row:row, editing:editing};
         }
     }
 }
@@ -169,18 +169,9 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
-    console.log('tableView:setObjectValue:' + aValue);
-    console.log('page.type:' + page.type);
-    
     if([page isNavigationType]) {
-        console.log('isNavigationType YES');
-        
-        var pageAtRow = [[page children] objectAtIndex:row];
-        console.log('row ' + row);
-        console.log('[tableColumn identifier] ' + [tableColumn identifier] );
-        
+        var pageAtRow = [[page children] objectAtIndex:row];        
         if([[tableColumn identifier] isEqual:"first"]) {
-            console.log('[pageAtRow setTitle:aValue]' + [pageAtRow setTitle:aValue]);
             [pageAtRow setTitle:aValue];
         } else {
             [pageAtRow setSubtitle:aValue];
@@ -215,9 +206,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 */
 
 - (@action)addItemToList:(id)sender {
+    console.log("addItemToList");
+    
     if([page isNavigationType]) {
         var itemtype = [[itemtypeButton selectedItem] title];
-        console.log('itemtype: ' + itemtype);
         var newpage;
         if(itemtype == 'Navigationpage') {
             newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
@@ -244,11 +236,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [page removeChild:row];
     } else {
         var key = [[page attributes] allKeys][row];
+        console.log('deleteItemFromList row ' +row );
         [[page attributes] removeObjectForKey:key];
     }
     [table deselectAll];
     [table reloadData];
-    [self tableViewSelectionDidChange:null];
+    //[self tableViewSelectionDidChange:null];
 }
 
 
