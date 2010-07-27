@@ -30,11 +30,11 @@
     return self;
 }
 - (void) awakeFromCib {    
-    table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 600.0)];
+    table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
  
     var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
     [[column0 headerView] setStringValue:""];
-    [column0 setWidth:50.0];
+    [column0 setWidth:70.0];
     [column0 setEditable:NO];
     [table addTableColumn:column0];
  
