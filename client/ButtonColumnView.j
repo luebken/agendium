@@ -26,13 +26,12 @@
 }   
 
 - (void)setObjectValue:(Object)anObject { 
-    console.log('anObject.editing:' + anObject.editing);
     if(anObject.editing) {
         row = anObject.row;
         [button setTitle:"-"]; 
         [button setFrame:CGRectMake(0,0,24,24)];
         [button setCenter:CPPointMake(12,25)];         
-    } else if(anObject.show) {
+    } else if(anObject.visible) {
         row = anObject.row;
         [button setTitle:">"];
         [button setFrame:CGRectMake(0,0,24,24)];

@@ -1,6 +1,7 @@
 
 @import <Foundation/CPObject.j>
 @import "ButtonColumnView.j"
+@import "TextFieldColumnView.j"
 @import "CPPropertyAnimation.j"
 
 
@@ -30,6 +31,7 @@
 - (void) awakeFromCib {    
     table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
  
+                    
     var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
     [[column0 headerView] setStringValue:""];
     [column0 setWidth:70.0];
@@ -38,21 +40,26 @@
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
+    var fieldColumn = [[TextFieldColumnView alloc] 
+                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)
+                    andTable:table];
+    [column1 setDataView:fieldColumn];
     [column1 setWidth:170.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
+    [column2 setDataView:fieldColumn];
     [[column2 headerView] setStringValue:@"Subtitle"];
     [column2 setWidth:230.0];
     [column2 setEditable:YES];
     [table addTableColumn:column2]; 
 
-    var button = [[ButtonColumnView alloc] 
+    var buttonColumn = [[ButtonColumnView alloc] 
                     initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
                     andDelegate:self];
     var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
-    [column3 setDataView:button];
+    [column3 setDataView:buttonColumn];
     [column3 setWidth:30.0];
     [column3 setEditable:YES];
     [table addTableColumn:column3];
@@ -93,40 +100,23 @@
     */
 }
 
-
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
-    [self setEditing:NO];//so switch always back to YES
+    [self setEditing:NO];//so switch always back to YES in toggleEditing
     [self toggleEditing:aTableView];
     return YES;
 }
 
 - (@action) toggleEditing:(id)sender {
-    var field;
     if(self.editing) {
-        field = [CPTextField labelWithTitle:@""];
-        //FIXME funktioniert nicht. custom cpview
-        //[field setFrame:CGRectMake(10.0, 10.0, 100, 29.0)];
-        //[field setAlignment:CPCenterTextAlignment];
-        [field setVerticalAlignment:CPCenterTextAlignment];
-
-        //[field setFont:[CPFont systemFontOfSize:14.0]];
-
         [self setEditing:NO];
         [editButton setTitle:@"Edit"];
         [editButton unsetThemeState:CPThemeStateDefault];
-
     } else {
-        field = [CPTextField textFieldWithStringValue:@"" 
-            placeholder:@"" 
-              width:100];
         [self setEditing:YES];
         [editButton setTitle:@"Done"];
         [editButton setThemeState:CPThemeStateDefault];
     }
-    var cols = [table tableColumns];
-    [cols[1] setDataView:field];
-    [cols[2] setDataView:field];
     [self myRefresh];
 }
 
@@ -148,15 +138,17 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 {
     if([page isNavigationType]) {
         var pageAtRow = [[page children] objectAtIndex:row];
+        var visible = YES; 
         if([[tableColumn identifier] isEqual:"zero"]) {
             return pageAtRow.type;
         } else if([[tableColumn identifier] isEqual:"first"]) {
-            return [pageAtRow title];
+            return {title: [pageAtRow title], row:row, visible:visible, type:pageAtRow.type, editing:editing};
         } else if([[tableColumn identifier] isEqual:"second"]) {
-            return [pageAtRow subtitle];
+            visible = pageAtRow.type !== 'Spacer';
+            return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
         } else {
-            var show = pageAtRow.type === 'Spacer' ? NO : YES;
-            return {row:row, show:show, editing:editing};
+            visible = pageAtRow.type !== 'Spacer';
+            return {row:row, visible:visible, editing:editing};
         }
     } else {
         var key = [[page attributes] allKeys][row];
@@ -178,9 +170,18 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     forTableColumn:(CPTableColumn)tableColumn 
                row:(int)row
 {
+    console.log('tableView:setObjectValue:' + aValue);
+    console.log('page.type:' + page.type);
+    
     if([page isNavigationType]) {
+        console.log('isNavigationType YES');
+        
         var pageAtRow = [[page children] objectAtIndex:row];
+        console.log('row ' + row);
+        console.log('[tableColumn identifier] ' + [tableColumn identifier] );
+        
         if([[tableColumn identifier] isEqual:"first"]) {
+            console.log('[pageAtRow setTitle:aValue]' + [pageAtRow setTitle:aValue]);
             [pageAtRow setTitle:aValue];
         } else {
             [pageAtRow setSubtitle:aValue];
@@ -197,7 +198,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             [[page attributes] setValue:aValue forKey:oldAttributeKey];
         }
     }
-    //[table reloadData];
+    [table reloadData];
     //[table setSelectedRow:0];
     //var textfield = [tableColumn dataView];
     //[textfield setSelectedRange:CPMakeRange(0, 0)];
@@ -295,8 +296,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
     [titleField setObjectValue:title];
     [itemtypeButton removeAllItems];
+    var header0 = [[table tableColumns][0] headerView];
     var header1 = [[table tableColumns][1] headerView];
     var header2 = [[table tableColumns][2] headerView];
+    [header0 setStringValue:@"Type"];
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
@@ -304,7 +307,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemtypeButton addItemsWithTitles: ['Attribute']];
+        [itemtypeButton addItemsWithTitles: ['Text', 'Link', 'Tweeter']];
     } 
     //[pagetypeButton selectItemWithTitle:page.type];
 }
