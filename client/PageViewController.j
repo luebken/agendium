@@ -1,7 +1,6 @@
 
 @import <Foundation/CPObject.j>
 @import "ButtonColumnView.j"
-@import "TextFieldColumnView.j"
 @import "CPPropertyAnimation.j"
 
 
@@ -40,15 +39,15 @@
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
-    var fieldColumn = [[TextFieldColumnView alloc] 
-                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
-    [column1 setDataView:fieldColumn];
+    //var fieldColumn = [[TextFieldColumnView alloc] 
+    //                initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
+    //[column1 setDataView:fieldColumn];
     [column1 setWidth:170.0];
     [column1 setEditable:YES];
     [table addTableColumn:column1];
 
     var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
-    [column2 setDataView:fieldColumn];
+    //[column2 setDataView:fieldColumn];
     [[column2 headerView] setStringValue:@"Subtitle"];
     [column2 setWidth:230.0];
     [column2 setEditable:YES];
@@ -107,17 +106,27 @@
 }
 
 - (@action) toggleEditing:(id)sender {
+    var field;
     if(self.editing) {
         [self setEditing:NO];
         [editButton setTitle:@"Edit"];
         [editButton unsetThemeState:CPThemeStateDefault];
+        field = [CPTextField labelWithTitle:@""];
+        [field setVerticalAlignment:CPCenterTextAlignment];
     } else {
         [self setEditing:YES];
         [editButton setTitle:@"Done"];
         [editButton setThemeState:CPThemeStateDefault];
+        field = [CPTextField textFieldWithStringValue:@"" 
+                    placeholder:@"" 
+                          width:100];
     }
+    var cols = [table tableColumns];
+    [cols[1] setDataView:field];
+    [cols[2] setDataView:field];
     [self myRefresh];
 }
+
 
 
 //table datasource method
@@ -141,10 +150,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         if([[tableColumn identifier] isEqual:"zero"]) {
             return pageAtRow.type;
         } else if([[tableColumn identifier] isEqual:"first"]) {
-            return {title: [pageAtRow title], row:row, visible:visible, type:pageAtRow.type, editing:editing};
+            //return {title: [pageAtRow title], row:row, visible:visible, type:pageAtRow.type, editing:editing};
+            return [pageAtRow title];
         } else if([[tableColumn identifier] isEqual:"second"]) {
             visible = pageAtRow.type !== 'Spacer';
-            return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
+            //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
+            return [pageAtRow subtitle];
         } else {
             visible = pageAtRow.type !== 'Spacer';
             return {row:row, visible:visible, editing:editing};
@@ -155,9 +166,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         if([[tableColumn identifier] isEqual:"zero"]) {
             return "";
         } else if([[tableColumn identifier] isEqual:"first"]) {
-            return {title: key, row:row, visible:YES, editing:editing};
+            //return {title: key, row:row, visible:YES, editing:editing};
+            return key;
         } else if([[tableColumn identifier] isEqual:"second"]) {
-            return {title: value, row:row, visible:YES, editing:editing};
+            //return {title: value, row:row, visible:YES, editing:editing};
+            return value;
         } else {
             return {visible:NO, row:row, editing:editing};
         }
