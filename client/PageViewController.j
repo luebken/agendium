@@ -8,7 +8,6 @@
 {
     @outlet CPScrollView scrollView;
     Page page @accessors;
-    @outlet CPButton deleteButton;
     @outlet CPButton addButton;
     @outlet CPButton backButton;
     @outlet CPButton editButton;
@@ -66,17 +65,18 @@
     
     [scrollView setDocumentView:table]; 
 
-    [deleteButton setEnabled:NO];
     [backButton setEnabled:NO];
     [itemtypeButton removeAllItems];
 
     editing = NO;
 
+/*
     [[CPNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(tableViewSelectionDidChange:)
                name:CPTableViewSelectionDidChangeNotification
              object:nil];
+*/
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -206,11 +206,13 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     console.log("isGroupRow:" + row);
     return YES;
 }
+
+/*
 - (void)tableViewSelectionDidChange:(CPNotification)notification
 {    
     var chosenRow = [[table selectedRowIndexes] firstIndex];
-    [deleteButton setEnabled:chosenRow > -1]
 }
+*/
 
 - (@action)addItemToList:(id)sender {
     if([page isNavigationType]) {
