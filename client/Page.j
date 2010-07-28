@@ -10,7 +10,7 @@
     Page[] children @accessors;
     Page ancestor @accessors;
     CPString type @accessors;
-    CPDictionary attributes @accessors;
+    CPString[] attributes @accessors;
 }
 
 + (Page) initFromJSONObject:(id)object {
@@ -21,8 +21,12 @@
         var child = [Page initFromJSONObject:object.children[i]];
         [page addChild:child atIndex:-1];
     }
-    for (var key in object.attributes){
-        [[page attributes] setValue:object.attributes[key] forKey:key];
+    if(object.attributes){
+    for (var i=0; i < object.attributes.length; i++) {
+        var attr = object.attributes[i];
+        console.log(attr);
+        [[page attributes] insertObject:attr atIndex:i];
+    }
     }
     return page;
 }
@@ -30,7 +34,7 @@
 - (id) init {
     self = [super init];
     children = [[CPArray alloc] init];
-    attributes = [CPDictionary dictionary];
+    attributes = [[CPArray alloc] init];
     type = "Navigation";
     return self;
 }
@@ -66,12 +70,12 @@
         childrenJSON = childrenJSON.substring(0, childrenJSON.length - 1);
     }        
     var attributesJSON = '';
-    for (var i=0; i < [attributes allKeys].length; i++) {
-        var key = [attributes allKeys][i];
-        var value = [attributes objectForKey:key];
-        attributesJSON += JSON.stringify(key) + ":" +  JSON.stringify(value);
+    for (var i=0; i < attributes.length; i++) {
+        attributesJSON += '{"key":"' + attributes[i].key + '"';
+        attributesJSON += ',"value":"' + attributes[i].value + '"}';
         attributesJSON += ',';
     }
+    
     if(attributesJSON.length > 0) {
         attributesJSON = attributesJSON.substring(0, attributesJSON.length - 1);
     }  
@@ -80,7 +84,7 @@
     if(subtitle) {
         json += '","subtitle":"' + subtitle;
     }
-    json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":{' + attributesJSON + '}}';
+    json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":[' + attributesJSON + ']}';
     return json;
 }
 

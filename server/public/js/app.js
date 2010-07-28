@@ -42,12 +42,12 @@ var createDetails = function(page, pageid) {
     var $details = $('<div class="details">');
     $details.append('<div class="title">' + page.title + '</div>');
     $details.append('<div class="subtitle">' + page.subtitle + '</div>');
-    for(var key in page.attributes) {
-        var value = page.attributes[key];
-        if(value.match("^http\://")){
-            $details.append('<div class="attribute">' + key + ': <a href="' + value + '">'+value+'</a></div>');        
+    for(var i=0; i < page.attributes.length; i++) {
+        var attr = page.attributes[i];
+        if(attr.value.match("^http\://")){
+            $details.append('<div class="attribute">' + attr.key + ': <a href="' + attr.value + '">'+attr.value+'</a></div>');        
         } else {
-            $details.append('<div class="attribute">' + key + ': ' + value + '</div>');                    
+            $details.append('<div class="attribute">' + attr.key + ': ' + attr.value + '</div>');                    
         }
     }
     return $details;

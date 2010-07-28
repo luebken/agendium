@@ -135,7 +135,7 @@
     if([page isNavigationType]) {
         return [[page children] count];
     } else {
-        return [[[page attributes] allKeys] count];
+        return [[page attributes] count];
     }
 }
 
@@ -161,8 +161,9 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             return {row:row, visible:visible, editing:editing};
         }
     } else {
-        var key = [[page attributes] allKeys][row];
-        var value = [[page attributes] objectForKey:key];
+        var attribute = [[page attributes] objectAtIndex:row];
+        var key = attribute.key;
+        var value = attribute.value;
         if([[tableColumn identifier] isEqual:"zero"]) {
             return "";
         } else if([[tableColumn identifier] isEqual:"first"]) {
@@ -190,15 +191,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             [pageAtRow setSubtitle:aValue];
         }
     } else {
-        var col0 = [table tableColumns][0];
-        var col1 = [table tableColumns][1]
-        var oldAttributeKey = [self tableView:table objectValueForTableColumn:col0 row:row];
-        var oldValue = [self tableView:table objectValueForTableColumn:col1 row:row];
+        var attribute = [[page attributes] objectAtIndex:row];        
         if([[tableColumn identifier] isEqual:"first"]) {
-            [[page attributes] removeObjectForKey:oldAttributeKey];
-            [[page attributes] setValue:oldValue forKey:aValue];
+            attribute.key = aValue;
         } else {
-            [[page attributes] setValue:aValue forKey:oldAttributeKey];
+            attribute.value = aValue;
         }
     }
     [table reloadData];
@@ -218,9 +215,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 */
 
-- (@action)addItemToList:(id)sender {
-    console.log("addItemToList");
-    
+- (@action)addItemToList:(id)sender {    
     if([page isNavigationType]) {
         var itemtype = [[itemtypeButton selectedItem] title];
         var newpage;
@@ -239,7 +234,8 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         }
         [page addChild:newpage atIndex:[table selectedRow]];            
     } else {
-        [[page attributes] setValue:"A value" forKey:"A attribute"];
+        var attribute = { key:"A key", value:"A value" };
+        [[page attributes] insertObject:attribute atIndex:[table selectedRow]];
     }
     [table reloadData];
 }
@@ -248,9 +244,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         [page removeChild:row];
     } else {
-        var key = [[page attributes] allKeys][row];
-        console.log('deleteItemFromList row ' +row );
-        [[page attributes] removeObjectForKey:key];
+        [[page attributes] removeObjectAtIndex:row];
     }
     [table deselectAll];
     [table reloadData];
