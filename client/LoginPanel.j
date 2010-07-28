@@ -10,13 +10,13 @@
 
 - (id)init:(id) delegate2
 {
-    self = [self initWithContentRect:CGRectMake(100.0, 100.0, 350.0, 150.0) 
+    self = [self initWithContentRect:CGRectMake(200.0, 150.0, 350.0, 170.0) 
     styleMask:CPHUDBackgroundWindowMask];
 
     if (self)
     {
         self.delegate = delegate2;
-        [self setTitle:@"Login"];
+        [self setTitle:@"Private Beta Login"];
         [self setFloatingPanel:YES];
         
         var contentView = [self contentView],
@@ -49,17 +49,28 @@
         [contentView addSubview:passwordField];
 
         var loginButton = [CPButton buttonWithTitle:"Login" theme:[CPTheme themeNamed:"Aristo-HUD"]];
-        [loginButton setFrame:CGRectMake(250,120, 70, 20)];
+        [loginButton setFrame:CGRectMake(250,110, 70, 20)];
         [contentView addSubview:loginButton];
         [loginButton setTag:1];
         [loginButton setTarget:self];
         [loginButton setAction:@selector(buttonAction:)];
 
         var cancelButton = [CPButton buttonWithTitle:"Cancel" theme:[CPTheme themeNamed:"Aristo-HUD"]];
-        [cancelButton setFrame:CGRectMake(170,120, 70, 20)];
+        [cancelButton setFrame:CGRectMake(170,110, 70, 20)];
         [contentView addSubview:cancelButton];
         [cancelButton setTag:0];
-
+        
+        var signUpButton = [CPButton buttonWithTitle:"Want to be part of the fun? Sign up."];
+        [signUpButton sizeToFit];
+        [signUpButton setFrameOrigin:CGPointMake(80,140)];  
+        [signUpButton setBordered:NO]; 
+        [signUpButton setTextColor:[CPColor grayColor]];
+        signUpButton._DOMElement.style.textDecoration = "underline";
+        [signUpButton setTarget:self]; 
+        [signUpButton setAction:@selector(signup)]; 
+        signUpButton._DOMElement.style.cursor = "pointer"; 
+        
+        [contentView addSubview:signUpButton];
         [cancelButton setTarget:self];
         [cancelButton setAction:@selector(buttonAction:)];
     
@@ -73,6 +84,10 @@
          [delegate panelDidClose:[sender tag]];
     }
     [self close];
+}
+
+- (void) signup {
+    window.open ("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
 }
 
 

@@ -20,6 +20,8 @@
     @outlet CPButton saveButton;
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
+    @outlet CPButton logoutButton;
+
     Page rootPage;
     @outlet CPTextField appnameField;
     @outlet CPView pageView;
@@ -32,6 +34,8 @@
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
+    [theWindow orderOut:self];
+    [[[LoginPanel alloc] init:self] orderFront:nil];
 }
 
 - (void)resetData {
@@ -74,6 +78,12 @@
     [previewButton setTarget:self]; 
     [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
+
+    [logoutButton setBordered:NO]; 
+    [logoutButton setImage:[[CPImage alloc] initWithContentsOfFile:"Resources/logout2.png"]];
+    logoutButton._DOMElement.style.textDecoration = "underline";
+    logoutButton._DOMElement.style.cursor = "pointer"; 
+
 
     [self resetData];
  
@@ -131,14 +141,17 @@
 }
 
 - (@action) login:(id)sender {
-    [[[LoginPanel alloc] init:self] orderFront:nil];
+    //[[[LoginPanel alloc] init:self] orderFront:nil];
+    history.go(-1);
 }
 //LoginPanel Delegate
 - (void) panelDidClose:(id)tag {
     if(tag == 1) {
         console.log(@"login success");
+        [theWindow orderFront:self];
     } else {
         console.log(@"login canceled");
+        history.go(-1);
     }
 }
 
