@@ -147,7 +147,6 @@
     [self resetData];
     var data = [NewTemplate data];
     [self didReceiveLoadData:data];
-    console.log(@"new");
 }
 
 - (@action) save:(id)sender {
