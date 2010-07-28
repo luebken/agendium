@@ -2,6 +2,7 @@
 @import <Foundation/CPObject.j>
 @import "ButtonColumnView.j"
 @import "CPPropertyAnimation.j"
+@import "ImageTextColumnView.j"
 
 
 @implementation PageViewController : CPViewController
@@ -30,15 +31,22 @@
 - (void) awakeFromCib {    
     table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
  
-                    
     var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
-    [[column0 headerView] setStringValue:""];
-    [column0 setWidth:70.0];
+    var imageColumn = [[ImageTextColumnView alloc] 
+                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
+    [column0 setDataView:imageColumn];
+    [[column0 headerView] setStringValue:""];    
+    [column0 setWidth:75.0];
     [column0 setEditable:NO];
     [table addTableColumn:column0];
  
     var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
     [[column1 headerView] setStringValue:"Title"];
+    var field = [CPTextField labelWithTitle:@""];
+    [field setFont:[CPFont systemFontOfSize:14.0]];
+    [field setVerticalAlignment:CPCenterTextAlignment];
+    [column1 setDataView:field];
+        
     //var fieldColumn = [[TextFieldColumnView alloc] 
     //                initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
     //[column1 setDataView:fieldColumn];
@@ -51,6 +59,8 @@
     [[column2 headerView] setStringValue:@"Subtitle"];
     [column2 setWidth:230.0];
     [column2 setEditable:YES];
+    [column2 setDataView:field];
+    
     [table addTableColumn:column2]; 
 
     var buttonColumn = [[ButtonColumnView alloc] 
@@ -63,6 +73,8 @@
     [table addTableColumn:column3];
 
     [table setUsesAlternatingRowBackgroundColors:YES];
+    [table setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
+    
     [table setRowHeight:50];
     [table setDataSource:self];
     [table setDelegate:self];
@@ -112,6 +124,7 @@
         [editButton setTitle:@"Edit"];
         [editButton unsetThemeState:CPThemeStateDefault];
         field = [CPTextField labelWithTitle:@""];
+        [field setFont:[CPFont systemFontOfSize:14.0]];
         [field setVerticalAlignment:CPCenterTextAlignment];
     } else {
         [self setEditing:YES];
@@ -165,7 +178,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         var key = attribute.key;
         var value = attribute.value;
         if([[tableColumn identifier] isEqual:"zero"]) {
-            return "";
+            return "Text";
         } else if([[tableColumn identifier] isEqual:"first"]) {
             //return {title: key, row:row, visible:YES, editing:editing};
             return key;
