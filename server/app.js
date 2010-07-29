@@ -53,6 +53,13 @@ get('/a/*', function(id){
     })
 })
 
+//Serves the mobile client
+get('/preview', function(){
+    this.render('emptypreview.html.haml', {
+      layout: false
+    })
+})
+
 //Serves the agenda data as JSON for the mobile client 
 //FIXME why not use get('/agenda/*' just because auf "var data"
 get('/data/*', function(name){
