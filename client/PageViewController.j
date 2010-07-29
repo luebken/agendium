@@ -13,7 +13,7 @@
     @outlet CPButton backButton;
     @outlet CPButton editButton;
     @outlet CPPopUpButton itemtypeButton;
-
+    id delegate;
     CPTableView table;
     @outlet CPTextField titleField;
     boolean editing @accessors;
@@ -108,6 +108,10 @@
     var plusAltImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/plus_down.png"]; 
     [addButton setAlternateImage: plusAltImage];     
     */
+}
+
+- (void) setDelegate:(id)delegate2 {
+    delegate = delegate2;
 }
 
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
@@ -270,9 +274,8 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if(![self editing]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
-    
         [[CPPropertyAnimation slideLeft:self view:scrollView] startAnimation];
-
+        [delegate selectedPage:page reverse:NO];
         [self myRefresh];
     } else {
         [self deleteItemFromList:[notification object]];
@@ -286,8 +289,8 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)backButtonClicked:(id)sender {
     [[CPPropertyAnimation slideRight:self view:scrollView] startAnimation];
-
     page = [page ancestor];
+    [delegate selectedPage:page reverse:YES];
     [self myRefresh];
 }
 

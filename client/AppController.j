@@ -42,6 +42,7 @@
 - (void)resetData {
     rootPage = [[Page alloc] init];
     [rootPage setTitle:[appnameField objectValue]];
+    rootPage.mobileNavId = "r";
     pageViewController.page = rootPage;
     appId = null;
 }
@@ -61,6 +62,7 @@
     pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
                                                         bundle:nil];
     [pageViewController setPage:rootPage];
+    [pageViewController setDelegate:self];
     [[pageViewController view] setFrame:CPRectMake(1, 1, 550, 501)]
     [pageView addSubview:[pageViewController view]];
 
@@ -137,6 +139,15 @@
     [self load:sender];
 }
 */
+
+//PageViewController Delegate
+- (void) selectedPage:(Page) page reverse:(Boolean) reverse {
+    var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
+    if(reverse) cmd += ', "reverse"';
+    cmd += ');'
+    console.log("cmd " + cmd);
+    [[previewView windowScriptObject] evaluateWebScript:cmd];
+}
 
 
 - (void) myRefresh {
@@ -218,7 +229,7 @@
 -(void)didReceiveLoadData:(CPString)data {
     try {
         var obj = JSON.parse(data);
-        var rootPage = [Page initFromJSONObject:obj.rootpage];
+        var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
         self.appId = obj._id;
         [pageViewController setPage:rootPage];
         [self myRefresh];

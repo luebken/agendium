@@ -8,17 +8,21 @@
     CPString title @accessors;
     CPString subtitle @accessors;
     Page[] children @accessors;
-    Page ancestor @accessors;
     CPString type @accessors;
     CPString[] attributes @accessors;
+    //transient
+    CPString navigationId @accessors;
+    Page ancestor @accessors;
 }
 
-+ (Page) initFromJSONObject:(id)object {
++ (Page) initFromJSONObject:(id)object andNavigationId:(CPString) navigationId {
     var page = [[Page alloc] initWithTitle:object.title 
                                andSubtitle:object.subtitle
-                                   andType:object.type];
+                                   andType:object.type
+                           andNavigationId:navigationId];
     for (var i=0; i < object.children.length; i++) {
-        var child = [Page initFromJSONObject:object.children[i]];
+        var childNnavigationId = navigationId + "c" + i;
+        var child = [Page initFromJSONObject:object.children[i] andNavigationId:childNnavigationId];
         [page addChild:child atIndex:-1];
     }
     if(object.attributes){
@@ -31,21 +35,25 @@
     return page;
 }
 
+//TODO remove
 - (id) init {
     self = [super init];
     children = [[CPArray alloc] init];
     attributes = [[CPArray alloc] init];
     type = "Navigation";
+    navigationId = "";
     return self;
 }
            
 - (id) initWithTitle:(CPString) newtitle 
          andSubtitle:(CPString) newsubtitle
-             andType:(CPString) newtype {
+             andType:(CPString) newtype
+     andNavigationId:(CPString) newNavigationId {
     self = [self init];
     title = newtitle;
     subtitle = newsubtitle;
     type = newtype;
+    navigationId = newNavigationId
     return self;
 }
            
