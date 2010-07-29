@@ -21,6 +21,7 @@
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     @outlet CPButton logoutButton;
+    @outlet CPWebView previewView;
 
     Page rootPage;
     @outlet CPTextField appnameField;
@@ -79,6 +80,8 @@
     [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
 
+    [previewView setScrollMode:CPWebViewScrollAppKit];
+
     [logoutButton setBordered:NO]; 
     [logoutButton setImage:[[CPImage alloc] initWithContentsOfFile:"Resources/logout2.png"]];
     logoutButton._DOMElement.style.textDecoration = "underline";
@@ -127,6 +130,7 @@
     [pageViewController myRefresh];
     var applink = baseURL + "a/" + appId;
     if(appId){
+        [previewView setMainFrameURL:applink];
         [previewButton setTitle:applink]; 
     } else {
         [previewButton setTitle:""]; 

@@ -7,14 +7,17 @@ body {
     margin: 0px;
 }
 
-#container {
+#container, #containerapp {
     text-align: left;
     margin: 0px auto;
     width: 752px;
 }
+#containerapp {
+    width: 852px;
+}
 
 /* ==================== header ====================*/
-#header {
+#header, #headerapp{
     background-color: #ffffff;
     height: 70px;
     width: 750px;
@@ -23,13 +26,16 @@ body {
     border-top: 1px solid #969696;
     border-right: 1px solid #969696; 
 }
+#headerapp {
+    width: 860px;
+}
 
-#header .logo{
+.logo{
     position: relative; top: 10px;
     padding: 10 0 10 15;
 }
 
-#header .logotext{
+.logotext{
     display: inline;
     letter-spacing: -2px;
     font-weight: bold;
