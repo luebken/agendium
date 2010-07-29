@@ -81,6 +81,20 @@
     previewButton._DOMElement.style.cursor = "pointer"; 
 
     [previewView setScrollMode:CPWebViewScrollAppKit];
+    [previewView._scrollView setAutohidesScrollers:YES];
+    var oldframe = [previewView frame];
+    [previewView setFrame:CPRectMake(oldframe.x, oldframe.x, 340, 520)];
+    previewView._DOMElement.style.webkitTransform = "scale(0.75)"; 
+    previewView._DOMElement.style.webkitTransformOrigin = "0 0";
+    previewView._DOMElement.style.width = "340px";
+    previewView._DOMElement.style.height = "520px";
+    
+    //previewView._iframe.style.webkitTransform = "scale(0.75)"; 
+    //previewView._iframe.style.webkitTransformOrigin = "0 0"; 
+    //previewView._iframe.style.opacity = "0"; 
+    //previewView._frameView._DOMElement.style.opacity = "0"; 
+    //previewView._scrollView._DOMElement.style.opacity = "0"; 
+    
 
     [logoutButton setBordered:NO]; 
     [logoutButton setImage:[[CPImage alloc] initWithContentsOfFile:"Resources/logout2.png"]];
