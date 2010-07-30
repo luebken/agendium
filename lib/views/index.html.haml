@@ -1,0 +1,19 @@
+%html{ xmlns: 'http://www.w3.org/1999/xhtml'}
+  %head
+    %title= rootpage.title
+    %script{ src: '/js/jquery-1.4.2.min.js' }
+    %script{ src: '/js/jqtouch.js' }
+    %script{ src: '/js/app.js' }
+    %script{ src: '/data/'+ rootpage.title }
+    %link{ rel: 'stylesheet', href: '/js/jqtouch.css' }
+    %link{ rel: 'stylesheet', href: '/js/app.css' }
+    %link{ rel: 'stylesheet', href: '/themes/jqt/theme.css' }
+  %body
+    #jqt
+      #home.current
+        .toolbar
+          %h1= 'Dummy'
+      #about
+        %p This page is powered by Agendium
+        %a{href: '#', class:'grayButton goback'}= 'Close'          
+      #otherpages
