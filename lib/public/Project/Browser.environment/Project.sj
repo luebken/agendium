@@ -1,4 +1,4 @@
-@STATIC;1.0;p;15;AppController.jt;7478;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;13;NewTemplate.jt;7348;
+@STATIC;1.0;p;15;AppController.jt;7483;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;13;NewTemplate.jt;7353;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -23,7 +23,7 @@ appId=null;
 }
 }),new objj_method(sel_getUid("awakeFromCib"),function(_8,_9){
 with(_8){
-baseURL="http://localhost:8000/";
+baseURL="http://agendium.heroku.com/";
 objj_msgSend(box,"setBorderType:",CPLineBorder);
 objj_msgSend(box,"setBorderWidth:",1);
 objj_msgSend(box,"setBorderColor:",objj_msgSend(CPColor,"grayColor"));
