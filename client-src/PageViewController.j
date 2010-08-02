@@ -236,20 +236,25 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         var itemtype = [[itemtypeButton selectedItem] title];
         var newpage;
+        var index = [table selectedRow];
+        var navigationId = page.navigationId + "c" + index;
         if(itemtype == 'Navigationpage') {
             newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
                                       andSubtitle:"The optional subtitle of a subpage" 
-                                          andType: "Navigation"];
+                                          andType: "Navigation"
+                                  andNavigationId: navigationId ];
         } else if(itemtype == 'Detailpage') {
             newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
                                       andSubtitle:"The optional subtitle of a subpage" 
-                                          andType: "Detail"];
+                                          andType: "Detail"
+                                  andNavigationId: navigationId];
         } else {
             newpage = [[Page alloc] initWithTitle:"A group title" 
                                           andSubtitle:"" 
-                                              andType:"Spacer"];
+                                              andType:"Spacer"
+                                      andNavigationId: navigationId ];
         }
-        [page addChild:newpage atIndex:[table selectedRow]];            
+        [page addChild:newpage atIndex:index];            
     } else {
         var attribute = { key:"A key", value:"A value" };
         [[page attributes] insertObject:attribute atIndex:[table selectedRow]];
