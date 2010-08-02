@@ -23,7 +23,7 @@ appId=null;
 }
 }),new objj_method(sel_getUid("awakeFromCib"),function(_8,_9){
 with(_8){
-baseURL="http://localhost:3000/";
+baseURL="http://localhost:8000/";
 objj_msgSend(box,"setBorderType:",CPLineBorder);
 objj_msgSend(box,"setBorderWidth:",1);
 objj_msgSend(box,"setBorderColor:",objj_msgSend(CPColor,"grayColor"));
