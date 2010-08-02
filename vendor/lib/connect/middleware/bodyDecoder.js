@@ -34,6 +34,7 @@ function mime(req) {
 
 exports.decode = {
     'application/x-www-form-urlencoded': queryString.parse,
+    //'application/xml': JSON.parse, //PATCH: Add this to get auto decoding for your application type
     'application/json': JSON.parse
 };
 
@@ -63,7 +64,15 @@ module.exports = function bodyDecoder(){
                 next();
             });
         } else {
-            next();
+            //PATCH: start
+            var data = '';
+            req.addListener('data', function(chunk) { data += chunk; });
+            req.addListener('end', function() {
+              req.rawBody = data; 
+              next();
+            });
+            //PATCH: end
+            //next(); //uncomment to unpatch
         }
     }
 };

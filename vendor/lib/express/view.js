@@ -45,22 +45,6 @@ exports.clearCache = function(){
 };
 
 /**
- * Cache view at the given `path`.
- *
- * @param {String} path
- * @return {String}
- * @api private
- */
-
-function cacheView(path) {
-    fs.readFile(path, 'utf8', function(err, data){
-        if (!err) {
-            viewCache[path] = data;
-        }
-    });
-}
-
-/**
  * Synchronously cache view at the given `path`.
  *
  * @param {String} path
@@ -83,42 +67,6 @@ function cacheViewSync(path) {
 function viewRoot(app) {
     return app.set('views') || process.cwd() + '/views';
 }
-
-/**
- * Setup view reloading, checking at the given `interval`
- * which defaults to 5 minutes.
- *
- * @param {Numbers} interval
- * @api private
- */
-
-exports.watcher = function(interval){
-    interval = interval === true
-        ? 300000
-        : interval;
-    (function cache(dir){
-        fs.readdir(dir, function(err, files){
-            if (!err) {
-                files.forEach(function(file){
-                    file = dir + '/' + file;
-                    fs.stat(file, function(err, stats){
-                        if (!err) {
-                            if (stats.isFile()) {
-                                fs.watchFile(file, { interval: interval }, function(curr, prev){
-                                    if (curr.mtime > prev.mtime) {
-                                        cacheView(file);
-                                    }
-                                });
-                            } else if (stats.isDirectory()) {
-                                cache(file);
-                            }
-                        }
-                    });
-                });
-            }
-        });
-    })(viewRoot(this));
-};
 
 /**
  * Render `view` partial with the given `options`.
@@ -198,8 +146,6 @@ http.ServerResponse.prototype.partial = function(view, options, ext){
  *
  *  - `context|scope`   Template evaluation context (`this`)
  *  - `locals`    Object containing local variables
- *  - `filename`  Filename used for the `cache` option
- *  - `cache`     Cache intermediate JavaScript in memory
  *  - `debug`     Output debugging information
  *
  * @param  {String} view
@@ -262,7 +208,11 @@ http.ServerResponse.prototype.render = function(view, options, fn){
         var key = keys[i],
             val = dynamicHelpers[key];
         if (typeof val === 'function') {
-            helpers[key] = val.call(this.app, this.req, this, this.req.params.path);
+            helpers[key] = val.call(
+                this.app, 
+                this.req, 
+                this, 
+                this.req.params.path);
         }
     }
 
@@ -284,7 +234,7 @@ http.ServerResponse.prototype.render = function(view, options, fn){
 
     // Cache contents
     try {
-        var str = viewCache[path] || cacheViewSync(path);
+        var str = (options.cache ? viewCache[path] : null) || cacheViewSync(path);
     } catch (err) {
         return error(err);
     }
@@ -303,7 +253,7 @@ http.ServerResponse.prototype.render = function(view, options, fn){
     if (layout) {
         options.layout = false;
         options.locals.body = str;
-        self.render(layout, options);
+        self.render(layout, options, fn);
     } else if (partial) {
         return str;
     } else if (fn) {

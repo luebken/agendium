@@ -9,7 +9,7 @@
  * Framework version.
  */
 
-exports.version = '0.2.3';
+exports.version = '0.2.2';
 
 /**
  * Module dependencies.
@@ -29,7 +29,7 @@ var sys = require('sys'),
  * @type Object
  */
 
-process.connectEnv = process.sparkEnv || {
+process.connectEnv = process.connectEnv || {
     name: process.env.CONNECT_ENV || 'development',
     port: 3000,
     host: null

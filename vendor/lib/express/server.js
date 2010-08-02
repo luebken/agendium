@@ -33,10 +33,17 @@ var Server = exports = module.exports = function Server(middleware){
     this.dynamicViewHelpers = {};
     connect.Server.call(this, middleware || []);
 
+    // Default "home" to / 
+    this.set('home', '/');
+
+    // Set "env" to EXPRESS_ENV or connectEnv.name
+    this.set('env',
+        process.env.EXPRESS_ENV ||
+        process.connectEnv.name);
+
     // Expose objects to each other
     this.use(function(req, res, next){
-        req.params = req.params || {};
-        req.params.get = {};
+        req.query = {};
         res.headers = {};
         req.app = res.app = self;
         req.res = res;
@@ -44,15 +51,18 @@ var Server = exports = module.exports = function Server(middleware){
         req.next = next;
         // Assign req.params.get
         if (req.url.indexOf('?') > 0) {
-            // TODO: consider simple substr to increase performance
             var query = url.parse(req.url).query;
-            req.params.get = queryString.parse(query);
+            req.query = queryString.parse(query);
         }
         next();
     });
 
     // Use router, expose as app.get(), etc
-    this.router = router(function(app){ self.routes = app; });
+    var fn = router(function(app){ self.routes = app; });
+    this.__defineGetter__('router', function(){
+        this.__usedRouter = true;
+        return fn;
+    });
 };
 
 /**
@@ -62,49 +72,59 @@ var Server = exports = module.exports = function Server(middleware){
 sys.inherits(Server, connect.Server);
 
 /**
- * Start listening on the given `port` / `host`.
+ * Proxy `connect.Server#use()` to apply settings to
+ * mounted applications.
  *
- * @param {Number} port
- * @param {String} host
+ * @param {String|Function|Server} route
+ * @param {Function|Server} middleware
+ * @return {Server} for chaining
  * @api public
  */
 
-Server.prototype.listen = function(port, host){
-    // Default "home" to the mounted route or '/'
-    if (!this.set('home')) {
-        this.set('home', this.route || '/');
+Server.prototype.use = function(route, middleware){
+    if (typeof route !== 'string') {
+        middleware = route, route = '/';
     }
 
-    // Set "env" to {EXPRESS,CONNECT}_ENV
-    this.set('env', process.env.EXPRESS_ENV || process.connectEnv.name);
-    this.runConfig('any', this.set('env'));
+    connect.Server.prototype.use.call(this, route, middleware);
 
-    // Setup view reloading
-    if (this.set('reload views')) {
-        view.watcher.call(this, this.set('reload views'));
+    // Mounted an app
+    if (middleware instanceof Server) {
+        // Home is /:route/:home
+        var app = middleware,
+            home = app.set('home');
+        if (home === '/') home = '';
+        app.set('home', (app.route || '') + home);
+        // Mounted hook
+        if (app.__mounted) app.__mounted.call(app, this);
     }
 
-    connect.Server.prototype.listen.call(this, port, host);
+    return this;
 };
 
 /**
- * Run config callbacks for the given environment(s);
+ * Assign a callback `fn` which is called
+ * when this `Server` is passed to `Server#use()`.
  *
- * @param {String} env ...
+ * Examples:
+ *
+ *    var app = express.createServer(),
+ *        blog = express.createServer();
+ *
+ *    blog.mounted(function(parent){
+ *        // parent is app
+ *        // "this" is blog
+ *    });
+ *
+ *    app.use(blog);
+ *
+ * @param {Function} fn
  * @return {Server} for chaining
- * @api private
+ * @api public
  */
 
-Server.prototype.runConfig = function(){
-    for (var i = 0, len = arguments.length; i < len; ++i) {
-        var env = arguments[i];
-        if (env in this.config) {
-            var config = this.config[env];
-            config.forEach(function(fn){
-                fn.call(this);
-            }, this);
-        }
-    }
+Server.prototype.mounted = function(fn){
+    this.__mounted = fn;
     return this;
 };
 
@@ -208,16 +228,21 @@ Server.prototype.redirect = function(key, url){
 };
 
 /**
- * Disable `setting`.
+ * Configure callback for the given `env`.
  *
- * @param {String} setting
+ * @param {String} env
+ * @param {Function} fn
  * @return {Server} for chaining
  * @api public
  */
 
 Server.prototype.configure = function(env, fn){
-    if (typeof env === 'function') fn = env, env = 'any';
-    (this.config[env] = this.config[env] || []).push(fn);
+    if (typeof env === 'function') {
+        fn = env, env = 'all';
+    }
+    if (env === 'all' || this.set('env') === env) {
+        fn.call(this);
+    }
     return this;
 };
 
@@ -227,7 +252,6 @@ Server.prototype.configure = function(env, fn){
     Server.prototype[method] = function(path, fn){
         if (!this.__usedRouter) {
             this.use(this.router);
-            this.__usedRouter = true;
         }
         this.routes[method](path, fn);
         return this;
