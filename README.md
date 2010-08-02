@@ -4,6 +4,11 @@ Server
 * Run 'node server.js'
 * Give it a try http://localhost:8000/a/0
 
+Server-Tests
+------
+* Install Expresso
+* Run 'expresso tests/*'
+
 Client
 ------
 * Open http://localhost:8000/
