@@ -53,7 +53,7 @@
     //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
     //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
     //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
-    baseURL = @"http://localhost:8000/";
+    baseURL = @"http://agendium.heroku.com/";
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
