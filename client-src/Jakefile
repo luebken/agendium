@@ -1,8 +1,8 @@
 /*
  * Jakefile
- * test
+ * agendium
  *
- * Created by You on July 23, 2010.
+ * Created by You on August 2, 2010.
  * Copyright 2010, Your Company All rights reserved.
  */
 
@@ -15,17 +15,17 @@ var ENV = require("system").env,
     configuration = ENV["CONFIG"] || ENV["CONFIGURATION"] || ENV["c"] || "Debug",
     OS = require("os");
 
-app ("test", function(task)
+app ("agendium", function(task)
 {
-    task.setBuildIntermediatesPath(FILE.join("Build", "test.build", configuration));
+    task.setBuildIntermediatesPath(FILE.join("Build", "agendium.build", configuration));
     task.setBuildPath(FILE.join("Build", configuration));
 
-    task.setProductName("test");
-    task.setIdentifier("com.yourcompany.test");
+    task.setProductName("agendium");
+    task.setIdentifier("com.yourcompany.agendium");
     task.setVersion("1.0");
     task.setAuthor("Your Company");
     task.setEmail("feedback @nospam@ yourcompany.com");
-    task.setSummary("test");
+    task.setSummary("agendium");
     task.setSources((new FileList("**/*.j")).exclude(FILE.join("Build", "**")));
     task.setResources(new FileList("Resources/**"));
     task.setIndexFilePath("index.html");
@@ -37,7 +37,7 @@ app ("test", function(task)
         task.setCompilerFlags("-O");
 });
 
-task ("default", ["test"], function()
+task ("default", ["agendium"], function()
 {
     printResults(configuration);
 });
@@ -58,36 +58,36 @@ task ("release", function()
 
 task ("run", ["debug"], function()
 {
-    OS.system(["open", FILE.join("Build", "Debug", "test", "index.html")]);
+    OS.system(["open", FILE.join("Build", "Debug", "agendium", "index.html")]);
 });
 
 task ("run-release", ["release"], function()
 {
-    OS.system(["open", FILE.join("Build", "Release", "test", "index.html")]);
+    OS.system(["open", FILE.join("Build", "Release", "agendium", "index.html")]);
 });
 
 task ("deploy", ["release"], function()
 {
-    FILE.mkdirs(FILE.join("Build", "Deployment", "test"));
-    OS.system(["press", "-f", FILE.join("Build", "Release", "test"), FILE.join("Build", "Deployment", "test")]);
+    FILE.mkdirs(FILE.join("Build", "Deployment", "agendium"));
+    OS.system(["press", "-f", FILE.join("Build", "Release", "agendium"), FILE.join("Build", "Deployment", "agendium")]);
     printResults("Deployment")
 });
 
 task ("desktop", ["release"], function()
 {
-    FILE.mkdirs(FILE.join("Build", "Desktop", "test"));
-    require("cappuccino/nativehost").buildNativeHost(FILE.join("Build", "Release", "test"), FILE.join("Build", "Desktop", "test", "test.app"));
+    FILE.mkdirs(FILE.join("Build", "Desktop", "agendium"));
+    require("cappuccino/nativehost").buildNativeHost(FILE.join("Build", "Release", "agendium"), FILE.join("Build", "Desktop", "agendium", "agendium.app"));
     printResults("Desktop")
 });
 
 task ("run-desktop", ["desktop"], function()
 {
-    OS.system([FILE.join("Build", "Desktop", "test", "test.app", "Contents", "MacOS", "NativeHost"), "-i"]);
+    OS.system([FILE.join("Build", "Desktop", "agendium", "agendium.app", "Contents", "MacOS", "NativeHost"), "-i"]);
 });
 
 function printResults(configuration)
 {
     print("----------------------------");
-    print(configuration+" app built at path: "+FILE.join("Build", configuration, "test"));
+    print(configuration+" app built at path: "+FILE.join("Build", configuration, "agendium"));
     print("----------------------------");
 }
