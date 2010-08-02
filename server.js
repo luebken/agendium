@@ -1,10 +1,6 @@
-require.paths.unshift("vendor/lib")
-
-// require express and others to make sure
-require("express")
-require("connect")
-require("jade")
-require("sass")
-
 //require the actual express app
-require ("./lib/app")
+app = require ("./lib/app").app
+
+var port = parseInt(process.env.PORT || 8000);
+app.listen(port, null);
+console.log('Server listening on ' + port);
