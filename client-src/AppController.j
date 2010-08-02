@@ -53,7 +53,7 @@
     //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
     //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
     //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
-    baseURL = @"http://localhost:3000/";
+    baseURL = @"http://localhost:8000/";
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
@@ -198,10 +198,14 @@
     var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];
     var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
-    console.log("Saving JSON: " + jsonData);
+    console.log("Saving JSON: " + jsonData)
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
+    
+    //console.log("[request HTTPBody]: " + [request HTTPBody]);
+    //console.log("[request allHTTPHeaderFields]: " + [request allHTTPHeaderFields]);
+    
     saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
