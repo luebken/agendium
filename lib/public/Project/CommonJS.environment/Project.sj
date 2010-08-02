@@ -678,7 +678,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;10355;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10234;
+p;20;PageViewController.jt;10463;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10342;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("ButtonColumnView.j",YES);
 objj_executeFile("CPPropertyAnimation.j",YES);
@@ -858,24 +858,26 @@ with(_3b){
 if(objj_msgSend(page,"isNavigationType")){
 var _3e=objj_msgSend(objj_msgSend(itemtypeButton,"selectedItem"),"title");
 var _3f;
+var _40=objj_msgSend(table,"selectedRow");
+var _41=page.navigationId+"c"+_40;
 if(_3e=="Navigationpage"){
-_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:","The title of a subpage","The optional subtitle of a subpage","Navigation");
+_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","The title of a subpage","The optional subtitle of a subpage","Navigation",_41);
 }else{
 if(_3e=="Detailpage"){
-_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:","The title of a subpage","The optional subtitle of a subpage","Detail");
+_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","The title of a subpage","The optional subtitle of a subpage","Detail",_41);
 }else{
-_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:","A group title","","Spacer");
+_3f=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","A group title","","Spacer",_41);
 }
 }
-objj_msgSend(page,"addChild:atIndex:",_3f,objj_msgSend(table,"selectedRow"));
+objj_msgSend(page,"addChild:atIndex:",_3f,_40);
 }else{
-var _40={key:"A key",value:"A value"};
-objj_msgSend(objj_msgSend(page,"attributes"),"insertObject:atIndex:",_40,objj_msgSend(table,"selectedRow"));
+var _42={key:"A key",value:"A value"};
+objj_msgSend(objj_msgSend(page,"attributes"),"insertObject:atIndex:",_42,objj_msgSend(table,"selectedRow"));
 }
 objj_msgSend(table,"reloadData");
 }
-}),new objj_method(sel_getUid("deleteItemFromList:"),function(_41,_42,row){
-with(_41){
+}),new objj_method(sel_getUid("deleteItemFromList:"),function(_43,_44,row){
+with(_43){
 if(objj_msgSend(page,"isNavigationType")){
 objj_msgSend(page,"removeChild:",row);
 }else{
@@ -884,54 +886,54 @@ objj_msgSend(objj_msgSend(page,"attributes"),"removeObjectAtIndex:",row);
 objj_msgSend(table,"deselectAll");
 objj_msgSend(table,"reloadData");
 }
-}),new objj_method(sel_getUid("rowClicked:"),function(_43,_44,_45){
-with(_43){
-if(!objj_msgSend(_43,"editing")){
-var row=objj_msgSend(_45,"object");
+}),new objj_method(sel_getUid("rowClicked:"),function(_45,_46,_47){
+with(_45){
+if(!objj_msgSend(_45,"editing")){
+var row=objj_msgSend(_47,"object");
 page=objj_msgSend(objj_msgSend(page,"children"),"objectAtIndex:",row);
-objj_msgSend(objj_msgSend(CPPropertyAnimation,"slideLeft:view:",_43,scrollView),"startAnimation");
+objj_msgSend(objj_msgSend(CPPropertyAnimation,"slideLeft:view:",_45,scrollView),"startAnimation");
 objj_msgSend(delegate,"selectedPage:reverse:",page,NO);
-objj_msgSend(_43,"myRefresh");
+objj_msgSend(_45,"myRefresh");
 }else{
-objj_msgSend(_43,"deleteItemFromList:",objj_msgSend(_45,"object"));
+objj_msgSend(_45,"deleteItemFromList:",objj_msgSend(_47,"object"));
 }
 }
-}),new objj_method(sel_getUid("animationDidEnd:"),function(_46,_47,_48){
-with(_46){
+}),new objj_method(sel_getUid("animationDidEnd:"),function(_48,_49,_4a){
+with(_48){
 console.log("animationDidEnd");
 }
-}),new objj_method(sel_getUid("backButtonClicked:"),function(_49,_4a,_4b){
-with(_49){
-objj_msgSend(objj_msgSend(CPPropertyAnimation,"slideRight:view:",_49,scrollView),"startAnimation");
+}),new objj_method(sel_getUid("backButtonClicked:"),function(_4b,_4c,_4d){
+with(_4b){
+objj_msgSend(objj_msgSend(CPPropertyAnimation,"slideRight:view:",_4b,scrollView),"startAnimation");
 page=objj_msgSend(page,"ancestor");
 objj_msgSend(delegate,"selectedPage:reverse:",page,YES);
-objj_msgSend(_49,"myRefresh");
+objj_msgSend(_4b,"myRefresh");
 }
-}),new objj_method(sel_getUid("myRefresh"),function(_4c,_4d){
-with(_4c){
+}),new objj_method(sel_getUid("myRefresh"),function(_4e,_4f){
+with(_4e){
 objj_msgSend(table,"reloadData");
 objj_msgSend(backButton,"setEnabled:",page.ancestor!=null);
 objj_msgSend(table,"deselectAll");
-var _4e=page.title;
+var _50=page.title;
 if(page.subtitle!=null){
-_4e+=" / "+page.subtitle;
+_50+=" / "+page.subtitle;
 }
 if(page.title){
-_4e+=" ("+page.type+")";
+_50+=" ("+page.type+")";
 }
-objj_msgSend(titleField,"setObjectValue:",_4e);
+objj_msgSend(titleField,"setObjectValue:",_50);
 objj_msgSend(itemtypeButton,"removeAllItems");
-var _4f=objj_msgSend(objj_msgSend(table,"tableColumns")[0],"headerView");
-var _50=objj_msgSend(objj_msgSend(table,"tableColumns")[1],"headerView");
-var _51=objj_msgSend(objj_msgSend(table,"tableColumns")[2],"headerView");
-objj_msgSend(_4f,"setStringValue:","Type");
+var _51=objj_msgSend(objj_msgSend(table,"tableColumns")[0],"headerView");
+var _52=objj_msgSend(objj_msgSend(table,"tableColumns")[1],"headerView");
+var _53=objj_msgSend(objj_msgSend(table,"tableColumns")[2],"headerView");
+objj_msgSend(_51,"setStringValue:","Type");
 if(objj_msgSend(page,"isNavigationType")){
-objj_msgSend(_50,"setStringValue:","Title");
-objj_msgSend(_51,"setStringValue:","Subtitle");
+objj_msgSend(_52,"setStringValue:","Title");
+objj_msgSend(_53,"setStringValue:","Subtitle");
 objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Navigationpage","Detailpage","Spacer"]);
 }else{
-objj_msgSend(_50,"setStringValue:","Attribute");
-objj_msgSend(_51,"setStringValue:","Value");
+objj_msgSend(_52,"setStringValue:","Attribute");
+objj_msgSend(_53,"setStringValue:","Value");
 objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Text","Link","Tweeter"]);
 }
 }
