@@ -25,6 +25,7 @@ Client Deployment
 ------
 * Build with Atlas or jake
 * Copy Release\Desktop Browser\Project to lib\public\Project
+* cp -r Build/Release/agendium/* ../lib/public/Project/
 
 MAIN TODOs
 =====
