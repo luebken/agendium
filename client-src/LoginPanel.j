@@ -51,14 +51,14 @@
         var loginButton = [CPButton buttonWithTitle:"Login" theme:[CPTheme themeNamed:"Aristo-HUD"]];
         [loginButton setFrame:CGRectMake(250,110, 70, 20)];
         [contentView addSubview:loginButton];
-        [loginButton setTag:1];
+        [loginButton setTag:"login"];
         [loginButton setTarget:self];
         [loginButton setAction:@selector(buttonAction:)];
 
         var cancelButton = [CPButton buttonWithTitle:"Cancel" theme:[CPTheme themeNamed:"Aristo-HUD"]];
         [cancelButton setFrame:CGRectMake(170,110, 70, 20)];
         [contentView addSubview:cancelButton];
-        [cancelButton setTag:0];
+        [cancelButton setTag:"logincancel"];
         
         var signUpButton = [CPButton buttonWithTitle:"Want to be part of the fun? Sign up."];
         [signUpButton sizeToFit];
@@ -80,8 +80,8 @@
 }
 
 - (void) buttonAction:(id) sender {
-    if ([delegate respondsToSelector:@selector(panelDidClose:)]) {
-         [delegate panelDidClose:[sender tag]];
+    if ([delegate respondsToSelector:@selector(panelDidClose:data:)]) {
+         [delegate panelDidClose:[sender tag] data:nil];
     }
     [self close];
 }

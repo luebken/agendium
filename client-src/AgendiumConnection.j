@@ -20,9 +20,9 @@
 }
 
 
-- (void) loadAgenda:(CPString)title delegate:(id)delegate {
+- (void) loadAgenda:(CPString)id delegate:(id)delegate {
     console.log(@"loading...");
-    var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+title];
+    var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+id];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;
@@ -50,10 +50,10 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        [saveDelegate saveSuccessful];
+        [self didReceiveData:data delegate:saveDelegate];
     }
     if(connection == listConnection) {
-        [self didReceiveLoadData:data];
+        [self didReceiveData:data delegate:listDelegate];
     }
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
@@ -76,18 +76,18 @@
 //
 //private
 //
--(void)didReceiveLoadData:(CPString)data {
+-(void)didReceiveData:(CPString)data delegate:(id)delegate {
     if(data != null && data != '' && data != 'null') {
         try {
             var obj = JSON.parse(data);
             var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-            [listDelegate didReceiveAgenda:obj._id withRootPage:rootPage]
+            [delegate didReceiveAgenda:obj._id withRootPage:rootPage]
         } catch (e) {
-            [listDelegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
+            [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 
     } else {
         console.log('failureWhileReceivingAgenda');
-        [listDelegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
+        [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
     }
 }
 

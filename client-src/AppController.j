@@ -11,6 +11,7 @@
 @import "PageView.j"
 @import "PageViewController.j"
 @import "LoginPanel.j"
+@import "OpenPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
 
@@ -101,7 +102,7 @@
     [self resetData];
  
     [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
-    [self myRefresh]
+    [self refreshUIFromData]
 }
 
 
@@ -115,7 +116,7 @@
 - (void)controlTextDidChange:(id)sender {
     var length = [[appnameField objectValue] length];
     [rootPage setTitle:[appnameField objectValue]];
-    [self myRefresh];
+    [self refreshUIFromData];
 /*
     [[CPNotificationCenter defaultCenter] 
         postNotificationName:@"PageChangedNotification" 
@@ -141,10 +142,9 @@
 //
 // private
 //
-- (void) myRefresh {
+- (void) refreshUIFromData {
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
-    [loadButton setEnabled:enable];
     [pageViewController myRefresh];
     var applink = aConnection.baseURL + "a/" + appId;
     if(appId){
@@ -171,7 +171,7 @@
 // Actions
 //
 - (@action) load:(id)sender {
-    [aConnection loadAgenda:rootPage.title delegate:self];
+    [[[OpenPanel alloc] init:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
     //[[[LoginPanel alloc] init:self] orderFront:nil];
@@ -192,33 +192,31 @@
 //
 // AgendiumConnection Delegate
 //
--(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)page  {
+-(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
+    [appnameField setObjectValue:newRootpage.title];
     self.appId = appId2;
-    [pageViewController setPage:page];
-    [self myRefresh];
+    self.rootPage = newRootpage
+    [pageViewController setPage:newRootpage];
+    [self refreshUIFromData];
 }
 -(void)failureWhileReceivingAgenda:(CPString)msg  {
     alert(msg);    
     [self resetData];
-    [self myRefresh]
-}
--(void)saveSuccessful  {
-    var popup = [[CPAlert alloc] init];
-    //[alert setWindowStyle:CPHUDBackgroundWindowMask];
-    [popup setAlertStyle:CPInformationalAlertStyle];
-    [popup setMessageText:"Saved!"];
-    [popup addButtonWithTitle:@"OK"];
-    [popup runModal];
+    [self refreshUIFromData]
 }
 
-//LoginPanel Delegate
-- (void) panelDidClose:(id)tag {
-    if(tag == 1) {
+//LoginPanel and OpenPanel Delegate
+- (void) panelDidClose:(id)tag data:(CPString)data {
+    if(tag == "login") {
         console.log(@"login success");
         [theWindow orderFront:self];
-    } else {
+    } else if(tag == "logincancel") {
         console.log(@"login canceled");
         history.go(-1);
+    }
+    else if(tag == "open") {
+        console.log("Loading Agenda with id: " + data);
+        [aConnection loadAgenda:data delegate:self];
     }
 }
 

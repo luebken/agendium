@@ -51,6 +51,32 @@ module.exports = {
                         'Content-Type': 'text/html; charset=utf-8'
                 }
         });
+    },
+    'test save a new agenda': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/agenda',
+            method: 'POST',
+            body : '{"test":"test"}'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8'
+            },
+            body : '{"test":"test","_id":"1"}'
+        });
+    },
+    'test save an existing agenda': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/agenda',
+            method: 'POST',
+            body : '{"test":"test","_id":"4711"}'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8'
+            },
+            body : '{"test":"test","_id":"4711"}'
+        });
     }
 };
 
