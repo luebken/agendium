@@ -104,7 +104,6 @@
 - (void) loginFailed{
     [titleLabel setObjectValue:'Login failed. Please try again.'];
     console.log('loginFailed');
-    //TODO retry
 }
 
 - (void) signup {
