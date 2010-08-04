@@ -1,8 +1,11 @@
 var http = require('http'),
  app = require('../lib/app').app;
-
+ 
 module.exports = {
-    'test get static files': function(assert, beforeExit){
+     'test setup': function(assert, beforeExit){
+         assert.isNotNull(app);
+     },    
+     'test get static files': function(assert, beforeExit){
         assert.response(app, {
             url: '/',
             method: 'GET'
@@ -25,13 +28,10 @@ module.exports = {
         assert.response(app, {url: '/js/app.js'},{ status: 200 });
         assert.response(app, {url: '/Project/index.html'},{ status: 200 });
         assert.response(app, {url: '/Project/Frameworks/Objective-J/Objective-J.js'},{ status: 200 });
-    }
-};
-
-module.exports = {
-    'test get agenda by name': function(assert, beforeExit){
+    },
+    'test get agenda by id': function(assert, beforeExit){
         assert.response(app, {
-            url: '/agenda/FOWA2010',
+            url: '/agenda/0',
             method: 'GET'
         },{
             status: 200,
@@ -39,20 +39,20 @@ module.exports = {
                 'Content-Type': 'application/json'
             }
         });
-        assert.response(app, {url: '/agenda/somereallycrazyname'},{ status: 404 });
-    }
-};
-
-module.exports = {
+        assert.response(app, {url: '/agenda/nonexistingid'},{ status: 404 });
+    },
     'test get mobile by id': function(assert, beforeExit){
         assert.response(app, {
             url: '/a/0',
             method: 'GET'
         },{
             status: 200,
-            headers: {
-                'Content-Type': 'text/html; charset=utf-8'
-            }
+                headers: {
+                        'Content-Type': 'text/html; charset=utf-8'
+                }
         });
     }
 };
+
+
+
