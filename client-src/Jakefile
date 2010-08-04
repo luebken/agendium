@@ -73,6 +73,13 @@ task ("deploy", ["release"], function()
     printResults("Deployment")
 });
 
+task ("mydeploy", ["config-prod", "release"], function()
+{
+    OS.system('rm -r ../lib/public/Project/*');
+    OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
+    printResults("My Deploy")
+});
+
 task ("desktop", ["release"], function()
 {
     FILE.mkdirs(FILE.join("Build", "Desktop", "agendium"));
