@@ -146,13 +146,14 @@
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
     [pageViewController myRefresh];
-    var applink = aConnection.baseURL + "a/" + appId;
+    var applink = aConnection.baseURL + "a/" + appId;    
     if(appId){
         [previewView setMainFrameURL:applink];
         [previewButton setTitle:applink]; 
     } else {
         [previewButton setTitle:""]; 
-        //FIXME preview ohne ständiges nachladen [previewView setMainFrameURL:baseURL + "preview"];
+        //FIXME preview ohne ständiges nachladen 
+        [previewView setMainFrameURL:aConnection.baseURL + "preview"];
     }
 }
 - (void)resetData {
@@ -182,7 +183,7 @@
     [self resetData];
     var obj = JSON.parse([NewTemplate data]);
     var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-    [self didReceiveAgenda:undefined  withRootPage:rootPage];
+    [self didReceiveAgenda:undefined withRootPage:rootPage];
 }
 
 - (@action) save:(id)sender {
