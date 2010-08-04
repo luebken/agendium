@@ -28,7 +28,6 @@
     if(object.attributes){
     for (var i=0; i < object.attributes.length; i++) {
         var attr = object.attributes[i];
-        console.log(attr);
         [[page attributes] insertObject:attr atIndex:i];
     }
     }
