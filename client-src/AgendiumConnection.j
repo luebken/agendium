@@ -1,6 +1,6 @@
 @import <Foundation/CPObject.j>
 @import "Page.j"
-
+@import "Config.j"
 
 @implementation AgendiumConnection : CPObject
 {
@@ -10,22 +10,17 @@
     id saveDelegate;
     CPURLConnection loginConnection;
     id loginDelegate;
-    
-    
-    CPString baseURL @accessors;
 }
 - (id)init
 {
     self = [super init];
-    //baseURL = @"http://agendium.heroku.com/";
-    baseURL = @"http://localhost:8000/";
     return self;
 }
 
 
 - (void) loadAgenda:(CPString)id delegate:(id)delegate {
     console.log(@"loading...");
-    var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+id];
+    var request = [CPURLRequest requestWithURL:BASEURL+"agenda/"+id];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;
@@ -33,14 +28,14 @@
 
 - (void) checkUser:(CPString)email delegate:(id)delegate {
     console.log(@"checkUser...");
-    var request = [CPURLRequest requestWithURL:baseURL+"user/"+email];
+    var request = [CPURLRequest requestWithURL:BASEURL+"user/"+email];
     [request setHTTPMethod:'GET'];
     loginConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     loginDelegate = delegate;
 }
 
 - (void) saveAgenda:(id)appId rootPage:(Page) rootPage delegate:(id)delegate {
-    var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
+    var request = [CPURLRequest requestWithURL:BASEURL + "agenda"];
     [request setHTTPMethod:'POST'];
     var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
     [request setHTTPBody:jsonData];

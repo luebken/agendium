@@ -14,6 +14,7 @@
 @import "OpenPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
+@import "Config.j"
 
 @implementation AppController : CPObject
 {
@@ -146,14 +147,14 @@
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
     [pageViewController myRefresh];
-    var applink = aConnection.baseURL + "a/" + appId;    
+    var applink = BASEURL + "a/" + appId;    
     if(appId){
         [previewView setMainFrameURL:applink];
         [previewButton setTitle:applink]; 
     } else {
         [previewButton setTitle:""]; 
         //FIXME preview ohne ständiges nachladen 
-        [previewView setMainFrameURL:aConnection.baseURL + "preview"];
+        [previewView setMainFrameURL:BASEURL + "preview"];
     }
 }
 - (void)resetData {
@@ -164,7 +165,7 @@
     appId = null;
 }
 - (void) openMobileApp {
-    var applink = aConnection.baseURL + "a/" + appId;
+    var applink = BASEURL + "a/" + appId;
     window.open (applink,"mywindow");
 }
 

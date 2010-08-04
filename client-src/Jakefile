@@ -85,6 +85,11 @@ task ("run-desktop", ["desktop"], function()
     OS.system([FILE.join("Build", "Desktop", "agendium", "agendium.app", "Contents", "MacOS", "NativeHost"), "-i"]);
 });
 
+task ("config-prod", function()
+{
+    OS.system('cp Config-prod.j Config.j');
+});
+
 function printResults(configuration)
 {
     print("----------------------------");
