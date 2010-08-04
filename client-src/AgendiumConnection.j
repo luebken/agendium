@@ -7,36 +7,40 @@
     CPURLConnection listConnection;
     id listDelegate;
     CPURLConnection saveConnection;
-    CPString baseURL;
+    id saveDelegate;
+    
+    CPString baseURL @accessors;
 }
 - (id)init
 {
     self = [super init];
+    //baseURL = @"http://agendium.heroku.com/";
     baseURL = @"http://localhost:8000/";
     return self;
 }
 
 
-- (void) loadAgenda:(CPString)title delegate:delegate {
+- (void) loadAgenda:(CPString)title delegate:(id)delegate {
     console.log(@"loading...");
     var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+title];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;
 }
-- (void) save:(Page) rootPage {
+
+- (void) saveAgenda:(id)appId rootPage:(Page) rootPage delegate:(id)delegate {
     var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
     [request setHTTPMethod:'POST'];
     var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
-    console.log("Saving JSON: " + jsonData)
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
     
     //console.log("[request HTTPBody]: " + [request HTTPBody]);
     //console.log("[request allHTTPHeaderFields]: " + [request allHTTPHeaderFields]);
-    
+    console.log("Saving JSON: " + jsonData)    
     saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    saveDelegate = delegate;
 }
 
 
@@ -46,12 +50,7 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        var popup = [[CPAlert alloc] init];
-        //[alert setWindowStyle:CPHUDBackgroundWindowMask];
-        [popup setAlertStyle:CPInformationalAlertStyle];
-        [popup setMessageText:"Saved!"];
-        [popup addButtonWithTitle:@"OK"];
-        [popup runModal];
+        [saveDelegate saveSuccessful];
     }
     if(connection == listConnection) {
         [self didReceiveLoadData:data];
@@ -61,6 +60,15 @@
     console.log("didFailWithError: " + error);
     alert(error);
 }
+-(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
+    console.log("didReceiveResponse for URL:" + [response URL]);
+}
+//CPURLConnection delegate
+-(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
+    console.log("didFailWithError: " + error);
+    alert(error);
+}
+//CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
     console.log("didReceiveResponse for URL:" + [response URL]);
 }

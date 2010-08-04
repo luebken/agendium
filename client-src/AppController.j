@@ -16,7 +16,7 @@
 
 @implementation AppController : CPObject
 {
-    @outlet CPWindow    theWindow; //this "outlet" is connected automatically by the Cib
+    @outlet CPWindow theWindow; //this "outlet" is connected automatically by the Cib
     @outlet CPBox box;
     @outlet CPButton saveButton;
     @outlet CPButton loadButton;
@@ -28,12 +28,9 @@
     @outlet CPTextField appnameField;
     @outlet CPView pageView;
     PageViewController pageViewController;
-    CPString baseURL;
     CPString appId;
     
     AgendiumConnection aConnection;
-    CPURLConnection listConnection;
-    CPURLConnection saveConnection;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -42,22 +39,12 @@
     [[[LoginPanel alloc] init:self] orderFront:nil];
 }
 
-- (void)resetData {
-    rootPage = [[Page alloc] init];
-    [rootPage setTitle:[appnameField objectValue]];
-    rootPage.mobileNavId = "r";
-    pageViewController.page = rootPage;
-    appId = null;
-}
-
 - (void)awakeFromCib
 {
     //[titleLabel setFont:[CPFont systemFontOfSize:18.0]];
     //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
     //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
     //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
-    //baseURL = @"http://agendium.heroku.com/";
-    baseURL = @"http://localhost:8000/";
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
@@ -117,10 +104,7 @@
     [self myRefresh]
 }
 
-- (void) openMobileApp {
-    var applink = baseURL + "a/" + appId;
-    window.open (applink,"mywindow");
-}
+
 
 - (void) pageDidChange: (CPNotification) notification {
     //FIXME: notification.object is nil !
@@ -154,13 +138,15 @@
     [[previewView windowScriptObject] evaluateWebScript:cmd];
 }
 
-
+//
+// private
+//
 - (void) myRefresh {
     var enable = rootPage.title.length > 0;
     [saveButton setEnabled:enable];
     [loadButton setEnabled:enable];
     [pageViewController myRefresh];
-    var applink = baseURL + "a/" + appId;
+    var applink = aConnection.baseURL + "a/" + appId;
     if(appId){
         [previewView setMainFrameURL:applink];
         [previewButton setTitle:applink]; 
@@ -169,27 +155,62 @@
         //FIXME preview ohne ständiges nachladen [previewView setMainFrameURL:baseURL + "preview"];
     }
 }
+- (void)resetData {
+    rootPage = [[Page alloc] init];
+    [rootPage setTitle:[appnameField objectValue]];
+    rootPage.mobileNavId = "r";
+    pageViewController.page = rootPage;
+    appId = null;
+}
+- (void) openMobileApp {
+    var applink = aConnection.baseURL + "a/" + appId;
+    window.open (applink,"mywindow");
+}
 
+//
+// Actions
+//
 - (@action) load:(id)sender {
     [aConnection loadAgenda:rootPage.title delegate:self];
 }
-//AgendiumConnection Delegate
+- (@action) login:(id)sender {
+    //[[[LoginPanel alloc] init:self] orderFront:nil];
+    history.go(-1);
+}
+- (@action) new:(id)sender {
+    [appnameField setObjectValue:""];
+    [self resetData];
+    var obj = JSON.parse([NewTemplate data]);
+    var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
+    [self didReceiveAgenda:undefined  withRootPage:rootPage];
+}
+
+- (@action) save:(id)sender {
+    [aConnection saveAgenda:appId rootPage:rootPage delegate:self];
+}
+
+//
+// AgendiumConnection Delegate
+//
 -(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)page  {
     self.appId = appId2;
     [pageViewController setPage:page];
     [self myRefresh];
 }
-//AgendiumConnection Delegate
 -(void)failureWhileReceivingAgenda:(CPString)msg  {
     alert(msg);    
     [self resetData];
     [self myRefresh]
 }
-
-- (@action) login:(id)sender {
-    //[[[LoginPanel alloc] init:self] orderFront:nil];
-    history.go(-1);
+-(void)saveSuccessful  {
+    var popup = [[CPAlert alloc] init];
+    //[alert setWindowStyle:CPHUDBackgroundWindowMask];
+    [popup setAlertStyle:CPInformationalAlertStyle];
+    [popup setMessageText:"Saved!"];
+    [popup addButtonWithTitle:@"OK"];
+    [popup runModal];
 }
+
 //LoginPanel Delegate
 - (void) panelDidClose:(id)tag {
     if(tag == 1) {
@@ -201,50 +222,8 @@
     }
 }
 
-- (@action) new:(id)sender {
-    [appnameField setObjectValue:""];
-    [self resetData];
-    var data = [NewTemplate data];
-    [self didReceiveLoadData:data];
-}
 
-- (@action) save:(id)sender {
-    var request = [CPURLRequest requestWithURL:baseURL + "agenda"];
-    [request setHTTPMethod:'POST'];
-    var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
-    console.log("Saving JSON: " + jsonData)
-    [request setHTTPBody:jsonData];
-    [request setValue:'application/json' forHTTPHeaderField:"Accept"];
-    [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
-    
-    //console.log("[request HTTPBody]: " + [request HTTPBody]);
-    //console.log("[request allHTTPHeaderFields]: " + [request allHTTPHeaderFields]);
-    
-    saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
-}
 
-//CPURLConnection delegate
--(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
-    console.log("didReceiveData: '" + data + "'");
-    if(connection == saveConnection) {
-        var popup = [[CPAlert alloc] init];
-        //[alert setWindowStyle:CPHUDBackgroundWindowMask];
-        [popup setAlertStyle:CPInformationalAlertStyle];
-        [popup setMessageText:"Saved!"];
-        [popup addButtonWithTitle:@"OK"];
-        [popup runModal];
-    }
-}
-
-//CPURLConnection delegate
--(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
-    console.log("didFailWithError: " + error);
-    alert(error);
-}
-//CPURLConnection delegate
--(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    console.log("didReceiveResponse for URL:" + [response URL]);
-}
 
 
 @end
