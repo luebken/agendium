@@ -208,14 +208,10 @@
 
 //LoginPanel and OpenPanel Delegate
 - (void) panelDidClose:(id)tag data:(CPString)data {
-    if(tag == "login") {
-        console.log(@"login success");
+    if(tag === "login") {
         [theWindow orderFront:self];
-    } else if(tag == "logincancel") {
-        console.log(@"login canceled");
-        history.go(-1);
-    }
-    else if(tag == "open") {
+    }  
+    if(tag === "open") {
         console.log("Loading Agenda with id: " + data);
         [aConnection loadAgenda:data delegate:self];
     }

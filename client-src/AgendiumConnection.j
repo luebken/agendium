@@ -8,6 +8,9 @@
     id listDelegate;
     CPURLConnection saveConnection;
     id saveDelegate;
+    CPURLConnection loginConnection;
+    id loginDelegate;
+    
     
     CPString baseURL @accessors;
 }
@@ -26,6 +29,14 @@
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;
+}
+
+- (void) checkUser:(CPString)email delegate:(id)delegate {
+    console.log(@"checkUser...");
+    var request = [CPURLRequest requestWithURL:baseURL+"user/"+email];
+    [request setHTTPMethod:'GET'];
+    loginConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    loginDelegate = delegate;
 }
 
 - (void) saveAgenda:(id)appId rootPage:(Page) rootPage delegate:(id)delegate {
@@ -50,10 +61,13 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        [self didReceiveData:data delegate:saveDelegate];
+        [self didReceivePageData:data delegate:saveDelegate];
     }
     if(connection == listConnection) {
-        [self didReceiveData:data delegate:listDelegate];
+        [self didReceivePageData:data delegate:listDelegate];
+    }
+    if(connection == loginConnection) {
+        [self didReceiveLoginData:data delegate:loginDelegate];
     }
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
@@ -76,7 +90,7 @@
 //
 //private
 //
--(void)didReceiveData:(CPString)data delegate:(id)delegate {
+-(void)didReceivePageData:(CPString)data delegate:(id)delegate {
     if(data != null && data != '' && data != 'null') {
         try {
             var obj = JSON.parse(data);
@@ -88,6 +102,13 @@
     } else {
         console.log('failureWhileReceivingAgenda');
         [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
+    }
+}
+-(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {
+    if("true" === data) {
+        [delegate loginSuccess];
+    } else {
+        [delegate loginFailed];        
     }
 }
 

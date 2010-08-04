@@ -77,7 +77,32 @@ module.exports = {
             },
             body : '{"test":"test","_id":"4711"}'
         });
+    },
+    'test check an existing user': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/user/mdl',
+            method: 'GET'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body : 'true'
+        });
+    },
+    'test check an non-existing user': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/user/mdl2',
+            method: 'GET'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body : 'false'
+        });
     }
+    
 };
 
 

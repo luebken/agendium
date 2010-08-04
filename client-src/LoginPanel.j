@@ -6,6 +6,10 @@
 @implementation LoginPanel : CPPanel
 {
     id delegate @accessors;
+    CPTextField titleLabel;
+    CPTextField emailField;
+    
+    AgendiumConnection aConnection;
 }
 
 - (id)init:(id) delegate2
@@ -22,7 +26,7 @@
         var contentView = [self contentView],
             bounds = [contentView bounds];
 
-        var titleLabel = [CPTextField labelWithTitle:"Enter your email and password to login."];
+        titleLabel = [CPTextField labelWithTitle:"Enter your email and password to login."];
         [titleLabel setFont:[CPFont systemFontOfSize:14.0]];
         [titleLabel sizeToFit];
         [titleLabel setTextColor:[CPColor whiteColor]];
@@ -34,7 +38,7 @@
         [emailLabel setFrameOrigin:CGPointMake(62,40)];
         [contentView addSubview:emailLabel];
 
-        var emailField = [CPTextField textFieldWithStringValue:"" placeholder:"" width:200];
+        emailField = [CPTextField textFieldWithStringValue:"" placeholder:"" width:200];
         [emailField setFrameOrigin:CGPointMake(100,35)];
         [contentView addSubview:emailField];
 
@@ -73,17 +77,34 @@
         [contentView addSubview:signUpButton];
         [cancelButton setTarget:self];
         [cancelButton setAction:@selector(buttonAction:)];
-    
+        
+        aConnection = [[AgendiumConnection alloc] init];
     }
 
     return self;
 }
 
 - (void) buttonAction:(id) sender {
+    if([sender tag] == "login") {
+        console.log('trying to login ' + [emailField objectValue]);
+        [aConnection checkUser:[emailField objectValue] delegate:self];
+    } else if([sender tag] == "logincancel") {
+        console.log(@"login canceled");
+        history.go(-1);
+        [self close];
+    }    
+}
+
+- (void) loginSuccess{
     if ([delegate respondsToSelector:@selector(panelDidClose:data:)]) {
-         [delegate panelDidClose:[sender tag] data:nil];
-    }
-    [self close];
+        [delegate panelDidClose:'login' data:[emailField objectValue]];
+        [self close];
+    }    
+}
+- (void) loginFailed{
+    [titleLabel setObjectValue:'Login failed. Please try again.'];
+    console.log('loginFailed');
+    //TODO retry
 }
 
 - (void) signup {
