@@ -12,6 +12,7 @@
 @import "PageViewController.j"
 @import "LoginPanel.j"
 @import "NewTemplate.j"
+@import "AgendiumConnection.j"
 
 @implementation AppController : CPObject
 {
@@ -29,6 +30,8 @@
     PageViewController pageViewController;
     CPString baseURL;
     CPString appId;
+    
+    AgendiumConnection aConnection;
     CPURLConnection listConnection;
     CPURLConnection saveConnection;
 }
@@ -53,7 +56,8 @@
     //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
     //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
     //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
-    baseURL = @"http://agendium.heroku.com/";
+    //baseURL = @"http://agendium.heroku.com/";
+    baseURL = @"http://localhost:8000/";
 
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
@@ -105,7 +109,8 @@
     logoutButton._DOMElement.style.textDecoration = "underline";
     logoutButton._DOMElement.style.cursor = "pointer"; 
 
-
+    aConnection = [[AgendiumConnection alloc] init];
+    
     [self resetData];
  
     [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
@@ -161,15 +166,24 @@
         [previewButton setTitle:applink]; 
     } else {
         [previewButton setTitle:""]; 
-        [previewView setMainFrameURL:baseURL + "preview"];
+        //FIXME preview ohne ständiges nachladen [previewView setMainFrameURL:baseURL + "preview"];
     }
 }
 
 - (@action) load:(id)sender {
-    console.log(@"loading...");
-    var request = [CPURLRequest requestWithURL:baseURL+"agenda/"+rootPage.title];
-    [request setHTTPMethod:'GET'];
-    listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    [aConnection loadAgenda:rootPage.title delegate:self];
+}
+//AgendiumConnection Delegate
+-(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)page  {
+    self.appId = appId2;
+    [pageViewController setPage:page];
+    [self myRefresh];
+}
+//AgendiumConnection Delegate
+-(void)failureWhileReceivingAgenda:(CPString)msg  {
+    alert(msg);    
+    [self resetData];
+    [self myRefresh]
 }
 
 - (@action) login:(id)sender {
@@ -220,27 +234,6 @@
         [popup addButtonWithTitle:@"OK"];
         [popup runModal];
     }
-
-    if(data != '') {
-        [self didReceiveLoadData:data];
-    } else {
-        alert('Couldn\'t find Agenda: "' + rootPage.title + '"');    
-        [self resetData];
-        [self myRefresh]
-    }
-}
-
--(void)didReceiveLoadData:(CPString)data {
-    try {
-        var obj = JSON.parse(data);
-        var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-        self.appId = obj._id;
-        [pageViewController setPage:rootPage];
-        [self myRefresh];
-    } catch (e) {
-        console.log(@"Error in didReceiveData. " + e);
-        alert(e);
-    } 
 }
 
 //CPURLConnection delegate
