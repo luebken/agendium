@@ -1,43 +1,140 @@
-@STATIC;1.0;p;15;AppController.jt;7483;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;13;NewTemplate.jt;7353;
+@STATIC;1.0;p;20;AgendiumConnection.jt;4014;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.jt;3959;
+objj_executeFile("Foundation/CPObject.j",NO);
+objj_executeFile("Page.j",YES);
+var _1=objj_allocateClassPair(CPObject,"AgendiumConnection"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("listConnection"),new objj_ivar("listDelegate"),new objj_ivar("saveConnection"),new objj_ivar("saveDelegate"),new objj_ivar("loginConnection"),new objj_ivar("loginDelegate"),new objj_ivar("baseURL")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("baseURL"),function(_3,_4){
+with(_3){
+return baseURL;
+}
+}),new objj_method(sel_getUid("setBaseURL:"),function(_5,_6,_7){
+with(_5){
+baseURL=_7;
+}
+}),new objj_method(sel_getUid("init"),function(_8,_9){
+with(_8){
+_8=objj_msgSendSuper({receiver:_8,super_class:objj_getClass("AgendiumConnection").super_class},"init");
+baseURL="http://localhost:8000/";
+return _8;
+}
+}),new objj_method(sel_getUid("loadAgenda:delegate:"),function(_a,_b,id,_c){
+with(_a){
+console.log("loading...");
+var _d=objj_msgSend(CPURLRequest,"requestWithURL:",baseURL+"agenda/"+id);
+objj_msgSend(_d,"setHTTPMethod:","GET");
+listConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_d,_a);
+listDelegate=_c;
+}
+}),new objj_method(sel_getUid("checkUser:delegate:"),function(_e,_f,_10,_11){
+with(_e){
+console.log("checkUser...");
+var _12=objj_msgSend(CPURLRequest,"requestWithURL:",baseURL+"user/"+_10);
+objj_msgSend(_12,"setHTTPMethod:","GET");
+loginConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_12,_e);
+loginDelegate=_11;
+}
+}),new objj_method(sel_getUid("saveAgenda:rootPage:delegate:"),function(_13,_14,_15,_16,_17){
+with(_13){
+var _18=objj_msgSend(CPURLRequest,"requestWithURL:",baseURL+"agenda");
+objj_msgSend(_18,"setHTTPMethod:","POST");
+var _19="{\"_id\":\""+_15+"\", \"rootpage\":"+objj_msgSend(_16,"toJSON")+"}";
+objj_msgSend(_18,"setHTTPBody:",_19);
+objj_msgSend(_18,"setValue:forHTTPHeaderField:","application/json","Accept");
+objj_msgSend(_18,"setValue:forHTTPHeaderField:","application/json","Content-Type");
+console.log("Saving JSON: "+_19);
+saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_18,_13);
+saveDelegate=_17;
+}
+}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_1a,_1b,_1c,_1d){
+with(_1a){
+console.log("didReceiveData: '"+_1d+"'");
+if(_1c==saveConnection){
+objj_msgSend(_1a,"didReceivePageData:delegate:",_1d,saveDelegate);
+}
+if(_1c==listConnection){
+objj_msgSend(_1a,"didReceivePageData:delegate:",_1d,listDelegate);
+}
+if(_1c==loginConnection){
+objj_msgSend(_1a,"didReceiveLoginData:delegate:",_1d,loginDelegate);
+}
+}
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_1e,_1f,_20,_21){
+with(_1e){
+console.log("didFailWithError: "+_21);
+alert(_21);
+}
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_22,_23,_24,_25){
+with(_22){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_25,"URL"));
+}
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_26,_27,_28,_29){
+with(_26){
+console.log("didFailWithError: "+_29);
+alert(_29);
+}
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2a,_2b,_2c,_2d){
+with(_2a){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_2d,"URL"));
+}
+}),new objj_method(sel_getUid("didReceivePageData:delegate:"),function(_2e,_2f,_30,_31){
+with(_2e){
+if(_30!=null&&_30!=""&&_30!="null"){
+try{
+var obj=JSON.parse(_30);
+var _32=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_31,"didReceiveAgenda:withRootPage:",obj._id,_32);
+}
+catch(e){
+objj_msgSend(_31,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
+}
+}else{
+console.log("failureWhileReceivingAgenda");
+objj_msgSend(_31,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
+}
+}
+}),new objj_method(sel_getUid("didReceiveLoginData:delegate:"),function(_33,_34,_35,_36){
+with(_33){
+if("true"===_35){
+objj_msgSend(_36,"loginSuccess");
+}else{
+objj_msgSend(_36,"loginFailed");
+}
+}
+})]);
+p;15;AppController.jt;6344;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.jt;6173;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
 objj_executeFile("PageViewController.j",YES);
 objj_executeFile("LoginPanel.j",YES);
+objj_executeFile("OpenPanel.j",YES);
 objj_executeFile("NewTemplate.j",YES);
+objj_executeFile("AgendiumConnection.j",YES);
 var _1=objj_allocateClassPair(CPObject,"AppController"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("baseURL"),new objj_ivar("appId"),new objj_ivar("listConnection"),new objj_ivar("saveConnection")]);
+class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("aConnection")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("applicationDidFinishLaunching:"),function(_3,_4,_5){
 with(_3){
 objj_msgSend(theWindow,"orderOut:",_3);
 objj_msgSend(objj_msgSend(objj_msgSend(LoginPanel,"alloc"),"init:",_3),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("resetData"),function(_6,_7){
+}),new objj_method(sel_getUid("awakeFromCib"),function(_6,_7){
 with(_6){
-rootPage=objj_msgSend(objj_msgSend(Page,"alloc"),"init");
-objj_msgSend(rootPage,"setTitle:",objj_msgSend(appnameField,"objectValue"));
-rootPage.mobileNavId="r";
-pageViewController.page=rootPage;
-appId=null;
-}
-}),new objj_method(sel_getUid("awakeFromCib"),function(_8,_9){
-with(_8){
-baseURL="http://agendium.heroku.com/";
 objj_msgSend(box,"setBorderType:",CPLineBorder);
 objj_msgSend(box,"setBorderWidth:",1);
 objj_msgSend(box,"setBorderColor:",objj_msgSend(CPColor,"grayColor"));
 pageViewController=objj_msgSend(objj_msgSend(PageViewController,"alloc"),"initWithCibName:bundle:","PageView",nil);
 objj_msgSend(pageViewController,"setPage:",rootPage);
-objj_msgSend(pageViewController,"setDelegate:",_8);
+objj_msgSend(pageViewController,"setDelegate:",_6);
 objj_msgSend(objj_msgSend(pageViewController,"view"),"setFrame:",CPRectMake(1,1,550,501));
 objj_msgSend(pageView,"addSubview:",objj_msgSend(pageViewController,"view"));
-objj_msgSend(objj_msgSend(CPNotificationCenter,"defaultCenter"),"addObserver:selector:name:object:",_8,sel_getUid("pageDidChange:"),"PageChangedNotification",rootPage);
+objj_msgSend(objj_msgSend(CPNotificationCenter,"defaultCenter"),"addObserver:selector:name:object:",_6,sel_getUid("pageDidChange:"),"PageChangedNotification",rootPage);
 objj_msgSend(previewButton,"setBordered:",NO);
 previewButton._DOMElement.style.textDecoration="underline";
 objj_msgSend(previewButton,"setTextColor:",objj_msgSend(CPColor,"blueColor"));
 objj_msgSend(previewButton,"setAlignment:",CPLeftTextAlignment);
-objj_msgSend(previewButton,"setTarget:",_8);
+objj_msgSend(previewButton,"setTarget:",_6);
 objj_msgSend(previewButton,"setAction:",sel_getUid("openMobileApp"));
 previewButton._DOMElement.style.cursor="pointer";
 objj_msgSend(previewView,"setFrame:",CPRectMake(540,100,340,520));
@@ -47,129 +144,101 @@ objj_msgSend(logoutButton,"setBordered:",NO);
 objj_msgSend(logoutButton,"setImage:",objj_msgSend(objj_msgSend(CPImage,"alloc"),"initWithContentsOfFile:","Resources/logout2.png"));
 logoutButton._DOMElement.style.textDecoration="underline";
 logoutButton._DOMElement.style.cursor="pointer";
-objj_msgSend(_8,"resetData");
+aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
+objj_msgSend(_6,"resetData");
 objj_msgSend(appnameField,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"lightGrayColor"),"text-color",CPTextFieldStatePlaceholder);
-objj_msgSend(_8,"myRefresh");
+objj_msgSend(_6,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("openMobileApp"),function(_a,_b){
-with(_a){
-var _c=baseURL+"a/"+appId;
-window.open(_c,"mywindow");
-}
-}),new objj_method(sel_getUid("pageDidChange:"),function(_d,_e,_f){
-with(_d){
+}),new objj_method(sel_getUid("pageDidChange:"),function(_8,_9,_a){
+with(_8){
 objj_msgSend(saveButton,"setEnabled:",rootPage.title.length>0);
 }
-}),new objj_method(sel_getUid("controlTextDidChange:"),function(_10,_11,_12){
-with(_10){
-var _13=objj_msgSend(objj_msgSend(appnameField,"objectValue"),"length");
+}),new objj_method(sel_getUid("controlTextDidChange:"),function(_b,_c,_d){
+with(_b){
+var _e=objj_msgSend(objj_msgSend(appnameField,"objectValue"),"length");
 objj_msgSend(rootPage,"setTitle:",objj_msgSend(appnameField,"objectValue"));
-objj_msgSend(_10,"myRefresh");
+objj_msgSend(_b,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("selectedPage:reverse:"),function(_14,_15,_16,_17){
-with(_14){
-var cmd="jQT.goTo(\"#"+_16.navigationId+"\", \"slide\"";
-if(_17){
+}),new objj_method(sel_getUid("selectedPage:reverse:"),function(_f,_10,_11,_12){
+with(_f){
+var cmd="jQT.goTo(\"#"+_11.navigationId+"\", \"slide\"";
+if(_12){
 cmd+=", \"reverse\"";
 }
 cmd+=");";
 console.log("cmd "+cmd);
 objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
-}),new objj_method(sel_getUid("myRefresh"),function(_18,_19){
-with(_18){
-var _1a=rootPage.title.length>0;
-objj_msgSend(saveButton,"setEnabled:",_1a);
-objj_msgSend(loadButton,"setEnabled:",_1a);
+}),new objj_method(sel_getUid("refreshUIFromData"),function(_13,_14){
+with(_13){
+var _15=rootPage.title.length>0;
+objj_msgSend(saveButton,"setEnabled:",_15);
 objj_msgSend(pageViewController,"myRefresh");
-var _1b=baseURL+"a/"+appId;
+var _16=aConnection.baseURL+"a/"+appId;
 if(appId){
-objj_msgSend(previewView,"setMainFrameURL:",_1b);
-objj_msgSend(previewButton,"setTitle:",_1b);
+objj_msgSend(previewView,"setMainFrameURL:",_16);
+objj_msgSend(previewButton,"setTitle:",_16);
 }else{
 objj_msgSend(previewButton,"setTitle:","");
-objj_msgSend(previewView,"setMainFrameURL:",baseURL+"preview");
+objj_msgSend(previewView,"setMainFrameURL:",aConnection.baseURL+"preview");
 }
+}
+}),new objj_method(sel_getUid("resetData"),function(_17,_18){
+with(_17){
+rootPage=objj_msgSend(objj_msgSend(Page,"alloc"),"init");
+objj_msgSend(rootPage,"setTitle:",objj_msgSend(appnameField,"objectValue"));
+rootPage.mobileNavId="r";
+pageViewController.page=rootPage;
+appId=null;
+}
+}),new objj_method(sel_getUid("openMobileApp"),function(_19,_1a){
+with(_19){
+var _1b=aConnection.baseURL+"a/"+appId;
+window.open(_1b,"mywindow");
 }
 }),new objj_method(sel_getUid("load:"),function(_1c,_1d,_1e){
 with(_1c){
-console.log("loading...");
-var _1f=objj_msgSend(CPURLRequest,"requestWithURL:",baseURL+"agenda/"+rootPage.title);
-objj_msgSend(_1f,"setHTTPMethod:","GET");
-listConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1f,_1c);
+objj_msgSend(objj_msgSend(objj_msgSend(OpenPanel,"alloc"),"init:",_1c),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("login:"),function(_20,_21,_22){
-with(_20){
+}),new objj_method(sel_getUid("login:"),function(_1f,_20,_21){
+with(_1f){
 history.go(-1);
 }
-}),new objj_method(sel_getUid("panelDidClose:"),function(_23,_24,tag){
-with(_23){
-if(tag==1){
-console.log("login success");
-objj_msgSend(theWindow,"orderFront:",_23);
-}else{
-console.log("login canceled");
-history.go(-1);
-}
-}
-}),new objj_method(sel_getUid("new:"),function(_25,_26,_27){
-with(_25){
+}),new objj_method(sel_getUid("new:"),function(_22,_23,_24){
+with(_22){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_25,"resetData");
-var _28=objj_msgSend(NewTemplate,"data");
-objj_msgSend(_25,"didReceiveLoadData:",_28);
+objj_msgSend(_22,"resetData");
+var obj=JSON.parse(objj_msgSend(NewTemplate,"data"));
+var _25=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_22,"didReceiveAgenda:withRootPage:",undefined,_25);
 }
-}),new objj_method(sel_getUid("save:"),function(_29,_2a,_2b){
+}),new objj_method(sel_getUid("save:"),function(_26,_27,_28){
+with(_26){
+objj_msgSend(aConnection,"saveAgenda:rootPage:delegate:",appId,rootPage,_26);
+}
+}),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_29,_2a,_2b,_2c){
 with(_29){
-var _2c=objj_msgSend(CPURLRequest,"requestWithURL:",baseURL+"agenda");
-objj_msgSend(_2c,"setHTTPMethod:","POST");
-var _2d="{\"_id\":\""+appId+"\", \"rootpage\":"+objj_msgSend(rootPage,"toJSON")+"}";
-console.log("Saving JSON: "+_2d);
-objj_msgSend(_2c,"setHTTPBody:",_2d);
-objj_msgSend(_2c,"setValue:forHTTPHeaderField:","application/json","Accept");
-objj_msgSend(_2c,"setValue:forHTTPHeaderField:","application/json","Content-Type");
-saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_2c,_29);
+objj_msgSend(appnameField,"setObjectValue:",_2c.title);
+_29.appId=_2b;
+_29.rootPage=_2c;
+objj_msgSend(pageViewController,"setPage:",_2c);
+objj_msgSend(_29,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_2e,_2f,_30,_31){
-with(_2e){
-console.log("didReceiveData: '"+_31+"'");
-if(_30==saveConnection){
-var _32=objj_msgSend(objj_msgSend(CPAlert,"alloc"),"init");
-objj_msgSend(_32,"setAlertStyle:",CPInformationalAlertStyle);
-objj_msgSend(_32,"setMessageText:","Saved!");
-objj_msgSend(_32,"addButtonWithTitle:","OK");
-objj_msgSend(_32,"runModal");
+}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_2d,_2e,msg){
+with(_2d){
+alert(msg);
+objj_msgSend(_2d,"resetData");
+objj_msgSend(_2d,"refreshUIFromData");
 }
-if(_31!=""){
-objj_msgSend(_2e,"didReceiveLoadData:",_31);
-}else{
-alert("Couldn't find Agenda: \""+rootPage.title+"\"");
-objj_msgSend(_2e,"resetData");
-objj_msgSend(_2e,"myRefresh");
+}),new objj_method(sel_getUid("panelDidClose:data:"),function(_2f,_30,tag,_31){
+with(_2f){
+if(tag==="login"){
+objj_msgSend(theWindow,"orderFront:",_2f);
 }
+if(tag==="open"){
+console.log("Loading Agenda with id: "+_31);
+objj_msgSend(aConnection,"loadAgenda:delegate:",_31,_2f);
 }
-}),new objj_method(sel_getUid("didReceiveLoadData:"),function(_33,_34,_35){
-with(_33){
-try{
-var obj=JSON.parse(_35);
-var _36=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-_33.appId=obj._id;
-objj_msgSend(pageViewController,"setPage:",_36);
-objj_msgSend(_33,"myRefresh");
-}
-catch(e){
-console.log("Error in didReceiveData. "+e);
-alert(e);
-}
-}
-}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_37,_38,_39,_3a){
-with(_37){
-console.log("didFailWithError: "+_3a);
-alert(_3a);
-}
-}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_3b,_3c,_3d,_3e){
-with(_3b){
-console.log("didReceiveResponse for URL:"+objj_msgSend(_3e,"URL"));
 }
 })]);
 p;18;ButtonColumnView.jt;2226;@STATIC;1.0;I;15;AppKit/CPView.jt;2187;
@@ -425,11 +494,11 @@ objj_msgSend(_f,"encodeObject:forKey:",textfield,"textfield");
 objj_msgSend(_f,"encodeObject:forKey:",imageView,"imageView");
 }
 })]);
-p;12;LoginPanel.jt;3677;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;3611;
+p;12;LoginPanel.jt;4536;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4470;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("delegate")]);
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("titleLabel"),new objj_ivar("emailField"),new objj_ivar("aConnection")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
 with(_3){
@@ -447,61 +516,80 @@ _8.delegate=_a;
 objj_msgSend(_8,"setTitle:","Private Beta Login");
 objj_msgSend(_8,"setFloatingPanel:",YES);
 var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
-var _d=objj_msgSend(CPTextField,"labelWithTitle:","Enter your email and password to login.");
-objj_msgSend(_d,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(_d,"sizeToFit");
+titleLabel=objj_msgSend(CPTextField,"labelWithTitle:","Enter your email and password to login.");
+objj_msgSend(titleLabel,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(titleLabel,"sizeToFit");
+objj_msgSend(titleLabel,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(titleLabel,"setFrameOrigin:",CGPointMake(45,5));
+objj_msgSend(_b,"addSubview:",titleLabel);
+var _d=objj_msgSend(CPTextField,"labelWithTitle:","Email:");
 objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_d,"setFrameOrigin:",CGPointMake(45,5));
+objj_msgSend(_d,"setFrameOrigin:",CGPointMake(62,40));
 objj_msgSend(_b,"addSubview:",_d);
-var _e=objj_msgSend(CPTextField,"labelWithTitle:","Email:");
+emailField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
+objj_msgSend(emailField,"setFrameOrigin:",CGPointMake(100,35));
+objj_msgSend(_b,"addSubview:",emailField);
+var _e=objj_msgSend(CPTextField,"labelWithTitle:","Password:");
 objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_e,"setFrameOrigin:",CGPointMake(62,40));
+objj_msgSend(_e,"setFrameOrigin:",CGPointMake(40,70));
 objj_msgSend(_b,"addSubview:",_e);
 var _f=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
-objj_msgSend(_f,"setFrameOrigin:",CGPointMake(100,35));
+objj_msgSend(_f,"setFrameOrigin:",CGPointMake(100,65));
+objj_msgSend(_f,"setSecure:",YES);
 objj_msgSend(_b,"addSubview:",_f);
-var _10=objj_msgSend(CPTextField,"labelWithTitle:","Password:");
-objj_msgSend(_10,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_10,"setFrameOrigin:",CGPointMake(40,70));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_10,"setFrame:",CGRectMake(250,110,70,20));
 objj_msgSend(_b,"addSubview:",_10);
-var _11=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
-objj_msgSend(_11,"setFrameOrigin:",CGPointMake(100,65));
-objj_msgSend(_11,"setSecure:",YES);
+objj_msgSend(_10,"setTag:","login");
+objj_msgSend(_10,"setTarget:",_8);
+objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
+var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_11,"setFrame:",CGRectMake(170,110,70,20));
 objj_msgSend(_b,"addSubview:",_11);
-var _12=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_12,"setFrame:",CGRectMake(250,110,70,20));
-objj_msgSend(_b,"addSubview:",_12);
-objj_msgSend(_12,"setTag:",1);
+objj_msgSend(_11,"setTag:","logincancel");
+var _12=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
+objj_msgSend(_12,"sizeToFit");
+objj_msgSend(_12,"setFrameOrigin:",CGPointMake(80,140));
+objj_msgSend(_12,"setBordered:",NO);
+objj_msgSend(_12,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
+_12._DOMElement.style.textDecoration="underline";
 objj_msgSend(_12,"setTarget:",_8);
-objj_msgSend(_12,"setAction:",sel_getUid("buttonAction:"));
-var _13=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_13,"setFrame:",CGRectMake(170,110,70,20));
-objj_msgSend(_b,"addSubview:",_13);
-objj_msgSend(_13,"setTag:",0);
-var _14=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
-objj_msgSend(_14,"sizeToFit");
-objj_msgSend(_14,"setFrameOrigin:",CGPointMake(80,140));
-objj_msgSend(_14,"setBordered:",NO);
-objj_msgSend(_14,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
-_14._DOMElement.style.textDecoration="underline";
-objj_msgSend(_14,"setTarget:",_8);
-objj_msgSend(_14,"setAction:",sel_getUid("signup"));
-_14._DOMElement.style.cursor="pointer";
-objj_msgSend(_b,"addSubview:",_14);
-objj_msgSend(_13,"setTarget:",_8);
-objj_msgSend(_13,"setAction:",sel_getUid("buttonAction:"));
+objj_msgSend(_12,"setAction:",sel_getUid("signup"));
+_12._DOMElement.style.cursor="pointer";
+objj_msgSend(_b,"addSubview:",_12);
+objj_msgSend(_11,"setTarget:",_8);
+objj_msgSend(_11,"setAction:",sel_getUid("buttonAction:"));
+aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
 }
 return _8;
 }
-}),new objj_method(sel_getUid("buttonAction:"),function(_15,_16,_17){
-with(_15){
-if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:"))){
-objj_msgSend(delegate,"panelDidClose:",objj_msgSend(_17,"tag"));
+}),new objj_method(sel_getUid("buttonAction:"),function(_13,_14,_15){
+with(_13){
+if(objj_msgSend(_15,"tag")=="login"){
+console.log("trying to login "+objj_msgSend(emailField,"objectValue"));
+objj_msgSend(aConnection,"checkUser:delegate:",objj_msgSend(emailField,"objectValue"),_13);
+}else{
+if(objj_msgSend(_15,"tag")=="logincancel"){
+console.log("login canceled");
+history.go(-1);
+objj_msgSend(_13,"close");
 }
-objj_msgSend(_15,"close");
 }
-}),new objj_method(sel_getUid("signup"),function(_18,_19){
+}
+}),new objj_method(sel_getUid("loginSuccess"),function(_16,_17){
+with(_16){
+if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
+objj_msgSend(delegate,"panelDidClose:data:","login",objj_msgSend(emailField,"objectValue"));
+objj_msgSend(_16,"close");
+}
+}
+}),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
 with(_18){
+objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
+console.log("loginFailed");
+}
+}),new objj_method(sel_getUid("signup"),function(_1a,_1b){
+with(_1a){
 window.open("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
 }
 })]);
@@ -522,7 +610,61 @@ var _5={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"New
 return JSON.stringify(_5);
 }
 })]);
-p;6;Page.jt;4080;@STATIC;1.0;I;21;Foundation/CPObject.jt;4035;
+p;11;OpenPanel.jt;2397;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2331;
+objj_executeFile("Foundation/CPObject.j",NO);
+objj_executeFile("AppKit/CPPanel.j",NO);
+var _1=objj_allocateClassPair(CPPanel,"OpenPanel"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("field")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
+with(_3){
+return delegate;
+}
+}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
+with(_5){
+delegate=_7;
+}
+}),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
+with(_8){
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,150,330,140),CPHUDBackgroundWindowMask);
+if(_8){
+_8.delegate=_a;
+objj_msgSend(_8,"setTitle:","Open Agenda");
+objj_msgSend(_8,"setFloatingPanel:",YES);
+var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
+var _d=objj_msgSend(CPTextField,"labelWithTitle:","Enter the link or the id of your agenda.");
+objj_msgSend(_d,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(_d,"sizeToFit");
+objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_d,"setFrameOrigin:",CGPointMake(45,5));
+objj_msgSend(_b,"addSubview:",_d);
+field=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
+objj_msgSend(field,"setFrameOrigin:",CGPointMake(70,35));
+objj_msgSend(_b,"addSubview:",field);
+var _e=objj_msgSend(CPButton,"buttonWithTitle:theme:","Open",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_e,"setFrame:",CGRectMake(250,90,70,20));
+objj_msgSend(_b,"addSubview:",_e);
+objj_msgSend(_e,"setTag:","open");
+objj_msgSend(_e,"setTarget:",_8);
+objj_msgSend(_e,"setAction:",sel_getUid("buttonAction:"));
+var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_f,"setFrame:",CGRectMake(170,90,70,20));
+objj_msgSend(_b,"addSubview:",_f);
+objj_msgSend(_f,"setTag:","opencancel");
+objj_msgSend(_f,"setTarget:",_8);
+objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
+}
+return _8;
+}
+}),new objj_method(sel_getUid("buttonAction:"),function(_10,_11,_12){
+with(_10){
+if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
+objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_12,"tag"),objj_msgSend(field,"objectValue"));
+}
+objj_msgSend(_10,"close");
+}
+})]);
+p;6;Page.jt;4062;@STATIC;1.0;I;21;Foundation/CPObject.jt;4017;
 objj_executeFile("Foundation/CPObject.j",NO);
 var _1=objj_allocateClassPair(CPObject,"Page"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("title"),new objj_ivar("subtitle"),new objj_ivar("children"),new objj_ivar("type"),new objj_ivar("attributes"),new objj_ivar("navigationId"),new objj_ivar("ancestor")]);
@@ -659,7 +801,6 @@ objj_msgSend(_42,"addChild:atIndex:",_44,-1);
 if(_40.attributes){
 for(var i=0;i<_40.attributes.length;i++){
 var _45=_40.attributes[i];
-console.log(_45);
 objj_msgSend(objj_msgSend(_42,"attributes"),"insertObject:atIndex:",_45,i);
 }
 }
