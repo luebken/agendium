@@ -73,12 +73,29 @@ task ("deploy", ["release"], function()
     printResults("Deployment")
 });
 
-task ("mydeploy", ["config-prod", "release"], function()
+task ("config-dev", function()
+{
+    OS.system('cp Config-dev.j Config.j');
+});
+task ("config-prod", function()
+{
+    OS.system('cp Config-prod.j Config.j');
+});
+
+task ("devdeploy", ["config-dev", "release"], function()
 {
     OS.system('rm -r ../lib/public/Project/*');
     OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
     printResults("My Deploy")
 });
+
+task ("proddeploy", ["config-prod", "release"], function()
+{
+    OS.system('rm -r ../lib/public/Project/*');
+    OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
+    printResults("My Deploy")
+});
+
 
 task ("desktop", ["release"], function()
 {
@@ -92,10 +109,6 @@ task ("run-desktop", ["desktop"], function()
     OS.system([FILE.join("Build", "Desktop", "agendium", "agendium.app", "Contents", "MacOS", "NativeHost"), "-i"]);
 });
 
-task ("config-prod", function()
-{
-    OS.system('cp Config-prod.j Config.j');
-});
 
 function printResults(configuration)
 {
