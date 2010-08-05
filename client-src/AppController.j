@@ -12,6 +12,7 @@
 @import "PageViewController.j"
 @import "LoginPanel.j"
 @import "OpenPanel.j"
+@import "NewPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
 @import "Config.j"
@@ -180,11 +181,7 @@
     history.go(-1);
 }
 - (@action) new:(id)sender {
-    [appnameField setObjectValue:""];
-    [self resetData];
-    var obj = JSON.parse([NewTemplate data]);
-    var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-    [self didReceiveAgenda:undefined withRootPage:rootPage];
+    [[[NewPanel alloc] init:self] orderFront:nil];
 }
 
 - (@action) save:(id)sender {
@@ -216,6 +213,19 @@
         console.log("Loading Agenda with id: " + data);
         [aConnection loadAgenda:data delegate:self];
     }
+    if(tag === "empty") {
+        [appnameField setObjectValue:""];
+        [self resetData];
+        [self refreshUIFromData];
+    }
+    if(tag === "threedaytwotracks"){
+        [appnameField setObjectValue:""];
+        [self resetData];
+        var obj = JSON.parse([NewTemplate data]);
+        var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
+        [self didReceiveAgenda:undefined withRootPage:rootPage];        
+    }
+    
 }
 
 
