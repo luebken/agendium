@@ -26,10 +26,10 @@
         [page addChild:child atIndex:-1];
     }
     if(object.attributes){
-    for (var i=0; i < object.attributes.length; i++) {
-        var attr = object.attributes[i];
-        [[page attributes] insertObject:attr atIndex:i];
-    }
+        for (var i=0; i < object.attributes.length; i++) {
+            var attr = object.attributes[i];
+            [[page attributes] insertObject:attr atIndex:i];
+        }
     }
     return page;
 }
