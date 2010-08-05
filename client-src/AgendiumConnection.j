@@ -56,10 +56,10 @@
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
     console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
-        [self didReceivePageData:data delegate:saveDelegate];
+        [self didReceiveSaveData:data delegate:saveDelegate];
     }
     if(connection == listConnection) {
-        [self didReceivePageData:data delegate:listDelegate];
+        [self didReceiveLoadData:data delegate:listDelegate];
     }
     if(connection == loginConnection) {
         [self didReceiveLoginData:data delegate:loginDelegate];
@@ -85,7 +85,20 @@
 //
 //private
 //
--(void)didReceivePageData:(CPString)data delegate:(id)delegate {
+-(void)didReceiveSaveData:(CPString)data delegate:(id)delegate {
+    if(data != null && data != '' && data != 'null') {
+        try {
+            var obj = JSON.parse(data);
+            [delegate didReceiveAgenda:obj._id]
+        } catch (e) {
+            [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
+        } 
+    } else {
+        console.log('failureWhileReceivingAgenda');
+        [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
+    }
+}
+-(void)didReceiveLoadData:(CPString)data delegate:(id)delegate {
     if(data != null && data != '' && data != 'null') {
         try {
             var obj = JSON.parse(data);

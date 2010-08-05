@@ -161,7 +161,7 @@
 - (void)resetData {
     rootPage = [[Page alloc] init];
     [rootPage setTitle:[appnameField objectValue]];
-    rootPage.mobileNavId = "r";
+    rootPage.navigationId = "r";
     pageViewController.page = rootPage;
     appId = null;
 }
@@ -198,6 +198,16 @@
     [pageViewController setPage:newRootpage];
     [self refreshUIFromData];
 }
+-(void)didReceiveAgenda:(id)appId2 {
+    self.appId = appId2;
+    var page = [pageViewController page];
+    [self refreshUIFromData];
+    var cmd = 'jQT.goTo("#' + page.navigationId + ');';
+    console.log("cmd2 " + cmd);
+    [[previewView windowScriptObject] evaluateWebScript:cmd];
+}
+
+
 -(void)failureWhileReceivingAgenda:(CPString)msg  {
     alert(msg);    
     [self resetData];
