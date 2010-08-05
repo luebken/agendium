@@ -68,6 +68,19 @@
                name:@"PageChangedNotification"
              object:rootPage];
 
+    [[CPNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(save:)
+               name:@"AddItemToListNotification"
+             object:nil];
+
+    [[CPNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(save:)
+               name:@"EditingDoneNotification"
+              object:nil];
+
+
     [previewButton setBordered:NO]; 
     previewButton._DOMElement.style.textDecoration = "underline";
     [previewButton setTextColor:[CPColor blueColor]]; 

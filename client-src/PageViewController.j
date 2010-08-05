@@ -130,6 +130,10 @@
         field = [CPTextField labelWithTitle:@""];
         [field setFont:[CPFont systemFontOfSize:14.0]];
         [field setVerticalAlignment:CPCenterTextAlignment];
+        
+        [[CPNotificationCenter defaultCenter] 
+            postNotificationName:@"EditingDoneNotification" 
+            object:nil];
     } else {
         [self setEditing:YES];
         [editButton setTitle:@"Done"];
@@ -261,6 +265,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         var attribute = { key:"A key", value:"A value" };
         [[page attributes] insertObject:attribute atIndex:index];
     }
+    
+    [[CPNotificationCenter defaultCenter] 
+        postNotificationName:@"AddItemToListNotification" 
+        object:nil];
+        
     [table reloadData];
 }
 
