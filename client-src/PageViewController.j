@@ -233,10 +233,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 */
 
 - (@action)addItemToList:(id)sender {    
+    var index = [table selectedRow];
+    if(index < 0) index = page.children.length;
+
     if([page isNavigationType]) {
         var itemtype = [[itemtypeButton selectedItem] title];
         var newpage;
-        var index = [table selectedRow];
         var navigationId = page.navigationId + "c" + index;
         if(itemtype == 'Navigationpage') {
             newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
@@ -257,7 +259,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [page addChild:newpage atIndex:index];            
     } else {
         var attribute = { key:"A key", value:"A value" };
-        [[page attributes] insertObject:attribute atIndex:[table selectedRow]];
+        [[page attributes] insertObject:attribute atIndex:index];
     }
     [table reloadData];
 }
