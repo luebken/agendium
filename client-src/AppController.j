@@ -90,8 +90,9 @@
     [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
 
-    previewView = [[CPWebView alloc] initWithFrame:CPRectMake(540, 100, 340, 520)];
-    [[theWindow contentView] addSubview:previewView];
+    //previewView = [[CPWebView alloc] initWithFrame:CPRectMake(540, 100, 340, 520)];
+    [previewView setFrame:CPRectMake(540, 100, 340, 520)];
+    //[[theWindow contentView] addSubview:previewView];
     [previewView setFrameLoadDelegate:self];
     //[previewView setScrollMode:CPWebViewScrollAppKit];
     //[previewView._scrollView setAutohidesScrollers:YES];
