@@ -25,7 +25,7 @@
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     @outlet CPButton logoutButton;
-    @outlet CPWebView previewView;
+    CPWebView previewView;
 
     Page rootPage;
     @outlet CPTextField appnameField;
@@ -40,6 +40,7 @@
 {
     [theWindow orderOut:self];
     [[[LoginPanel alloc] init:self] orderFront:nil];
+
 }
 
 - (void)awakeFromCib
@@ -89,10 +90,12 @@
     [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
 
+    previewView = [[CPWebView alloc] initWithFrame:CPRectMake(540, 100, 340, 520)];
+    [[theWindow contentView] addSubview:previewView];
+    [previewView setFrameLoadDelegate:self];
     //[previewView setScrollMode:CPWebViewScrollAppKit];
     //[previewView._scrollView setAutohidesScrollers:YES];
 
-    [previewView setFrame:CPRectMake(540, 100, 340, 520)];
     previewView._DOMElement.style.webkitTransformOrigin = "10 10";
     previewView._DOMElement.style.webkitTransform = "scale(0.75)";
     //previewView._DOMElement.style.overflow = "hidden";
@@ -213,11 +216,19 @@
 }
 -(void)didReceiveAgenda:(id)appId2 {
     self.appId = appId2;
-    var page = [pageViewController page];
     [self refreshUIFromData];
-    var cmd = 'jQT.goTo("#' + page.navigationId + ');';
-    console.log("cmd2 " + cmd);
+
+}
+- (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
+    var page = [pageViewController page];
+    var cmd = 'jQT.goTo("#' + page.navigationId + '");';
+    console.log("didFinishLoadForFrame " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
+    //FIXME Here some redrawing action?
+    //previewView._DOMElement.style.webkitTransformOrigin = "10 10";
+    //[[theWindow contentView] layoutIfNeeded];
+    //[[theWindow contentView] needsDisplay]; 
+    //[[theWindow contentView] display]   
 }
 
 
