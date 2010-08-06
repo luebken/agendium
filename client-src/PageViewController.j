@@ -16,6 +16,7 @@
     id delegate;
     CPTableView table;
     @outlet CPTextField titleField;
+
     boolean editing @accessors;
 }
 - (id) initWithCibName: (CPString) aCibNameOrNil
@@ -86,6 +87,10 @@
     [itemtypeButton removeAllItems];
 
     editing = NO;
+
+    [titleField setFont:[CPFont systemFontOfSize:14.0]];
+    [titleField setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
+
 
 /*
     [[CPNotificationCenter defaultCenter]
@@ -321,9 +326,13 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if(page.subtitle != null) {
         title += " / " + page.subtitle;
     }
-    if(page.title) {
+    if(!page.title) {
+        title = "Untitled"    
+    }
+    if(![page isRootPage]) {
         title += " (" + page.type + ")";
     }
+
 
     [titleField setObjectValue:title];
     [itemtypeButton removeAllItems];

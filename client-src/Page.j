@@ -61,7 +61,9 @@
     if(index < 0) index = children.length;
     [children insertObject:child atIndex:index];
 }
-
+- (Bool) isRootPage {
+    return self.ancestor == null;
+}
 - (id) removeChild: (int) index {
     [children removeObjectAtIndex:index];
 }
