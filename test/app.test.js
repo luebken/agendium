@@ -41,6 +41,18 @@ module.exports = {
         });
         assert.response(app, {url: '/agenda/nonexistingid'},{ status: 404 });
     },
+    'test get agenda data by id': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/data/0',
+            method: 'GET'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        assert.response(app, {url: '/data/nonexistingid'},{ status: 404 });
+    },
     'test get mobile by id': function(assert, beforeExit){
         assert.response(app, {
             url: '/a/0',
