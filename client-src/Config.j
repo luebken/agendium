@@ -1,1 +1,1 @@
-BASEURL = "http://localhost:8000/";
+BASEURL = "http://agendium.heroku.com/";
