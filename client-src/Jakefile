@@ -82,14 +82,14 @@ task ("config-prod", function()
     OS.system('cp Config-prod.j Config.j');
 });
 
-task ("devdeploy", ["config-dev", "release"], function()
+task ("devbuild", ["config-dev", "release"], function()
 {
     OS.system('rm -r ../lib/public/Project/*');
     OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
     printResults("My Deploy")
 });
 
-task ("proddeploy", ["config-prod", "release"], function()
+task ("prodbuild", ["config-prod", "release"], function()
 {
     OS.system('rm -r ../lib/public/Project/*');
     OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
