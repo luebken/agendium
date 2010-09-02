@@ -1,5 +1,6 @@
 var http = require('http'),
- app = require('../lib/app').app;
+ app = require('../lib/app').app,
+ pageProvider = require('../lib/app').pageProvider;
  
 module.exports = {
      'test setup': function(assert, beforeExit){
@@ -29,41 +30,37 @@ module.exports = {
         assert.response(app, {url: '/Project/index.html'},{ status: 200 });
         assert.response(app, {url: '/Project/Frameworks/Objective-J/Objective-J.js'},{ status: 200 });
     },
+    'test save an existing agenda': function(assert, beforeExit){
+        assert.response(app, {
+            url: '/agenda',
+            method: 'POST',
+            body : '{"test":"test","_id":"4711"}'
+        },{
+            status: 200,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8'
+            },
+            body : '{"test":"test","_id":"4711"}'
+        });
+    },    
     'test get agenda by id': function(assert, beforeExit){
-        assert.response(app, {
-            url: '/agenda/0',
-            method: 'GET'
-        },{
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        assert.response(app, {url: '/agenda/nonexistingid'},{ status: 404 });
-    },
-    'test get agenda data by id': function(assert, beforeExit){
-        assert.response(app, {
-            url: '/data/0',
-            method: 'GET'
-        },{
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        assert.response(app, {url: '/data/nonexistingid'},{ status: 404 });
+        assert.response(app, {url: '/agenda/nonexistingid'},{ status: 404 });    
+            
+        pageProvider.save({"test":"test"}, function(error, page) {
+            assert.response(app, {url: '/agenda/' + page._id.toHexString()},{ status: 200 });            
+        });    
     },
     'test get mobile by id': function(assert, beforeExit){
-        assert.response(app, {
-            url: '/a/0',
-            method: 'GET'
-        },{
-            status: 200,
-                headers: {
-                        'Content-Type': 'text/html; charset=utf-8'
-                }
+        assert.response(app, {url: '/a/nonexistingid'},{ status: 404 });        
+        var page = {'rootpage': {'title':'my title'}};
+        pageProvider.save(page, function(error, page) {
+            assert.response(app, {url: '/a/' + page._id.toHexString()},{ status: 200 });            
         });
+        
     },
+    /*
+    ,
+    
     'test save a new agenda': function(assert, beforeExit){
         assert.response(app, {
             url: '/agenda',
@@ -77,19 +74,7 @@ module.exports = {
             body : '{"test":"test","_id":"1"}'
         });
     },
-    'test save an existing agenda': function(assert, beforeExit){
-        assert.response(app, {
-            url: '/agenda',
-            method: 'POST',
-            body : '{"test":"test","_id":"4711"}'
-        },{
-            status: 200,
-            headers: {
-                'Content-Type': 'text/html; charset=utf-8'
-            },
-            body : '{"test":"test","_id":"4711"}'
-        });
-    },
+    */
     'test check an existing user': function(assert, beforeExit){
         assert.response(app, {
             url: '/user/mdl',
