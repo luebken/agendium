@@ -34,7 +34,7 @@ module.exports = {
        },
        'test save a page': function(assert, beforeExit) {     
            pageProvider.removeAll();                                  
-           var page = {'name':'hurz'};
+           var page = {'name':'hurz', '_id':'undefined'};
            pageProvider.save(page, function(error, inserted_page) {
                assert.isNull(error);
                assert.isDefined(inserted_page);
@@ -49,9 +49,22 @@ module.exports = {
                });
              });
        },
+     
+       'test update a page': function(assert, beforeExit) {     
+           var page = {'name':'hurz', '_id':'undefined'};
+           pageProvider.save(page, function(error, inserted_page) {
+               console.log('inserted_page._id: ' + inserted_page._id.toHexString());
+               assert.equal(inserted_page.name, 'hurz');
+               inserted_page.name = 'schnurz'
+               pageProvider.save(inserted_page, function(error, updated_page) {
+                   assert.equal(updated_page.name, 'schnurz');
+                   pageProvider.removeAll();                 
+               });
+           });
+       },
        'test find a page by id': function(assert, beforeExit) {     
            pageProvider.removeAll();                                  
-           pageProvider.save({'name':'hurz'}, function(error, inserted_page) {
+           pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
                var id = inserted_page._id.toHexString();
                pageProvider.findById(id, function(error, page) {
                   assert.isNull(error);

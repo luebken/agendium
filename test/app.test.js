@@ -46,35 +46,20 @@ module.exports = {
     'test get agenda by id': function(assert, beforeExit){
         assert.response(app, {url: '/agenda/nonexistingid'},{ status: 404 });    
             
-        pageProvider.save({"test":"test"}, function(error, page) {
-            assert.response(app, {url: '/agenda/' + page._id.toHexString()},{ status: 200 });            
+        pageProvider.save({'_id':'undefined',"test":"test"}, function(error, page) {
+            assert.response(app, {url: '/agenda/' + page._id.toHexString()},{ status: 200 }); 
+            pageProvider.removeAll();           
         });    
     },
     'test get mobile by id': function(assert, beforeExit){
         assert.response(app, {url: '/a/nonexistingid'},{ status: 404 });        
-        var page = {'rootpage': {'title':'my title'}};
+        var page = {'_id':'undefined','rootpage': {'title':'my title'}};
         pageProvider.save(page, function(error, page) {
-            assert.response(app, {url: '/a/' + page._id.toHexString()},{ status: 200 });            
+            assert.response(app, {url: '/a/' + page._id.toHexString()},{ status: 200 }); 
+            pageProvider.removeAll();                      
         });
         
     },
-    /*
-    ,
-    
-    'test save a new agenda': function(assert, beforeExit){
-        assert.response(app, {
-            url: '/agenda',
-            method: 'POST',
-            body : '{"test":"test"}'
-        },{
-            status: 200,
-            headers: {
-                'Content-Type': 'text/html; charset=utf-8'
-            },
-            body : '{"test":"test","_id":"1"}'
-        });
-    },
-    */
     'test check an existing user': function(assert, beforeExit){
         assert.response(app, {
             url: '/user/mdl',
