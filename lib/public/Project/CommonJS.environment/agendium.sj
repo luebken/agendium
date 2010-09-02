@@ -109,7 +109,7 @@ objj_msgSend(_35,"loginFailed");
 }
 }
 })]);
-p;15;AppController.jt;7507;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;7309;
+p;15;AppController.jt;7517;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;7319;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -262,7 +262,7 @@ objj_msgSend(aConnection,"loadAgenda:delegate:",_38,_36);
 if(tag==="empty"){
 objj_msgSend(appnameField,"setObjectValue:","");
 objj_msgSend(_36,"resetData");
-objj_msgSend(_36,"refreshUIFromData");
+objj_msgSend(_36,"didReceiveAgenda:",undefined);
 }
 if(tag==="threedaytwotracks"){
 objj_msgSend(appnameField,"setObjectValue:","");
