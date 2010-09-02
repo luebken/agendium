@@ -180,7 +180,7 @@
     [rootPage setTitle:[appnameField objectValue]];
     rootPage.navigationId = "r";
     pageViewController.page = rootPage;
-    appId = null;
+    appId = null; 
 }
 - (void) openMobileApp {
     var applink = BASEURL + "a/" + appId;
@@ -251,7 +251,7 @@
     if(tag === "empty") {
         [appnameField setObjectValue:""];
         [self resetData];
-        [self refreshUIFromData];
+        [self didReceiveAgenda:undefined];
     }
     if(tag === "threedaytwotracks"){
         [appnameField setObjectValue:""];
