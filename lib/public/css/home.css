@@ -21,7 +21,6 @@ body {
     background-color: #ffffff;
     height: 70px;
     width: 750px;
-    
     border-left: 1px solid #969696;
     border-top: 1px solid #969696;
     border-right: 1px solid #969696; 
@@ -117,6 +116,10 @@ body {
     font-weight: bold;
     letter-spacing: -1px;
 }
+#content .desc2 a {
+    color:#222222;
+}
+
 
 #content .button{
     position: relative;
@@ -138,7 +141,7 @@ body {
 /* ==================== footer ====================*/
 
 
-#footer {
+#footer, #footer-small {
     text-align: left;
     vertical-align: middle;
     margin: 0px auto;
@@ -153,7 +156,9 @@ body {
     
     /*-webkit-box-shadow: rgba(0,0,0,.4) 2px 4px 8px;*/
 }
-
+#footer-small {
+    height: 70px;
+}
 #footer ul {
     display: inline;
     float: left;
