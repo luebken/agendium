@@ -8,6 +8,8 @@ Server-Tests
 ------
 * Install Expresso
 * Run 'expresso tests/*'
+* Or with Vows: 'vows vowstest/*' 
+* Not decided yet
 
 Client
 ------
