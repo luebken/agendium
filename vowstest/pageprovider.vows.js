@@ -50,14 +50,47 @@ vows.describe('app').addBatch({
         }
     }
 }).addBatch({
-    'saving': {
+    'initial save works': {
         topic: function() { pageProvider.save({'name':'hurz', '_id':'undefined'}, this.callback ) },
-        'inserted page': function (error, inserted_page) {
+        'no error and inserted page is fine': function (error, inserted_page) {
             assert.isNull(error);
             assert.equal(inserted_page.name, 'hurz');
             assert.notStrictEqual(undefined, inserted_page._id);
-            
-            pageProvider.removeAll();
+        },
+        teardown : function () {
+            pageProvider.removeAll();            
+        }    
+    }, 
+    'update works': {
+        topic: function() { 
+            var self = this;
+            pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
+                 pageProvider.save({'name':'schnurz', '_id':inserted_page._id}, self.callback );
+            }); 
+        },
+        'no error and inserted page is fine': function (error, inserted_page) {
+            assert.isNull(error);
+            assert.equal(inserted_page.name, 'schnurz');
+            assert.notStrictEqual(undefined, inserted_page._id);
+        },
+        teardown : function () {
+            pageProvider.removeAll();            
+        }
+    }
+}).addBatch({
+    'test find by id after save': {
+        topic: function() { 
+            var self = this;
+            pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
+                pageProvider.findById(inserted_page._id.toHexString(), self.callback);
+            }); 
+        },
+        'result empty': function (error, page) {
+            assert.isNull(error);
+            assert.notStrictEqual(undefined, page);
+        },
+        teardown : function () {
+            pageProvider.removeAll();            
         }
     }
 }).run();
