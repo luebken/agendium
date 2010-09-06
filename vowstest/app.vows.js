@@ -19,14 +19,24 @@ vows.describe('app').addBatch({
     'app serves static files': {
         topic: function () {
             app.listen(8000);
-            var client = http.createClient(8001);
-            //server.client = http.createClient(server.__port);
-            //client.request('GET',  '/', this.callback);
-            return null; 
+            var client = http.createClient(80, 'localhost');
+            var request = client.request('GET', '/', {'host': 'localhost:8000'});
+            request.end();
+            request.on('response', this.callback);
         },
-        'should respond with a 200 OK': function (e, res) {
-            assert.isNull(e);
-         // assert.equal (res.status, 200);
+        'should respond with a 200 OK': function (res, y) {
+           assert.equal (res.statusCode, 200);
+        }
+    },
+    'app doesnt serve unknown files': {
+        topic: function () {
+            var client = http.createClient(80, 'localhost');
+            var request = client.request('GET', '/sasd', {'host': 'localhost:8000'});
+            request.end();
+            request.on('response', this.callback);
+        },
+        'should respond with a 404': function (res, y) {
+           assert.equal (res.statusCode, 404);
         }
     }
 }).run(); // Run it
