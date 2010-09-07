@@ -108,7 +108,7 @@ module.exports = function staticProvider(root){
                     "Last-Modified": stat.mtime.toUTCString(),
                     // Cache in browser for 1 year
                     //"Cache-Control": "public max-age=" + 31536000
-                    "Cache-Control": "public max-age=0, must-revalidate"
+                    "Cache-Control": "no-cache"
                 });
                 res.end(data);
             }
