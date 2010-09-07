@@ -14,7 +14,7 @@
 
 - (id)init:(id) delegate2
 {
-    self = [self initWithContentRect:CGRectMake(200.0, 150.0, 350.0, 170.0) 
+    self = [self initWithContentRect:CGRectMake(250.0, 150.0, 350.0, 170.0) 
     styleMask:CPHUDBackgroundWindowMask];
 
     if (self)
