@@ -25,15 +25,21 @@
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     @outlet CPButton logoutButton;
+
     CPWebView previewView;
 
     Page rootPage;
     @outlet CPTextField appnameField;
+    @outlet CPTextField appnameProblemLabel;
+
     @outlet CPView pageView;
     PageViewController pageViewController;
     CPString appId;
+
     
     AgendiumConnection aConnection;
+    
+    BOOL validName;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -116,6 +122,8 @@
     logoutButton._DOMElement.style.textDecoration = "underline";
     logoutButton._DOMElement.style.cursor = "pointer"; 
 
+    [appnameProblemLabel setObjectValue:""];
+
     aConnection = [[AgendiumConnection alloc] init];
     
     [self resetData];
@@ -133,7 +141,10 @@
 
 //CPTextField Delegate
 - (void)controlTextDidChange:(id)sender {
+    var appName = [appnameField objectValue];
     var length = [[appnameField objectValue] length];
+    var containsWhiteSpace = /\s/.test(appName);
+    validName = !(containsWhiteSpace | length < 5);    
     [rootPage setTitle:[appnameField objectValue]];
     [self refreshUIFromData];
 /*
@@ -162,8 +173,20 @@
 // private
 //
 - (void) refreshUIFromData {
-    var enable = rootPage.title.length > 0;
-    [saveButton setEnabled:enable];
+    [saveButton setEnabled:validName];
+    if(!validName) {
+        var containsWhiteSpace = /\s/.test(rootPage.title);
+        if(containsWhiteSpace){
+            [appnameProblemLabel setObjectValue:"< Please remove whitespaces."];
+        } else if(rootPage.title.length < 5) {
+            [appnameProblemLabel setObjectValue:""];            
+        } else {
+            [appnameProblemLabel setObjectValue:""];            
+        }
+    } else {
+        [appnameProblemLabel setObjectValue:""];
+    }
+    
     [pageViewController myRefresh];
     var applink = BASEURL + "a/" + appId;    
     if(appId){

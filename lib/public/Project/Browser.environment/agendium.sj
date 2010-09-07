@@ -109,7 +109,7 @@ objj_msgSend(_35,"loginFailed");
 }
 }
 })]);
-p;15;AppController.jt;7517;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;7319;
+p;15;AppController.jt;8075;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;7877;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -121,7 +121,7 @@ objj_executeFile("NewTemplate.j",YES);
 objj_executeFile("AgendiumConnection.j",YES);
 objj_executeFile("Config.j",YES);
 var _1=objj_allocateClassPair(CPObject,"AppController"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("aConnection")]);
+class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("aConnection"),new objj_ivar("validName")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("applicationDidFinishLaunching:"),function(_3,_4,_5){
 with(_3){
@@ -156,6 +156,7 @@ objj_msgSend(logoutButton,"setBordered:",NO);
 objj_msgSend(logoutButton,"setImage:",objj_msgSend(objj_msgSend(CPImage,"alloc"),"initWithContentsOfFile:","Resources/logout2.png"));
 logoutButton._DOMElement.style.textDecoration="underline";
 logoutButton._DOMElement.style.cursor="pointer";
+objj_msgSend(appnameProblemLabel,"setObjectValue:","");
 aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
 objj_msgSend(_6,"resetData");
 objj_msgSend(appnameField,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"lightGrayColor"),"text-color",CPTextFieldStatePlaceholder);
@@ -167,109 +168,125 @@ objj_msgSend(saveButton,"setEnabled:",rootPage.title.length>0);
 }
 }),new objj_method(sel_getUid("controlTextDidChange:"),function(_b,_c,_d){
 with(_b){
-var _e=objj_msgSend(objj_msgSend(appnameField,"objectValue"),"length");
+var _e=objj_msgSend(appnameField,"objectValue");
+var _f=objj_msgSend(objj_msgSend(appnameField,"objectValue"),"length");
+var _10=/\s/.test(_e);
+validName=!(_10|_f<5);
 objj_msgSend(rootPage,"setTitle:",objj_msgSend(appnameField,"objectValue"));
 objj_msgSend(_b,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("selectedPage:reverse:"),function(_f,_10,_11,_12){
-with(_f){
-var cmd="jQT.goTo(\"#"+_11.navigationId+"\", \"slide\"";
-if(_12){
+}),new objj_method(sel_getUid("selectedPage:reverse:"),function(_11,_12,_13,_14){
+with(_11){
+var cmd="jQT.goTo(\"#"+_13.navigationId+"\", \"slide\"";
+if(_14){
 cmd+=", \"reverse\"";
 }
 cmd+=");";
 console.log("cmd "+cmd);
 objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
-}),new objj_method(sel_getUid("refreshUIFromData"),function(_13,_14){
-with(_13){
-var _15=rootPage.title.length>0;
-objj_msgSend(saveButton,"setEnabled:",_15);
+}),new objj_method(sel_getUid("refreshUIFromData"),function(_15,_16){
+with(_15){
+objj_msgSend(saveButton,"setEnabled:",validName);
+if(!validName){
+var _17=/\s/.test(rootPage.title);
+if(_17){
+objj_msgSend(appnameProblemLabel,"setObjectValue:","< Please remove whitespaces.");
+}else{
+if(rootPage.title.length<5){
+objj_msgSend(appnameProblemLabel,"setObjectValue:","");
+}else{
+objj_msgSend(appnameProblemLabel,"setObjectValue:","");
+}
+}
+}else{
+objj_msgSend(appnameProblemLabel,"setObjectValue:","");
+}
 objj_msgSend(pageViewController,"myRefresh");
-var _16=BASEURL+"a/"+appId;
+var _18=BASEURL+"a/"+appId;
 if(appId){
-objj_msgSend(previewView,"setMainFrameURL:",_16);
-objj_msgSend(previewButton,"setTitle:",_16);
+objj_msgSend(previewView,"setMainFrameURL:",_18);
+objj_msgSend(previewButton,"setTitle:",_18);
 }else{
 objj_msgSend(previewButton,"setTitle:","");
 objj_msgSend(previewView,"setMainFrameURL:",BASEURL+"preview");
 }
 }
-}),new objj_method(sel_getUid("resetData"),function(_17,_18){
-with(_17){
+}),new objj_method(sel_getUid("resetData"),function(_19,_1a){
+with(_19){
 rootPage=objj_msgSend(objj_msgSend(Page,"alloc"),"init");
 objj_msgSend(rootPage,"setTitle:",objj_msgSend(appnameField,"objectValue"));
 rootPage.navigationId="r";
 pageViewController.page=rootPage;
 appId=null;
 }
-}),new objj_method(sel_getUid("openMobileApp"),function(_19,_1a){
-with(_19){
-var _1b=BASEURL+"a/"+appId;
-window.open(_1b,"mywindow");
+}),new objj_method(sel_getUid("openMobileApp"),function(_1b,_1c){
+with(_1b){
+var _1d=BASEURL+"a/"+appId;
+window.open(_1d,"mywindow");
 }
-}),new objj_method(sel_getUid("load:"),function(_1c,_1d,_1e){
-with(_1c){
-objj_msgSend(objj_msgSend(objj_msgSend(OpenPanel,"alloc"),"init:",_1c),"orderFront:",nil);
+}),new objj_method(sel_getUid("load:"),function(_1e,_1f,_20){
+with(_1e){
+objj_msgSend(objj_msgSend(objj_msgSend(OpenPanel,"alloc"),"init:",_1e),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("login:"),function(_1f,_20,_21){
-with(_1f){
+}),new objj_method(sel_getUid("login:"),function(_21,_22,_23){
+with(_21){
 history.go(-1);
 }
-}),new objj_method(sel_getUid("new:"),function(_22,_23,_24){
-with(_22){
-objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_22),"orderFront:",nil);
+}),new objj_method(sel_getUid("new:"),function(_24,_25,_26){
+with(_24){
+objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_24),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("save:"),function(_25,_26,_27){
-with(_25){
-objj_msgSend(aConnection,"saveAgenda:rootPage:delegate:",appId,rootPage,_25);
+}),new objj_method(sel_getUid("save:"),function(_27,_28,_29){
+with(_27){
+objj_msgSend(aConnection,"saveAgenda:rootPage:delegate:",appId,rootPage,_27);
 }
-}),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_28,_29,_2a,_2b){
-with(_28){
-objj_msgSend(appnameField,"setObjectValue:",_2b.title);
-_28.appId=_2a;
-_28.rootPage=_2b;
-objj_msgSend(pageViewController,"setPage:",_2b);
-objj_msgSend(_28,"refreshUIFromData");
+}),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_2a,_2b,_2c,_2d){
+with(_2a){
+objj_msgSend(appnameField,"setObjectValue:",_2d.title);
+_2a.appId=_2c;
+_2a.rootPage=_2d;
+objj_msgSend(pageViewController,"setPage:",_2d);
+objj_msgSend(_2a,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("didReceiveAgenda:"),function(_2c,_2d,_2e){
-with(_2c){
-_2c.appId=_2e;
-objj_msgSend(_2c,"refreshUIFromData");
+}),new objj_method(sel_getUid("didReceiveAgenda:"),function(_2e,_2f,_30){
+with(_2e){
+_2e.appId=_30;
+objj_msgSend(_2e,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_2f,_30,_31,_32){
-with(_2f){
-var _33=objj_msgSend(pageViewController,"page");
-var cmd="jQT.goTo(\"#"+_33.navigationId+"\");";
+}),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_31,_32,_33,_34){
+with(_31){
+var _35=objj_msgSend(pageViewController,"page");
+var cmd="jQT.goTo(\"#"+_35.navigationId+"\");";
 console.log("didFinishLoadForFrame "+cmd);
 objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
-}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_34,_35,msg){
-with(_34){
-alert(msg);
-objj_msgSend(_34,"resetData");
-objj_msgSend(_34,"refreshUIFromData");
-}
-}),new objj_method(sel_getUid("panelDidClose:data:"),function(_36,_37,tag,_38){
+}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_36,_37,msg){
 with(_36){
+alert(msg);
+objj_msgSend(_36,"resetData");
+objj_msgSend(_36,"refreshUIFromData");
+}
+}),new objj_method(sel_getUid("panelDidClose:data:"),function(_38,_39,tag,_3a){
+with(_38){
 if(tag==="login"){
-objj_msgSend(theWindow,"orderFront:",_36);
+objj_msgSend(theWindow,"orderFront:",_38);
 }
 if(tag==="open"){
-console.log("Loading Agenda with id: "+_38);
-objj_msgSend(aConnection,"loadAgenda:delegate:",_38,_36);
+console.log("Loading Agenda with id: "+_3a);
+objj_msgSend(aConnection,"loadAgenda:delegate:",_3a,_38);
 }
 if(tag==="empty"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_36,"resetData");
-objj_msgSend(_36,"didReceiveAgenda:",undefined);
+objj_msgSend(_38,"resetData");
+objj_msgSend(_38,"didReceiveAgenda:",undefined);
 }
 if(tag==="threedaytwotracks"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_36,"resetData");
+objj_msgSend(_38,"resetData");
 var obj=JSON.parse(objj_msgSend(NewTemplate,"data"));
-var _39=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_36,"didReceiveAgenda:withRootPage:",undefined,_39);
+var _3b=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_38,"didReceiveAgenda:withRootPage:",undefined,_3b);
 }
 }
 })]);
@@ -548,7 +565,7 @@ delegate=_7;
 }
 }),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
 with(_8){
-_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,150,350,170),CPHUDBackgroundWindowMask);
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(250,150,350,170),CPHUDBackgroundWindowMask);
 if(_8){
 _8.delegate=_a;
 objj_msgSend(_8,"setTitle:","Private Beta Login");
@@ -711,13 +728,13 @@ objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_16,"tag"),nil);
 objj_msgSend(_14,"close");
 }
 })]);
-p;13;NewTemplate.jt;2662;@STATIC;1.0;I;21;Foundation/CPObject.jt;2617;
+p;13;NewTemplate.jt;3436;@STATIC;1.0;I;21;Foundation/CPObject.jt;3391;
 objj_executeFile("Foundation/CPObject.j",NO);
 var _1=objj_allocateClassPair(CPObject,"NewTemplate"),_2=_1.isa;
 objj_registerClassPair(_1);
 class_addMethods(_2,[new objj_method(sel_getUid("data"),function(_3,_4){
 with(_3){
-var _5={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:"Update: 12.12. / 9:00",children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:"04 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc:","value":"A detailed description about his session"},{"key":"Link:","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic Y",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 3",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 1",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 02",subtitle:"05 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 03",subtitle:"06 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
+var _5={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:"Update: 12.12. / 9:00",children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:"04 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic Y",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 3",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 1",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 02",subtitle:"05 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 03",subtitle:"06 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
 return JSON.stringify(_5);
 }
 })]);
