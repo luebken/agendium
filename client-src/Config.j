@@ -1,1 +1,1 @@
-BASEURL = "http://touchium.com/";
+BASEURL = "http://localhost:8000/";
