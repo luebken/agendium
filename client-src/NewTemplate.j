@@ -45,8 +45,8 @@
                             subtitle: '9:00 - 10:30 in Room 1',
                             attributes : [
                                 {'key':'Speaker','value':'Some speaker'},
-                                {'key':'Desc:','value':'A detailed description about his session'},
-                                {'key':'Link:','value':'http://www.agendium.de'}
+                                {'key':'Desc','value':'A detailed description about his session'},
+                                {'key':'Link','value':'http://www.agendium.de'}
                             ],
                             children : []
                         },
@@ -136,6 +136,37 @@
                             children : []
                         }
                     ]
+                },
+                {
+                    type: 'Navigation',
+                    title: 'Track B',
+                    subtitle: 'This track is about topic X',
+                    children : [
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '9:00 - 10:30 in Room 1',
+                            attributes : [
+                            ],
+                            children : []
+                        },
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '11:00 - 12:30 in Room 2',
+                            attributes : [
+                            ],
+                            children : []
+                        },
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '14:00 - 15:30 in Room 3',
+                            attributes : [
+                            ],
+                            children : []
+                        }
+                    ]
                 }
               ]
             },
@@ -147,6 +178,37 @@
                 {
                     type: 'Navigation',
                     title: 'Track A',
+                    subtitle: 'This track is about topic X',
+                    children : [
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '9:00 - 10:30 in Room 1',
+                            attributes : [
+                            ],
+                            children : []
+                        },
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '11:00 - 12:30 in Room 2',
+                            attributes : [
+                            ],
+                            children : []
+                        },
+                        {
+                            type: 'Detail',
+                            title: 'A great session',
+                            subtitle: '14:00 - 15:30 in Room 3',
+                            attributes : [
+                            ],
+                            children : []
+                        }
+                    ]
+                },
+                {
+                    type: 'Navigation',
+                    title: 'Track B',
                     subtitle: 'This track is about topic X',
                     children : [
                         {
