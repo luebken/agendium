@@ -1,1 +1,1 @@
-BASEURL = "http://agendium.heroku.com/";
+BASEURL = "http://touchium.com/";
