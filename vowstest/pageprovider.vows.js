@@ -1,11 +1,11 @@
 require.paths.unshift('vendor/testlib');
 
 var vows = require('vows'),
-    assert = require('assert');    
-
-var http = require('http'),
-     //app = require('../lib/app').app,
-     pageProvider = require('../lib/app').pageProvider;
+    assert = require('assert'),
+    http = require('http');
+    
+var PageProvider = require('../lib/pageprovider').PageProvider;
+var pageProvider = new PageProvider();
 
 vows.describe('app').addBatch({
     'app is configured': {
@@ -19,6 +19,8 @@ vows.describe('app').addBatch({
         'db is not null': function(db, db2) {
             assert.isNotNull(db);
             assert.notStrictEqual(undefined, db);
+            assert.isNotNull(pageProvider.database);
+            assert.equal(db, pageProvider.database);
         }
     }
 }).addBatch({
@@ -29,12 +31,13 @@ vows.describe('app').addBatch({
             assert.equal('page', page_collection.collectionName);
         }
     },
-    'collection size': {
+    'collection is empty': {
         topic: function() { 
             var self = this;
-            pageProvider.getCollection( function(error, page_collection) {
-                assert.notStrictEqual(undefined, page_collection);
-                page_collection.count(error, self.callback);
+            pageProvider.removeAll(function() {
+                pageProvider.getCollection( function(error, page_collection) {
+                    page_collection.count(error, self.callback);
+                });
             });
         },
         'collection has no entries': function (error, n) {
@@ -43,7 +46,26 @@ vows.describe('app').addBatch({
     }
 }).addBatch({
     'test initially cant find by id': {
-        topic: function() { pageProvider.findById('1', this.callback) },
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.findById('1', self.callback) 
+            });
+        },
+        'result empty': function (error, page) {
+            assert.isNull(error);
+            assert.isUndefined(page);
+        }
+    }
+})
+.addBatch({
+    'test initially cant find by name': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.findByName('appname', self.callback) 
+            });
+        },
         'result empty': function (error, page) {
             assert.isNull(error);
             assert.isUndefined(page);
@@ -51,46 +73,87 @@ vows.describe('app').addBatch({
     }
 }).addBatch({
     'initial save works': {
-        topic: function() { pageProvider.save({'name':'hurz', '_id':'undefined'}, this.callback ) },
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'name':'hurz', '_id':'undefined'}, self.callback ) 
+            });
+        },
         'no error and inserted page is fine': function (error, inserted_page) {
             assert.isNull(error);
             assert.equal(inserted_page.name, 'hurz');
-            assert.notStrictEqual(undefined, inserted_page._id);
-        },
-        teardown : function () {
-            pageProvider.removeAll();            
+            assert.notStrictEqual(undefined, inserted_page._id);            
         }    
-    }, 
+    }
+}).addBatch({ 
     'update works': {
         topic: function() { 
             var self = this;
-            pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
-                 pageProvider.save({'name':'schnurz', '_id':inserted_page._id}, self.callback );
-            }); 
+            pageProvider.removeAll(function() {
+                pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
+                     pageProvider.save({'name':'schnurz', '_id':inserted_page._id}, self.callback );
+                }); 
+            });
         },
         'no error and inserted page is fine': function (error, inserted_page) {
             assert.isNull(error);
             assert.equal(inserted_page.name, 'schnurz');
             assert.notStrictEqual(undefined, inserted_page._id);
-        },
-        teardown : function () {
-            pageProvider.removeAll();            
         }
     }
 }).addBatch({
     'test find by id after save': {
         topic: function() { 
             var self = this;
-            pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
-                pageProvider.findById(inserted_page._id.toHexString(), self.callback);
-            }); 
+            pageProvider.removeAll(function() {
+                pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
+                    pageProvider.findById(inserted_page._id.toHexString(), self.callback);
+                }); 
+            });
         },
-        'result empty': function (error, page) {
+        'result not empty': function (error, page) {
             assert.isNull(error);
-            assert.notStrictEqual(undefined, page);
-        },
-        teardown : function () {
-            pageProvider.removeAll();            
+            assert.notStrictEqual(undefined, page);           
         }
     }
-}).run();
+}).addBatch({
+    'test find by name after save': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'rootpage':{'title': 'hurx'}, '_id':'undefined'}, function(error, inserted_page) {
+                    pageProvider.findByName('hurx', self.callback);
+                }); 
+            });
+        },
+        'result not empty': function (error, page) {
+            assert.isNull(error);
+            assert.notStrictEqual(undefined, page);
+        }
+    }
+}).addBatch({
+    'test find by name with capitals': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
+                    pageProvider.findByName('neu', self.callback);
+                }); 
+            });
+        },
+        'result not empty': function (error, page) {
+            assert.isNull(error);
+            assert.notStrictEqual(undefined, page.rootpage.title);
+            assert.equal('neu', page.rootpage.title);
+        }
+    }
+})
+.addBatch({
+    'database connection closed': {
+        topic: function() { pageProvider.close(); return null;},
+        'db is not null': function() {
+            assert.isNull(pageProvider.database);
+        }
+    }
+})
+.run();
