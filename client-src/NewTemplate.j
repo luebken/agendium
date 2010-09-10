@@ -8,7 +8,86 @@
 {
 }
 
-+ (id) data {
++ (id) data: (CPString) choice {
+    if(choice == 'onedayonetrack') {
+        return [NewTemplate dataonedayonetrack];
+    } else {
+        return [NewTemplate datathreedaystwotracks];
+    }
+}
++ (id) dataonedayonetrack {
+    var data2 = { 
+      rootpage: { 
+          type: 'Navigation',
+          title: '',
+          children : [
+            {
+              type: 'Detail',
+              title: 'News',
+              subtitle: 'Update: 12.12. / 9:00',
+              children : [],
+              attributes : [
+                  {'key':'Info', 'value':'This is a perfect place to put in some information about agenda changes.'}
+              ]
+            },
+            {
+              type: 'Spacer',
+              title: 'Conference',
+              subtitle: '',
+              children : [ ]
+            },
+            {
+              type: 'Navigation',
+              title: 'Sessions',
+              subtitle: '04 October, 2010',
+              children : [
+                  {
+                      type: 'Detail',
+                      title: 'A great session',
+                      subtitle: '9:00 - 10:30 in Room 1',
+                      attributes : [
+                          {'key':'Speaker','value':'Some speaker'},
+                          {'key':'Desc','value':'A detailed description about his session'},
+                          {'key':'Link','value':'http://www.agendium.de'}
+                      ],
+                      children : []
+                  },
+                  {
+                      type: 'Detail',
+                      title: 'A great session',
+                      subtitle: '11:00 - 12:30 in Room 2',
+                      attributes : [
+                      ],
+                      children : []
+                  },
+                  {
+                      type: 'Detail',
+                      title: 'A great session',
+                      subtitle: '14:00 - 15:30 in Room 3',
+                      attributes : [
+                      ],
+                      children : []
+                  }
+              ]            
+            }
+          ,
+          {
+            type: 'Spacer',
+            title: '',
+            subtitle: '',
+            children : []
+          },
+          {
+            type: 'Navigation',
+            title: 'Infos',
+            subtitle: 'General information',
+            children : []
+          }]
+      }
+    };
+    return JSON.stringify(data2);
+}
++ (id) datathreedaystwotracks {
     var data2 = { 
       rootpage: { 
           type: 'Navigation',

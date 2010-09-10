@@ -298,10 +298,10 @@
         [self resetData];
         [self didReceiveAgenda:undefined];
     }
-    if(tag === "threedaytwotracks"){
+    if(tag === "threedaytwotracks" || tag === "onedayonetrack"){
         [appnameField setObjectValue:""];
         [self resetData];
-        var obj = JSON.parse([NewTemplate data]);
+        var obj = JSON.parse([NewTemplate data:tag]);
         var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
         [self didReceiveAgenda:undefined withRootPage:rootPage];        
     }
