@@ -37,10 +37,10 @@
     CPString appId;
     CPString nameOKServer;
 
-    
     AgendiumConnection aConnection;
     
     BOOL validName;
+    BOOL namechanged;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -142,6 +142,7 @@
 
 //CPTextField Delegate
 - (void)controlTextDidChange:(id)sender {
+    namechanged = true;
     var appName = [appnameField objectValue];
     var length = [[appnameField objectValue] length];
     var containsWhiteSpace = /\s/.test(appName);
@@ -196,9 +197,10 @@
     }
     
     [pageViewController myRefresh];
-    var applink = BASEURL + "a/" + rootPage.title;    
     if(appId){
-        [previewView setMainFrameURL:applink];
+        var applink = BASEURL + "a/" + rootPage.title;
+        var previewlink = BASEURL + "prev/" + appId;
+        [previewView setMainFrameURL:previewlink];
         [previewButton setTitle:applink]; 
     } else {
         [previewButton setTitle:""]; 
@@ -214,8 +216,12 @@
     appId = null; 
 }
 - (void) openMobileApp {
-    var applink = BASEURL + "a/" + rootPage.title;
-    window.open (applink,"mywindow");
+    if(namechanged) {
+        window.alert('Please save before opening the app.')
+    } else {
+        var link = BASEURL + "a/" + rootPage.title;
+        window.open (link,"mywindow");
+    }
 }
 
 //
@@ -240,6 +246,7 @@
 // AgendiumConnection Delegate
 //
 -(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
+    self.namechanged = false;
     [appnameField setObjectValue:newRootpage.title];
     self.appId = appId2;
     self.rootPage = newRootpage
@@ -247,6 +254,7 @@
     [self refreshUIFromData];
 }
 -(void)didReceiveAgenda:(id)appId2 {
+    self.namechanged = false;    
     self.appId = appId2;
     [self refreshUIFromData];
 
