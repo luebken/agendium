@@ -119,7 +119,7 @@ with(_3b){
 objj_msgSend(_3e,"didReceiveCheckName:",_3d);
 }
 })]);
-p;15;AppController.jt;8702;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8504;
+p;15;AppController.jt;8741;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8543;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -168,9 +168,9 @@ logoutButton._DOMElement.style.textDecoration="underline";
 logoutButton._DOMElement.style.cursor="pointer";
 objj_msgSend(appnameProblemLabel,"setObjectValue:","");
 aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
-objj_msgSend(_6,"resetData");
 objj_msgSend(appnameField,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"lightGrayColor"),"text-color",CPTextFieldStatePlaceholder);
-objj_msgSend(_6,"refreshUIFromData");
+objj_msgSend(_6,"resetData");
+objj_msgSend(_6,"didReceiveAgenda:",undefined);
 }
 }),new objj_method(sel_getUid("pageDidChange:"),function(_8,_9,_a){
 with(_8){
@@ -311,10 +311,10 @@ objj_msgSend(appnameField,"setObjectValue:","");
 objj_msgSend(_3c,"resetData");
 objj_msgSend(_3c,"didReceiveAgenda:",undefined);
 }
-if(tag==="threedaytwotracks"){
+if(tag==="threedaytwotracks"||tag==="onedayonetrack"){
 objj_msgSend(appnameField,"setObjectValue:","");
 objj_msgSend(_3c,"resetData");
-var obj=JSON.parse(objj_msgSend(NewTemplate,"data"));
+var obj=JSON.parse(objj_msgSend(NewTemplate,"data:",tag));
 var _3f=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
 objj_msgSend(_3c,"didReceiveAgenda:withRootPage:",undefined,_3f);
 }
@@ -382,8 +382,8 @@ p;12;Config-dev.jt;52;@STATIC;1.0;t;35;
 BASEURL="http://localhost:8000/";
 p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
-p;8;Config.jt;52;@STATIC;1.0;t;35;
-BASEURL="http://localhost:8000/";
+p;8;Config.jt;50;@STATIC;1.0;t;33;
+BASEURL="http://touchium.com/";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -685,7 +685,7 @@ objj_executeFile("AppController.j",YES);
 main=function(_1,_2){
 CPApplicationMain(_1,_2);
 };
-p;10;NewPanel.jt;3500;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;3434;
+p;10;NewPanel.jt;2774;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2708;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"NewPanel"),_2=_1.isa;
@@ -701,7 +701,7 @@ delegate=_7;
 }
 }),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
 with(_8){
-_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,150,310,170),CPHUDBackgroundWindowMask);
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,110,310,130),CPHUDBackgroundWindowMask);
 if(_8){
 _8.delegate=_a;
 objj_msgSend(_8,"setTitle:","New Agenda");
@@ -713,10 +713,10 @@ objj_msgSend(_d,"sizeToFit");
 objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
 objj_msgSend(_d,"setFrameOrigin:",CGPointMake(45,5));
 objj_msgSend(_b,"addSubview:",_d);
-var _e=objj_msgSend(CPButton,"buttonWithTitle:theme:","3 days 1 track",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+var _e=objj_msgSend(CPButton,"buttonWithTitle:theme:","1 day 1 track",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
 objj_msgSend(_e,"setFrame:",CGRectMake(30,50,110,20));
 objj_msgSend(_b,"addSubview:",_e);
-objj_msgSend(_e,"setTag:","threedaytwotracks");
+objj_msgSend(_e,"setTag:","onedayonetrack");
 objj_msgSend(_e,"setTarget:",_8);
 objj_msgSend(_e,"setAction:",sel_getUid("buttonAction:"));
 var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","3 days 2 tracks",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
@@ -725,47 +725,48 @@ objj_msgSend(_b,"addSubview:",_f);
 objj_msgSend(_f,"setTag:","threedaytwotracks");
 objj_msgSend(_f,"setTarget:",_8);
 objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
-var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","5 days 1 track",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Empty",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
 objj_msgSend(_10,"setFrame:",CGRectMake(30,80,110,20));
 objj_msgSend(_b,"addSubview:",_10);
-objj_msgSend(_10,"setTag:","threedaytwotracks");
+objj_msgSend(_10,"setTag:","empty");
 objj_msgSend(_10,"setTarget:",_8);
 objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
-var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","3 days 2 tracks",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
 objj_msgSend(_11,"setFrame:",CGRectMake(170,80,110,20));
 objj_msgSend(_b,"addSubview:",_11);
-objj_msgSend(_11,"setTag:","threedaytwotracks");
+objj_msgSend(_11,"setTag:","cancel");
 objj_msgSend(_11,"setTarget:",_8);
 objj_msgSend(_11,"setAction:",sel_getUid("buttonAction:"));
-var _12=objj_msgSend(CPButton,"buttonWithTitle:theme:","Empty",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_12,"setFrame:",CGRectMake(30,120,110,20));
-objj_msgSend(_b,"addSubview:",_12);
-objj_msgSend(_12,"setTag:","empty");
-objj_msgSend(_12,"setTarget:",_8);
-objj_msgSend(_12,"setAction:",sel_getUid("buttonAction:"));
-var _13=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_13,"setFrame:",CGRectMake(170,120,110,20));
-objj_msgSend(_b,"addSubview:",_13);
-objj_msgSend(_13,"setTag:","cancel");
-objj_msgSend(_13,"setTarget:",_8);
-objj_msgSend(_13,"setAction:",sel_getUid("buttonAction:"));
 }
 return _8;
 }
-}),new objj_method(sel_getUid("buttonAction:"),function(_14,_15,_16){
-with(_14){
-objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_16,"tag"),nil);
-objj_msgSend(_14,"close");
+}),new objj_method(sel_getUid("buttonAction:"),function(_12,_13,_14){
+with(_12){
+objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_14,"tag"),nil);
+objj_msgSend(_12,"close");
 }
 })]);
-p;13;NewTemplate.jt;3436;@STATIC;1.0;I;21;Foundation/CPObject.jt;3391;
+p;13;NewTemplate.jt;4743;@STATIC;1.0;I;21;Foundation/CPObject.jt;4698;
 objj_executeFile("Foundation/CPObject.j",NO);
 var _1=objj_allocateClassPair(CPObject,"NewTemplate"),_2=_1.isa;
 objj_registerClassPair(_1);
-class_addMethods(_2,[new objj_method(sel_getUid("data"),function(_3,_4){
+class_addMethods(_2,[new objj_method(sel_getUid("data:"),function(_3,_4,_5){
 with(_3){
-var _5={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:"Update: 12.12. / 9:00",children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:"04 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic Y",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 3",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 1",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 02",subtitle:"05 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 03",subtitle:"06 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
-return JSON.stringify(_5);
+if(_5=="onedayonetrack"){
+return objj_msgSend(NewTemplate,"dataonedayonetrack");
+}else{
+return objj_msgSend(NewTemplate,"datathreedaystwotracks");
+}
+}
+}),new objj_method(sel_getUid("dataonedayonetrack"),function(_6,_7){
+with(_6){
+var _8={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:"Update: 12.12. / 9:00",children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Sessions",subtitle:"04 October, 2010",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
+return JSON.stringify(_8);
+}
+}),new objj_method(sel_getUid("datathreedaystwotracks"),function(_9,_a){
+with(_9){
+var _b={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:"Update: 12.12. / 9:00",children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:"04 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic Y",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 3",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 1",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 02",subtitle:"05 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Navigation",title:"Day 03",subtitle:"06 October, 2010",children:[{type:"Navigation",title:"Track A",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Navigation",title:"Track B",subtitle:"This track is about topic X",children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
+return JSON.stringify(_b);
 }
 })]);
 p;11;OpenPanel.jt;2397;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2331;
