@@ -35,6 +35,7 @@
     @outlet CPView pageView;
     PageViewController pageViewController;
     CPString appId;
+    CPString nameOKServer;
 
     
     AgendiumConnection aConnection;
@@ -147,6 +148,11 @@
     validName = !(containsWhiteSpace | length < 5);    
     [rootPage setTitle:[appnameField objectValue]];
     [self refreshUIFromData];
+    
+    if(validName) {
+        [aConnection checkAppName:appName forId:appId delegate:self];
+    }
+    
 /*
     [[CPNotificationCenter defaultCenter] 
         postNotificationName:@"PageChangedNotification" 
@@ -173,7 +179,7 @@
 // private
 //
 - (void) refreshUIFromData {
-    [saveButton setEnabled:validName];
+    [saveButton setEnabled:validName && nameOKServer === 'true'];
     if(!validName) {
         var containsWhiteSpace = /\s/.test(rootPage.title);
         if(containsWhiteSpace){
@@ -183,6 +189,8 @@
         } else {
             [appnameProblemLabel setObjectValue:""];            
         }
+    } else if(nameOKServer === 'false'){
+        [appnameProblemLabel setObjectValue:"< Name is already taken."];
     } else {
         [appnameProblemLabel setObjectValue:""];
     }
@@ -243,10 +251,16 @@
     [self refreshUIFromData];
 
 }
+- (void)didReceiveCheckName:(id)nameOK {
+    console.log('didReceiveCheckName ' + nameOK);
+    self.nameOKServer = nameOK;
+    [self refreshUIFromData];
+}
+
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
     var page = [pageViewController page];
     var cmd = 'jQT.goTo("#' + page.navigationId + '");';
-    console.log("didFinishLoadForFrame " + cmd);
+    //console.log("didFinishLoadForFrame " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
     //FIXME Here some redrawing action?
     //previewView._DOMElement.style.webkitTransformOrigin = "10 10";

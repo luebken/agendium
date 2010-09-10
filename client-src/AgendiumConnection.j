@@ -10,6 +10,8 @@
     id saveDelegate;
     CPURLConnection loginConnection;
     id loginDelegate;
+    CPURLConnection checkNameConnection;
+    id checkNameDelegate;
 }
 - (id)init
 {
@@ -19,7 +21,6 @@
 
 
 - (void) loadAgenda:(CPString)id delegate:(id)delegate {
-    console.log(@"loading...");
     var request = [CPURLRequest requestWithURL:BASEURL+"agenda/"+id];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
@@ -27,7 +28,6 @@
 }
 
 - (void) checkUser:(CPString)email delegate:(id)delegate {
-    console.log(@"checkUser...");
     var request = [CPURLRequest requestWithURL:BASEURL+"user/"+email];
     [request setHTTPMethod:'GET'];
     loginConnection = [CPURLConnection connectionWithRequest:request delegate:self];
@@ -44,9 +44,16 @@
     
     //console.log("[request HTTPBody]: " + [request HTTPBody]);
     //console.log("[request allHTTPHeaderFields]: " + [request allHTTPHeaderFields]);
-    console.log("Saving JSON: " + jsonData)    
+    //console.log("Saving JSON: " + jsonData)    
     saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     saveDelegate = delegate;
+}
+
+- (void) checkAppName:(CPString)name forId:(CPString)id delegate:(id)delegate {
+    var request = [CPURLRequest requestWithURL:BASEURL+"isnameok/" + name + "/" + id];
+    [request setHTTPMethod:'GET'];
+    checkNameConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    checkNameDelegate = delegate;
 }
 
 
@@ -54,7 +61,7 @@
 //CPURLConnection delegate
 //
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
-    console.log("didReceiveData: '" + data + "'");
+    //console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
         [self didReceiveSaveData:data delegate:saveDelegate];
     }
@@ -63,6 +70,9 @@
     }
     if(connection == loginConnection) {
         [self didReceiveLoginData:data delegate:loginDelegate];
+    }
+    if(connection == checkNameConnection) {
+        [self didReceiveCheckNameData:data delegate:checkNameDelegate];
     }
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
@@ -118,6 +128,10 @@
     } else {
         [delegate loginFailed];        
     }
+}
+
+-(void)didReceiveCheckNameData:(CPString)data delegate:(id)delegate {
+    [delegate didReceiveCheckName:data];
 }
 
 @end
