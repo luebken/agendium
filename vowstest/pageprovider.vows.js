@@ -147,6 +147,49 @@ vows.describe('app').addBatch({
             assert.equal('neu', page.rootpage.title);
         }
     }
+}).addBatch({
+    'name is ok because its not found': {
+        topic: function() { 
+            var self = this;
+            pageProvider.isNameOK('einnichtvorhandenername', '123', self.callback);
+        },
+        'result is true': function (error, result) {
+            assert.isNull(error);
+            assert.equal(true, result);
+        }
+    }
+})
+.addBatch({
+    'name is ok because its found and its id is equal': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
+                    pageProvider.isNameOK('neu', inserted_page._id.toHexString(), self.callback);
+                }); 
+            });        
+        },
+        'result is true': function (error, result) {
+            assert.isNull(error);
+            assert.equal(result, true);
+        }
+    }
+})
+.addBatch({
+    'test name is not ok because its found and it id is not equal': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
+                    pageProvider.isNameOK('neu', '123', self.callback);
+                }); 
+            });        
+        },
+        'result is true': function (error, result) {
+            assert.isNull(error);
+            assert.equal(result, false);
+        }
+    }
 })
 .addBatch({
     'database connection closed': {
