@@ -127,10 +127,10 @@
 
     aConnection = [[AgendiumConnection alloc] init];
     
-    [self resetData];
- 
     [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
-    [self refreshUIFromData]
+    
+    [self resetData];
+    [self didReceiveAgenda:undefined];     
 }
 
 
