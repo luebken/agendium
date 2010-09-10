@@ -196,7 +196,7 @@
     }
     
     [pageViewController myRefresh];
-    var applink = BASEURL + "a/" + appId;    
+    var applink = BASEURL + "a/" + rootPage.title;    
     if(appId){
         [previewView setMainFrameURL:applink];
         [previewButton setTitle:applink]; 
@@ -214,7 +214,7 @@
     appId = null; 
 }
 - (void) openMobileApp {
-    var applink = BASEURL + "a/" + appId;
+    var applink = BASEURL + "a/" + rootPage.title;
     window.open (applink,"mywindow");
 }
 
