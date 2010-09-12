@@ -96,6 +96,14 @@ task ("prodbuild", ["config-prod", "release"], function()
     printResults("My Deploy")
 });
 
+task ("date", function()
+{
+    OS.system('echo BUILDDATE=\\" > Builddate.j');
+    OS.system('date >> Builddate.j');
+    OS.system('echo \\" >> Builddate.j');
+    printResults("date")
+});
+
 
 task ("desktop", ["release"], function()
 {
