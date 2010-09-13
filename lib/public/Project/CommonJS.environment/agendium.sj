@@ -119,7 +119,7 @@ with(_3c){
 objj_msgSend(_3f,"didReceiveCheckName:",_3e);
 }
 })]);
-p;15;AppController.jt;8742;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8544;
+p;15;AppController.jt;8832;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8634;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -131,7 +131,7 @@ objj_executeFile("NewTemplate.j",YES);
 objj_executeFile("AgendiumConnection.j",YES);
 objj_executeFile("Config.j",YES);
 var _1=objj_allocateClassPair(CPObject,"AppController"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("nameOKServer"),new objj_ivar("aConnection"),new objj_ivar("validName"),new objj_ivar("namechanged")]);
+class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("buildDateLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("nameOKServer"),new objj_ivar("aConnection"),new objj_ivar("validName"),new objj_ivar("namechanged")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("applicationDidFinishLaunching:"),function(_3,_4,_5){
 with(_3){
@@ -169,6 +169,7 @@ logoutButton._DOMElement.style.cursor="pointer";
 objj_msgSend(appnameProblemLabel,"setObjectValue:","");
 aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
 objj_msgSend(appnameField,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"lightGrayColor"),"text-color",CPTextFieldStatePlaceholder);
+objj_msgSend(buildDateLabel,"setObjectValue:",BUILDDATE);
 objj_msgSend(_6,"resetData");
 objj_msgSend(_6,"didReceiveAgenda:",undefined);
 }
@@ -378,12 +379,14 @@ with(_13){
 with(_16){
 }
 })]);
-p;12;Config-dev.jt;52;@STATIC;1.0;t;35;
+p;12;Config-dev.jt;75;@STATIC;1.0;t;58;
 BASEURL="http://localhost:8000/";
+BUILDDATE="vDEVBUILD";
 p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
-p;8;Config.jt;50;@STATIC;1.0;t;33;
+p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
+BUILDDATE="v20100913-18:53:42";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -1252,6 +1255,7 @@ objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Text","Link","Tweeter"]);
 }
 }
 })]);
+p;6;Test.jt;17;@STATIC;1.0;t;1;
 p;21;TextFieldColumnView.jt;1171;@STATIC;1.0;I;15;AppKit/CPView.jt;1132;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPTextField,"TextFieldColumnView"),_2=_1.isa;

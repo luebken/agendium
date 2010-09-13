@@ -31,6 +31,7 @@
     Page rootPage;
     @outlet CPTextField appnameField;
     @outlet CPTextField appnameProblemLabel;
+    @outlet CPTextField buildDateLabel;
 
     @outlet CPView pageView;
     PageViewController pageViewController;
@@ -129,6 +130,7 @@
     
     [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
     
+    [buildDateLabel setObjectValue:BUILDDATE];
     [self resetData];
     [self didReceiveAgenda:undefined];     
 }

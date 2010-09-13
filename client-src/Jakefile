@@ -80,6 +80,7 @@ task ("config-dev", function()
 task ("config-prod", function()
 {
     OS.system('cp Config-prod.j Config.j');
+    OS.system('date "+%nBUILDDATE = \\"v%Y%m%d-%H:%M:%S\\"\;" >> Config.j');
 });
 
 task ("devbuild", ["config-dev", "release"], function()
@@ -95,15 +96,6 @@ task ("prodbuild", ["config-prod", "release"], function()
     OS.system('cp -r Build/Release/agendium/* ../lib/public/Project/');
     printResults("My Deploy")
 });
-
-task ("date", function()
-{
-    OS.system('echo BUILDDATE=\\" > Builddate.j');
-    OS.system('date >> Builddate.j');
-    OS.system('echo \\" >> Builddate.j');
-    printResults("date")
-});
-
 
 task ("desktop", ["release"], function()
 {
