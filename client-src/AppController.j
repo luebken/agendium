@@ -241,7 +241,9 @@
 }
 
 - (@action) save:(id)sender {
-    [aConnection saveAgenda:appId rootPage:rootPage delegate:self];
+    if(validName && nameOKServer === 'true'){
+        [aConnection saveAgenda:appId rootPage:rootPage delegate:self];
+    }
 }
 
 //
