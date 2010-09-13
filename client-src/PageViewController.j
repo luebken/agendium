@@ -347,7 +347,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemtypeButton addItemsWithTitles: ['Text', 'Link', 'Tweeter']];
+        [itemtypeButton addItemsWithTitles: ['Text']];//, 'Link', 'Tweeter']];
     } 
     //[pagetypeButton selectItemWithTitle:page.type];
 }
