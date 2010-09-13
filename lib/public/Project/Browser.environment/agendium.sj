@@ -119,7 +119,7 @@ with(_3c){
 objj_msgSend(_3f,"didReceiveCheckName:",_3e);
 }
 })]);
-p;15;AppController.jt;8832;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8634;
+p;15;AppController.jt;8872;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8674;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -263,7 +263,9 @@ objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_25),"orderFron
 }
 }),new objj_method(sel_getUid("save:"),function(_28,_29,_2a){
 with(_28){
+if(validName&&nameOKServer==="true"){
 objj_msgSend(aConnection,"saveAgenda:rootPage:delegate:",appId,rootPage,_28);
+}
 }
 }),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_2b,_2c,_2d,_2e){
 with(_2b){
@@ -386,7 +388,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100913-18:53:42";
+BUILDDATE="v20100913-20:19:07";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -985,7 +987,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;10956;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10835;
+p;20;PageViewController.jt;10939;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10818;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("ButtonColumnView.j",YES);
 objj_executeFile("CPPropertyAnimation.j",YES);
@@ -1251,11 +1253,10 @@ objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Navigationpage","Detailpage"
 }else{
 objj_msgSend(_52,"setStringValue:","Attribute");
 objj_msgSend(_53,"setStringValue:","Value");
-objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Text","Link","Tweeter"]);
+objj_msgSend(itemtypeButton,"addItemsWithTitles:",["Text"]);
 }
 }
 })]);
-p;6;Test.jt;17;@STATIC;1.0;t;1;
 p;21;TextFieldColumnView.jt;1171;@STATIC;1.0;I;15;AppKit/CPView.jt;1132;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPTextField,"TextFieldColumnView"),_2=_1.isa;
