@@ -23,7 +23,7 @@
         var contentView = [self contentView],
             bounds = [contentView bounds];
 
-        var titleLabel = [CPTextField labelWithTitle:"Enter the link or the id of your agenda."];
+        var titleLabel = [CPTextField labelWithTitle:"Enter the name of your agenda."];
         [titleLabel setFont:[CPFont systemFontOfSize:14.0]];
         [titleLabel sizeToFit];
         [titleLabel setTextColor:[CPColor whiteColor]];

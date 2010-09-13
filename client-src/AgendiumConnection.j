@@ -20,8 +20,8 @@
 }
 
 
-- (void) loadAgenda:(CPString)id delegate:(id)delegate {
-    var request = [CPURLRequest requestWithURL:BASEURL+"agenda/"+id];
+- (void) loadAgenda:(CPString)name delegate:(id)delegate {
+    var request = [CPURLRequest requestWithURL:BASEURL+"agenda/" + name];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;

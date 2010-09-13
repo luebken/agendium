@@ -290,7 +290,7 @@
         [theWindow orderFront:self];
     }  
     if(tag === "open") {
-        console.log("Loading Agenda with id: " + data);
+        console.log("Loading Agenda for name: " + data);
         [aConnection loadAgenda:data delegate:self];
     }
     if(tag === "empty") {
