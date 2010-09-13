@@ -4,7 +4,7 @@ body {
 }
 div#jqt > * {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#333), to(#5e5e65));
-    height: 480px; /* MDL */
+    min-height: 480px; /* MDL */
 }
 #jqt h1, #jqt h2 {
     font: bold 18px "Helvetica Neue", Helvetica;
