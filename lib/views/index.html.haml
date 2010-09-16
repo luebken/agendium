@@ -7,7 +7,6 @@
     %link{ rel: 'stylesheet', href: '/themes/jqt/theme.css' }
     %script{ src: '/js/jquery-1.4.2.min.js' }
     %script{ src: '/js/jqtouch.js' }
-    %script{ src: '/data/'+ rootpage.title }
     %script{ src: '/js/app.js' }
   %body
     #jqt
@@ -17,6 +16,26 @@
         %ul.metal
           %li.arrow
             %a{href: '#r'}= 'Start'
+      #r
+        .toolbar
+          %h1= 'R'
+          %a{href: '#', class:'back'}= 'Back'
+        %ul.metal
+          %li.arrow
+            %a{href: '#r2'}= 'R2'
+          %li.arrow
+            %a{href: '#r2'}= 'R2'
+          %li.arrow
+            %a{href: '#r2'}= 'R2'
+          %li.arrow
+            %a{href: '#r2'}= 'R2'
+      #r2
+        .toolbar
+          %h1= 'R2'
+          %a{href: '#', class:'back'}= 'Back'
+        %ul.metal
+          %li.arrow
+            %a{href: '#r2'}= 'R3'
       #about
         %p This page WebApp is powered by Touchium. To learn more go to 
         %a{href: 'http://touchium.com'}= 'http://touchium.com'
