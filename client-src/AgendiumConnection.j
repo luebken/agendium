@@ -34,10 +34,10 @@
     loginDelegate = delegate;
 }
 
-- (void) saveAgenda:(id)appId rootPage:(Page) rootPage delegate:(id)delegate {
+- (void) saveAgenda:(id)appId rootPage:(Page) rootPage userId:(CPString)userId delegate:(id)delegate {
     var request = [CPURLRequest requestWithURL:BASEURL + "agenda"];
     [request setHTTPMethod:'POST'];
-    var jsonData = '{"_id":"' + appId + '", "rootpage":'+ [rootPage toJSON] + '}';
+    var jsonData = '{"_id":"' + appId + '","userid":"'+userId+'", "rootpage":'+ [rootPage toJSON] + '}';
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
@@ -125,8 +125,7 @@
 -(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {    
     if(data && data != "undefined") {
         var obj = JSON.parse(data);
-        console.log("didReceiveLoginData " + obj.email);
-        [delegate loginSuccess];
+        [delegate loginSuccess:obj._id];
     } else {
         [delegate loginFailed];        
     }

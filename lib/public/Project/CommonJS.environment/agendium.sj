@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;4914;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4847;
+@STATIC;1.0;p;20;AgendiumConnection.jt;4958;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4891;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -24,104 +24,104 @@ objj_msgSend(_f,"setHTTPMethod:","GET");
 loginConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_f,_a);
 loginDelegate=_e;
 }
-}),new objj_method(sel_getUid("saveAgenda:rootPage:delegate:"),function(_10,_11,_12,_13,_14){
+}),new objj_method(sel_getUid("saveAgenda:rootPage:userId:delegate:"),function(_10,_11,_12,_13,_14,_15){
 with(_10){
-var _15=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"agenda");
-objj_msgSend(_15,"setHTTPMethod:","POST");
-var _16="{\"_id\":\""+_12+"\", \"rootpage\":"+objj_msgSend(_13,"toJSON")+"}";
-objj_msgSend(_15,"setHTTPBody:",_16);
-objj_msgSend(_15,"setValue:forHTTPHeaderField:","application/json","Accept");
-objj_msgSend(_15,"setValue:forHTTPHeaderField:","application/json","Content-Type");
-saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_15,_10);
-saveDelegate=_14;
+console.log("saveing agenda with userId "+_14);
+var _16=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"agenda");
+objj_msgSend(_16,"setHTTPMethod:","POST");
+var _17="{\"_id\":\""+_12+"\",\"userid\":\""+_14+"\", \"rootpage\":"+objj_msgSend(_13,"toJSON")+"}";
+objj_msgSend(_16,"setHTTPBody:",_17);
+objj_msgSend(_16,"setValue:forHTTPHeaderField:","application/json","Accept");
+objj_msgSend(_16,"setValue:forHTTPHeaderField:","application/json","Content-Type");
+saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_16,_10);
+saveDelegate=_15;
 }
-}),new objj_method(sel_getUid("checkAppName:forId:delegate:"),function(_17,_18,_19,id,_1a){
-with(_17){
-var _1b=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"isnameok/"+_19+"/"+id);
-objj_msgSend(_1b,"setHTTPMethod:","GET");
-checkNameConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1b,_17);
-checkNameDelegate=_1a;
+}),new objj_method(sel_getUid("checkAppName:forId:delegate:"),function(_18,_19,_1a,id,_1b){
+with(_18){
+var _1c=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"isnameok/"+_1a+"/"+id);
+objj_msgSend(_1c,"setHTTPMethod:","GET");
+checkNameConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1c,_18);
+checkNameDelegate=_1b;
 }
-}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_1c,_1d,_1e,_1f){
-with(_1c){
-if(_1e==saveConnection){
-objj_msgSend(_1c,"didReceiveSaveData:delegate:",_1f,saveDelegate);
+}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_1d,_1e,_1f,_20){
+with(_1d){
+if(_1f==saveConnection){
+objj_msgSend(_1d,"didReceiveSaveData:delegate:",_20,saveDelegate);
 }
-if(_1e==listConnection){
-objj_msgSend(_1c,"didReceiveLoadData:delegate:",_1f,listDelegate);
+if(_1f==listConnection){
+objj_msgSend(_1d,"didReceiveLoadData:delegate:",_20,listDelegate);
 }
-if(_1e==loginConnection){
-objj_msgSend(_1c,"didReceiveLoginData:delegate:",_1f,loginDelegate);
+if(_1f==loginConnection){
+objj_msgSend(_1d,"didReceiveLoginData:delegate:",_20,loginDelegate);
 }
-if(_1e==checkNameConnection){
-objj_msgSend(_1c,"didReceiveCheckNameData:delegate:",_1f,checkNameDelegate);
+if(_1f==checkNameConnection){
+objj_msgSend(_1d,"didReceiveCheckNameData:delegate:",_20,checkNameDelegate);
 }
 }
-}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_20,_21,_22,_23){
-with(_20){
-console.log("didFailWithError: "+_23);
-alert(_23);
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_21,_22,_23,_24){
+with(_21){
+console.log("didFailWithError: "+_24);
+alert(_24);
 }
-}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_24,_25,_26,_27){
-with(_24){
-console.log("didReceiveResponse for URL:"+objj_msgSend(_27,"URL"));
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_25,_26,_27,_28){
+with(_25){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_28,"URL"));
 }
-}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_28,_29,_2a,_2b){
-with(_28){
-console.log("didFailWithError: "+_2b);
-alert(_2b);
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_29,_2a,_2b,_2c){
+with(_29){
+console.log("didFailWithError: "+_2c);
+alert(_2c);
 }
-}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2c,_2d,_2e,_2f){
-with(_2c){
-console.log("didReceiveResponse for URL:"+objj_msgSend(_2f,"URL"));
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2d,_2e,_2f,_30){
+with(_2d){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_30,"URL"));
 }
-}),new objj_method(sel_getUid("didReceiveSaveData:delegate:"),function(_30,_31,_32,_33){
-with(_30){
-if(_32!=null&&_32!=""&&_32!="null"){
+}),new objj_method(sel_getUid("didReceiveSaveData:delegate:"),function(_31,_32,_33,_34){
+with(_31){
+if(_33!=null&&_33!=""&&_33!="null"){
 try{
-var obj=JSON.parse(_32);
-objj_msgSend(_33,"didReceiveAgenda:",obj._id);
+var obj=JSON.parse(_33);
+objj_msgSend(_34,"didReceiveAgenda:",obj._id);
 }
 catch(e){
-objj_msgSend(_33,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
+objj_msgSend(_34,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
 console.log("failureWhileReceivingAgenda");
-objj_msgSend(_33,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
+objj_msgSend(_34,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
-}),new objj_method(sel_getUid("didReceiveLoadData:delegate:"),function(_34,_35,_36,_37){
-with(_34){
-if(_36!=null&&_36!=""&&_36!="null"){
+}),new objj_method(sel_getUid("didReceiveLoadData:delegate:"),function(_35,_36,_37,_38){
+with(_35){
+if(_37!=null&&_37!=""&&_37!="null"){
 try{
-var obj=JSON.parse(_36);
-var _38=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_37,"didReceiveAgenda:withRootPage:",obj._id,_38);
+var obj=JSON.parse(_37);
+var _39=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_38,"didReceiveAgenda:withRootPage:",obj._id,_39);
 }
 catch(e){
-objj_msgSend(_37,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
+objj_msgSend(_38,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
 console.log("failureWhileReceivingAgenda");
-objj_msgSend(_37,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
+objj_msgSend(_38,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
-}),new objj_method(sel_getUid("didReceiveLoginData:delegate:"),function(_39,_3a,_3b,_3c){
-with(_39){
-if(_3b&&_3b!="undefined"){
-var obj=JSON.parse(_3b);
-console.log("didReceiveLoginData "+obj.email);
-objj_msgSend(_3c,"loginSuccess");
+}),new objj_method(sel_getUid("didReceiveLoginData:delegate:"),function(_3a,_3b,_3c,_3d){
+with(_3a){
+if(_3c&&_3c!="undefined"){
+var obj=JSON.parse(_3c);
+objj_msgSend(_3d,"loginSuccess:",obj._id);
 }else{
-objj_msgSend(_3c,"loginFailed");
+objj_msgSend(_3d,"loginFailed");
 }
 }
-}),new objj_method(sel_getUid("didReceiveCheckNameData:delegate:"),function(_3d,_3e,_3f,_40){
-with(_3d){
-objj_msgSend(_40,"didReceiveCheckName:",_3f);
+}),new objj_method(sel_getUid("didReceiveCheckNameData:delegate:"),function(_3e,_3f,_40,_41){
+with(_3e){
+objj_msgSend(_41,"didReceiveCheckName:",_40);
 }
 })]);
-p;15;AppController.jt;8872;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8674;
+p;15;AppController.jt;8954;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8756;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -133,7 +133,7 @@ objj_executeFile("NewTemplate.j",YES);
 objj_executeFile("AgendiumConnection.j",YES);
 objj_executeFile("Config.j",YES);
 var _1=objj_allocateClassPair(CPObject,"AppController"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("buildDateLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("nameOKServer"),new objj_ivar("aConnection"),new objj_ivar("validName"),new objj_ivar("namechanged")]);
+class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("buildDateLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("userId"),new objj_ivar("nameOKServer"),new objj_ivar("aConnection"),new objj_ivar("validName"),new objj_ivar("namechanged")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("applicationDidFinishLaunching:"),function(_3,_4,_5){
 with(_3){
@@ -266,7 +266,7 @@ objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_25),"orderFron
 }),new objj_method(sel_getUid("save:"),function(_28,_29,_2a){
 with(_28){
 if(validName&&nameOKServer==="true"){
-objj_msgSend(aConnection,"saveAgenda:rootPage:delegate:",appId,rootPage,_28);
+objj_msgSend(aConnection,"saveAgenda:rootPage:userId:delegate:",appId,rootPage,userId,_28);
 }
 }
 }),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_2b,_2c,_2d,_2e){
@@ -305,6 +305,8 @@ objj_msgSend(_3a,"refreshUIFromData");
 }),new objj_method(sel_getUid("panelDidClose:data:"),function(_3c,_3d,tag,_3e){
 with(_3c){
 if(tag==="login"){
+console.log("userid:"+_3e);
+_3c.userId=_3e;
 objj_msgSend(theWindow,"orderFront:",_3c);
 }
 if(tag==="open"){
@@ -390,7 +392,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100917-22:33:43";
+BUILDDATE="v20100917-23:11:00";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -586,7 +588,7 @@ objj_msgSend(_f,"encodeObject:forKey:",textfield,"textfield");
 objj_msgSend(_f,"encodeObject:forKey:",imageView,"imageView");
 }
 })]);
-p;12;LoginPanel.jt;4656;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4590;
+p;12;LoginPanel.jt;4626;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4560;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
@@ -668,20 +670,20 @@ objj_msgSend(_12,"close");
 }
 }
 }
-}),new objj_method(sel_getUid("loginSuccess"),function(_15,_16){
+}),new objj_method(sel_getUid("loginSuccess:"),function(_15,_16,_17){
 with(_15){
 if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
-objj_msgSend(delegate,"panelDidClose:data:","login",objj_msgSend(emailField,"objectValue"));
+objj_msgSend(delegate,"panelDidClose:data:","login",_17);
 objj_msgSend(_15,"close");
 }
 }
-}),new objj_method(sel_getUid("loginFailed"),function(_17,_18){
-with(_17){
+}),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
+with(_18){
 objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
 console.log("loginFailed");
 }
-}),new objj_method(sel_getUid("signup"),function(_19,_1a){
-with(_19){
+}),new objj_method(sel_getUid("signup"),function(_1a,_1b){
+with(_1a){
 window.open("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
 }
 })]);

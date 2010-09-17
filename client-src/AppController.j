@@ -36,6 +36,7 @@
     @outlet CPView pageView;
     PageViewController pageViewController;
     CPString appId;
+    CPString userId;
     CPString nameOKServer;
 
     AgendiumConnection aConnection;
@@ -242,7 +243,7 @@
 
 - (@action) save:(id)sender {
     if(validName && nameOKServer === 'true'){
-        [aConnection saveAgenda:appId rootPage:rootPage delegate:self];
+        [aConnection saveAgenda:appId rootPage:rootPage userId:userId delegate:self];
     }
 }
 
@@ -291,6 +292,7 @@
 //LoginPanel and OpenPanel Delegate
 - (void) panelDidClose:(id)tag data:(CPString)data {
     if(tag === "login") {
+        self.userId = data;
         [theWindow orderFront:self];
     }  
     if(tag === "open") {

@@ -96,9 +96,9 @@
     }    
 }
 
-- (void) loginSuccess{
+- (void) loginSuccess: (String) userid{
     if ([delegate respondsToSelector:@selector(panelDidClose:data:)]) {
-        [delegate panelDidClose:'login' data:[emailField objectValue]];
+        [delegate panelDidClose:'login' data:userid];
         [self close];
     }    
 }
