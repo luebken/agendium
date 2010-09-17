@@ -42,12 +42,12 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.checkUser('mdl', self.callback) 
+                userprovider.checkUser('mdl','', self.callback) 
             });
         },
         'result empty': function (error, user) {
             assert.isNull(error);
-            assert.isFalse(user);
+            assert.isTrue(user == undefined);
         }
     }
 })
@@ -67,19 +67,38 @@ vows.describe('app').addBatch({
     }
 })
 .addBatch({
-    'checkuser after save true': {
+    'checkuser with wrong password': {
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
                 userprovider.save([{'email':'hurz2', 'password':'secure'}], function (error, inserted_users) {
-                    userprovider.checkUser('hurz2', self.callback) 
+                    userprovider.checkUser('hurz2', 'sdfsd', self.callback) 
+                    
+                } ) 
+            });
+        },
+        'no error and user is false': function (error, user) {
+            assert.isNull(error);
+            assert.isTrue(user == undefined);          
+        }    
+    }
+})
+.addBatch({
+    'checkuser with correct password': {
+        topic: function() { 
+            var self = this;
+            userprovider.removeAll(function() {
+                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                    userprovider.checkUser('hurz3', 'secure', self.callback) 
                     
                 } ) 
             });
         },
         'no error and user is fine': function (error, user) {
             assert.isNull(error);
-            assert.isTrue(user);          
+            assert.isTrue(user != undefined);     
+            assert.equal('hurz3', user.email);  
+            assert.equal('secure', user.password);
         }    
     }
 })

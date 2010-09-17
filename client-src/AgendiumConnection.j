@@ -27,8 +27,8 @@
     listDelegate = delegate;
 }
 
-- (void) checkUser:(CPString)email delegate:(id)delegate {
-    var request = [CPURLRequest requestWithURL:BASEURL+"user/"+email];
+- (void) checkUser:(CPString)email withPassword:(CPString)password delegate:(id)delegate {
+    var request = [CPURLRequest requestWithURL:BASEURL+"user/"+email+"/"+password];
     [request setHTTPMethod:'GET'];
     loginConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     loginDelegate = delegate;
@@ -122,8 +122,10 @@
         [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
     }
 }
--(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {
-    if("true" === data) {
+-(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {    
+    if(data && data != "undefined") {
+        var obj = JSON.parse(data);
+        console.log("didReceiveLoginData " + obj.email);
         [delegate loginSuccess];
     } else {
         [delegate loginFailed];        

@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;4807;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4740;
+@STATIC;1.0;p;20;AgendiumConnection.jt;4914;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4847;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -17,106 +17,108 @@ objj_msgSend(_9,"setHTTPMethod:","GET");
 listConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_9,_5);
 listDelegate=_8;
 }
-}),new objj_method(sel_getUid("checkUser:delegate:"),function(_a,_b,_c,_d){
+}),new objj_method(sel_getUid("checkUser:withPassword:delegate:"),function(_a,_b,_c,_d,_e){
 with(_a){
-var _e=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"user/"+_c);
-objj_msgSend(_e,"setHTTPMethod:","GET");
-loginConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_e,_a);
-loginDelegate=_d;
+var _f=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"user/"+_c+"/"+_d);
+objj_msgSend(_f,"setHTTPMethod:","GET");
+loginConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_f,_a);
+loginDelegate=_e;
 }
-}),new objj_method(sel_getUid("saveAgenda:rootPage:delegate:"),function(_f,_10,_11,_12,_13){
-with(_f){
-var _14=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"agenda");
-objj_msgSend(_14,"setHTTPMethod:","POST");
-var _15="{\"_id\":\""+_11+"\", \"rootpage\":"+objj_msgSend(_12,"toJSON")+"}";
-objj_msgSend(_14,"setHTTPBody:",_15);
-objj_msgSend(_14,"setValue:forHTTPHeaderField:","application/json","Accept");
-objj_msgSend(_14,"setValue:forHTTPHeaderField:","application/json","Content-Type");
-saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_14,_f);
-saveDelegate=_13;
+}),new objj_method(sel_getUid("saveAgenda:rootPage:delegate:"),function(_10,_11,_12,_13,_14){
+with(_10){
+var _15=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"agenda");
+objj_msgSend(_15,"setHTTPMethod:","POST");
+var _16="{\"_id\":\""+_12+"\", \"rootpage\":"+objj_msgSend(_13,"toJSON")+"}";
+objj_msgSend(_15,"setHTTPBody:",_16);
+objj_msgSend(_15,"setValue:forHTTPHeaderField:","application/json","Accept");
+objj_msgSend(_15,"setValue:forHTTPHeaderField:","application/json","Content-Type");
+saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_15,_10);
+saveDelegate=_14;
 }
-}),new objj_method(sel_getUid("checkAppName:forId:delegate:"),function(_16,_17,_18,id,_19){
-with(_16){
-var _1a=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"isnameok/"+_18+"/"+id);
-objj_msgSend(_1a,"setHTTPMethod:","GET");
-checkNameConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1a,_16);
-checkNameDelegate=_19;
+}),new objj_method(sel_getUid("checkAppName:forId:delegate:"),function(_17,_18,_19,id,_1a){
+with(_17){
+var _1b=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"isnameok/"+_19+"/"+id);
+objj_msgSend(_1b,"setHTTPMethod:","GET");
+checkNameConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1b,_17);
+checkNameDelegate=_1a;
 }
-}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_1b,_1c,_1d,_1e){
-with(_1b){
-if(_1d==saveConnection){
-objj_msgSend(_1b,"didReceiveSaveData:delegate:",_1e,saveDelegate);
+}),new objj_method(sel_getUid("connection:didReceiveData:"),function(_1c,_1d,_1e,_1f){
+with(_1c){
+if(_1e==saveConnection){
+objj_msgSend(_1c,"didReceiveSaveData:delegate:",_1f,saveDelegate);
 }
-if(_1d==listConnection){
-objj_msgSend(_1b,"didReceiveLoadData:delegate:",_1e,listDelegate);
+if(_1e==listConnection){
+objj_msgSend(_1c,"didReceiveLoadData:delegate:",_1f,listDelegate);
 }
-if(_1d==loginConnection){
-objj_msgSend(_1b,"didReceiveLoginData:delegate:",_1e,loginDelegate);
+if(_1e==loginConnection){
+objj_msgSend(_1c,"didReceiveLoginData:delegate:",_1f,loginDelegate);
 }
-if(_1d==checkNameConnection){
-objj_msgSend(_1b,"didReceiveCheckNameData:delegate:",_1e,checkNameDelegate);
+if(_1e==checkNameConnection){
+objj_msgSend(_1c,"didReceiveCheckNameData:delegate:",_1f,checkNameDelegate);
 }
 }
-}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_1f,_20,_21,_22){
-with(_1f){
-console.log("didFailWithError: "+_22);
-alert(_22);
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_20,_21,_22,_23){
+with(_20){
+console.log("didFailWithError: "+_23);
+alert(_23);
 }
-}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_23,_24,_25,_26){
-with(_23){
-console.log("didReceiveResponse for URL:"+objj_msgSend(_26,"URL"));
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_24,_25,_26,_27){
+with(_24){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_27,"URL"));
 }
-}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_27,_28,_29,_2a){
-with(_27){
-console.log("didFailWithError: "+_2a);
-alert(_2a);
+}),new objj_method(sel_getUid("connection:didFailWithError:"),function(_28,_29,_2a,_2b){
+with(_28){
+console.log("didFailWithError: "+_2b);
+alert(_2b);
 }
-}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2b,_2c,_2d,_2e){
-with(_2b){
-console.log("didReceiveResponse for URL:"+objj_msgSend(_2e,"URL"));
+}),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2c,_2d,_2e,_2f){
+with(_2c){
+console.log("didReceiveResponse for URL:"+objj_msgSend(_2f,"URL"));
 }
-}),new objj_method(sel_getUid("didReceiveSaveData:delegate:"),function(_2f,_30,_31,_32){
-with(_2f){
-if(_31!=null&&_31!=""&&_31!="null"){
+}),new objj_method(sel_getUid("didReceiveSaveData:delegate:"),function(_30,_31,_32,_33){
+with(_30){
+if(_32!=null&&_32!=""&&_32!="null"){
 try{
-var obj=JSON.parse(_31);
-objj_msgSend(_32,"didReceiveAgenda:",obj._id);
+var obj=JSON.parse(_32);
+objj_msgSend(_33,"didReceiveAgenda:",obj._id);
 }
 catch(e){
-objj_msgSend(_32,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
+objj_msgSend(_33,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
 console.log("failureWhileReceivingAgenda");
-objj_msgSend(_32,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
+objj_msgSend(_33,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
-}),new objj_method(sel_getUid("didReceiveLoadData:delegate:"),function(_33,_34,_35,_36){
-with(_33){
-if(_35!=null&&_35!=""&&_35!="null"){
+}),new objj_method(sel_getUid("didReceiveLoadData:delegate:"),function(_34,_35,_36,_37){
+with(_34){
+if(_36!=null&&_36!=""&&_36!="null"){
 try{
-var obj=JSON.parse(_35);
-var _37=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_36,"didReceiveAgenda:withRootPage:",obj._id,_37);
+var obj=JSON.parse(_36);
+var _38=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_37,"didReceiveAgenda:withRootPage:",obj._id,_38);
 }
 catch(e){
-objj_msgSend(_36,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
+objj_msgSend(_37,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
 console.log("failureWhileReceivingAgenda");
-objj_msgSend(_36,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
+objj_msgSend(_37,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
-}),new objj_method(sel_getUid("didReceiveLoginData:delegate:"),function(_38,_39,_3a,_3b){
-with(_38){
-if("true"===_3a){
-objj_msgSend(_3b,"loginSuccess");
+}),new objj_method(sel_getUid("didReceiveLoginData:delegate:"),function(_39,_3a,_3b,_3c){
+with(_39){
+if(_3b&&_3b!="undefined"){
+var obj=JSON.parse(_3b);
+console.log("didReceiveLoginData "+obj.email);
+objj_msgSend(_3c,"loginSuccess");
 }else{
-objj_msgSend(_3b,"loginFailed");
+objj_msgSend(_3c,"loginFailed");
 }
 }
-}),new objj_method(sel_getUid("didReceiveCheckNameData:delegate:"),function(_3c,_3d,_3e,_3f){
-with(_3c){
-objj_msgSend(_3f,"didReceiveCheckName:",_3e);
+}),new objj_method(sel_getUid("didReceiveCheckNameData:delegate:"),function(_3d,_3e,_3f,_40){
+with(_3d){
+objj_msgSend(_40,"didReceiveCheckName:",_3f);
 }
 })]);
 p;15;AppController.jt;8872;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8674;
@@ -388,7 +390,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100913-23:30:02";
+BUILDDATE="v20100917-22:33:43";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -584,11 +586,11 @@ objj_msgSend(_f,"encodeObject:forKey:",textfield,"textfield");
 objj_msgSend(_f,"encodeObject:forKey:",imageView,"imageView");
 }
 })]);
-p;12;LoginPanel.jt;4536;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4470;
+p;12;LoginPanel.jt;4656;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4590;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("titleLabel"),new objj_ivar("emailField"),new objj_ivar("aConnection")]);
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("titleLabel"),new objj_ivar("emailField"),new objj_ivar("passwordField"),new objj_ivar("aConnection")]);
 objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
 with(_3){
@@ -623,63 +625,63 @@ var _e=objj_msgSend(CPTextField,"labelWithTitle:","Password:");
 objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
 objj_msgSend(_e,"setFrameOrigin:",CGPointMake(40,70));
 objj_msgSend(_b,"addSubview:",_e);
-var _f=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
-objj_msgSend(_f,"setFrameOrigin:",CGPointMake(100,65));
-objj_msgSend(_f,"setSecure:",YES);
+passwordField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
+objj_msgSend(passwordField,"setFrameOrigin:",CGPointMake(100,65));
+objj_msgSend(passwordField,"setSecure:",YES);
+objj_msgSend(_b,"addSubview:",passwordField);
+var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_f,"setFrame:",CGRectMake(250,110,70,20));
 objj_msgSend(_b,"addSubview:",_f);
-var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_10,"setFrame:",CGRectMake(250,110,70,20));
+objj_msgSend(_f,"setTag:","login");
+objj_msgSend(_f,"setTarget:",_8);
+objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_10,"setFrame:",CGRectMake(170,110,70,20));
 objj_msgSend(_b,"addSubview:",_10);
-objj_msgSend(_10,"setTag:","login");
+objj_msgSend(_10,"setTag:","logincancel");
+var _11=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
+objj_msgSend(_11,"sizeToFit");
+objj_msgSend(_11,"setFrameOrigin:",CGPointMake(80,140));
+objj_msgSend(_11,"setBordered:",NO);
+objj_msgSend(_11,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
+_11._DOMElement.style.textDecoration="underline";
+objj_msgSend(_11,"setTarget:",_8);
+objj_msgSend(_11,"setAction:",sel_getUid("signup"));
+_11._DOMElement.style.cursor="pointer";
+objj_msgSend(_b,"addSubview:",_11);
 objj_msgSend(_10,"setTarget:",_8);
 objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
-var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_11,"setFrame:",CGRectMake(170,110,70,20));
-objj_msgSend(_b,"addSubview:",_11);
-objj_msgSend(_11,"setTag:","logincancel");
-var _12=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
-objj_msgSend(_12,"sizeToFit");
-objj_msgSend(_12,"setFrameOrigin:",CGPointMake(80,140));
-objj_msgSend(_12,"setBordered:",NO);
-objj_msgSend(_12,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
-_12._DOMElement.style.textDecoration="underline";
-objj_msgSend(_12,"setTarget:",_8);
-objj_msgSend(_12,"setAction:",sel_getUid("signup"));
-_12._DOMElement.style.cursor="pointer";
-objj_msgSend(_b,"addSubview:",_12);
-objj_msgSend(_11,"setTarget:",_8);
-objj_msgSend(_11,"setAction:",sel_getUid("buttonAction:"));
 aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
 }
 return _8;
 }
-}),new objj_method(sel_getUid("buttonAction:"),function(_13,_14,_15){
-with(_13){
-if(objj_msgSend(_15,"tag")=="login"){
+}),new objj_method(sel_getUid("buttonAction:"),function(_12,_13,_14){
+with(_12){
+if(objj_msgSend(_14,"tag")=="login"){
 console.log("trying to login "+objj_msgSend(emailField,"objectValue"));
-objj_msgSend(aConnection,"checkUser:delegate:",objj_msgSend(emailField,"objectValue"),_13);
+objj_msgSend(aConnection,"checkUser:withPassword:delegate:",objj_msgSend(emailField,"objectValue"),objj_msgSend(passwordField,"objectValue"),_12);
 }else{
-if(objj_msgSend(_15,"tag")=="logincancel"){
+if(objj_msgSend(_14,"tag")=="logincancel"){
 console.log("login canceled");
 history.go(-1);
-objj_msgSend(_13,"close");
+objj_msgSend(_12,"close");
 }
 }
 }
-}),new objj_method(sel_getUid("loginSuccess"),function(_16,_17){
-with(_16){
+}),new objj_method(sel_getUid("loginSuccess"),function(_15,_16){
+with(_15){
 if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
 objj_msgSend(delegate,"panelDidClose:data:","login",objj_msgSend(emailField,"objectValue"));
-objj_msgSend(_16,"close");
+objj_msgSend(_15,"close");
 }
 }
-}),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
-with(_18){
+}),new objj_method(sel_getUid("loginFailed"),function(_17,_18){
+with(_17){
 objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
 console.log("loginFailed");
 }
-}),new objj_method(sel_getUid("signup"),function(_1a,_1b){
-with(_1a){
+}),new objj_method(sel_getUid("signup"),function(_19,_1a){
+with(_19){
 window.open("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
 }
 })]);

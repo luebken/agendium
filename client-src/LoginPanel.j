@@ -8,6 +8,7 @@
     id delegate @accessors;
     CPTextField titleLabel;
     CPTextField emailField;
+    CPTextField passwordField;
     
     AgendiumConnection aConnection;
 }
@@ -47,7 +48,7 @@
         [passwordLabel setFrameOrigin:CGPointMake(40,70)];
         [contentView addSubview:passwordLabel];
 
-        var passwordField = [CPTextField textFieldWithStringValue:"" placeholder:"" width:200];
+        passwordField = [CPTextField textFieldWithStringValue:"" placeholder:"" width:200];
         [passwordField setFrameOrigin:CGPointMake(100,65)];
         [passwordField setSecure:YES];
         [contentView addSubview:passwordField];
@@ -87,7 +88,7 @@
 - (void) buttonAction:(id) sender {
     if([sender tag] == "login") {
         console.log('trying to login ' + [emailField objectValue]);
-        [aConnection checkUser:[emailField objectValue] delegate:self];
+        [aConnection checkUser:[emailField objectValue] withPassword:[passwordField objectValue] delegate:self];
     } else if([sender tag] == "logincancel") {
         console.log(@"login canceled");
         history.go(-1);
