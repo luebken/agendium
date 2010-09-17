@@ -1,41 +1,18 @@
-%html
+%html{ xmlns: 'http://www.w3.org/1999/xhtml'}
   %head
-    %meta{ charset: 'UTF-8'}
     %title= rootpage.title
-    %link{ rel: 'stylesheet', href: '/js/jqtouch.css' }
-    %link{ rel: 'stylesheet', href: '/js/app.css' }
-    %link{ rel: 'stylesheet', href: '/themes/jqt/theme.css' }
     %script{ src: '/js/jquery-1.4.2.min.js' }
     %script{ src: '/js/jqtouch.js' }
     %script{ src: '/js/app.js' }
+    %script{ src: '/data/'+ rootpage.title }
+    %link{ rel: 'stylesheet', href: '/js/jqtouch.css' }
+    %link{ rel: 'stylesheet', href: '/js/app.css' }
+    %link{ rel: 'stylesheet', href: '/themes/jqt/theme.css' }
   %body
     #jqt
       #home.current
         .toolbar
-          %h1= 'Touchium'
-        %ul.rounded
-          %li.arrow
-            %a{href: '#r'}= 'Start'
-      #r
-        .toolbar
-          %h1= 'R'
-          %a{href: '#', class:'back'}= 'Back'
-        %ul.rounded
-          %li.arrow
-            %a{href: '#r2'}= 'R2'
-          %li.arrow
-            %a{href: '#r2'}= 'R2'
-          %li.arrow
-            %a{href: '#r2'}= 'R2'
-          %li.arrow
-            %a{href: '#r2'}= 'R2'
-      #r2
-        .toolbar
-          %h1= 'R2'
-          %a{href: '#', class:'back'}= 'Back'
-        %ul.metal
-          %li.arrow
-            %a{href: '#r2'}= 'R3'
+          %h1= 'Dummy'
       #about
         %p This page WebApp is powered by Touchium. To learn more go to 
         %a{href: 'http://touchium.com'}= 'http://touchium.com'
