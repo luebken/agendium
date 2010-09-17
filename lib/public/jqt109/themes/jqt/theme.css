@@ -280,6 +280,12 @@ ul li input[type="checkbox"]:after, ul li input[type="radio"]:after {
     margin: -12px 0 0 17px;
 }
 /* @end */
+/* mdl */
+ul li a .sub{
+    color: #666;
+    font-size: 16px;
+    margin-top: 5px;
+}
 /* @group Mini Label */
 ul li small {
     color: #64c114;

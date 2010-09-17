@@ -318,6 +318,8 @@ div#jqt.landscape .toolbar > h1 {
 /* mdl */
 #jqt ul li a .sub{
     color: #666;
+    font-size: 16px;
+    margin-top: 5px;
 }
 /* @group Mini Label */
 #jqt ul li small {
