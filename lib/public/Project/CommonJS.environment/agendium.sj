@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;4958;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4891;
+@STATIC;1.0;p;20;AgendiumConnection.jt;4910;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4843;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -26,7 +26,6 @@ loginDelegate=_e;
 }
 }),new objj_method(sel_getUid("saveAgenda:rootPage:userId:delegate:"),function(_10,_11,_12,_13,_14,_15){
 with(_10){
-console.log("saveing agenda with userId "+_14);
 var _16=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"agenda");
 objj_msgSend(_16,"setHTTPMethod:","POST");
 var _17="{\"_id\":\""+_12+"\",\"userid\":\""+_14+"\", \"rootpage\":"+objj_msgSend(_13,"toJSON")+"}";
@@ -121,7 +120,7 @@ with(_3e){
 objj_msgSend(_41,"didReceiveCheckName:",_40);
 }
 })]);
-p;15;AppController.jt;8954;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8756;
+p;15;AppController.jt;8742;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8544;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -292,38 +291,34 @@ objj_msgSend(_32,"refreshUIFromData");
 }
 }),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_35,_36,_37,_38){
 with(_35){
-var _39=objj_msgSend(pageViewController,"page");
-var cmd="jQT.goTo(\"#"+_39.navigationId+"\");";
-objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
-}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_3a,_3b,msg){
-with(_3a){
+}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_39,_3a,msg){
+with(_39){
 alert(msg);
-objj_msgSend(_3a,"resetData");
-objj_msgSend(_3a,"refreshUIFromData");
+objj_msgSend(_39,"resetData");
+objj_msgSend(_39,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("panelDidClose:data:"),function(_3c,_3d,tag,_3e){
-with(_3c){
+}),new objj_method(sel_getUid("panelDidClose:data:"),function(_3b,_3c,tag,_3d){
+with(_3b){
 if(tag==="login"){
-console.log("userid:"+_3e);
-_3c.userId=_3e;
-objj_msgSend(theWindow,"orderFront:",_3c);
+_3b.userId=_3d;
+objj_msgSend(theWindow,"orderFront:",_3b);
 }
 if(tag==="open"){
-console.log("Loading Agenda for name: "+_3e);
-objj_msgSend(aConnection,"loadAgenda:delegate:",_3e,_3c);
+console.log("Loading Agenda for name: "+_3d);
+objj_msgSend(aConnection,"loadAgenda:delegate:",_3d,_3b);
 }
 if(tag==="empty"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3c,"resetData");
-objj_msgSend(_3c,"didReceiveAgenda:",undefined);
+objj_msgSend(_3b,"resetData");
+objj_msgSend(_3b,"didReceiveAgenda:",undefined);
 }
 if(tag==="threedaytwotracks"||tag==="onedayonetrack"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3c,"resetData");
+objj_msgSend(_3b,"resetData");
 var obj=JSON.parse(objj_msgSend(NewTemplate,"data:",tag));
-var _3f=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_3c,"didReceiveAgenda:withRootPage:",undefined,_3f);
+var _3e=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_3b,"didReceiveAgenda:withRootPage:",undefined,_3e);
 }
 }
 })]);
@@ -392,7 +387,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100917-23:11:00";
+BUILDDATE="v20100919-22:43:32";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;

@@ -270,16 +270,19 @@
     [self refreshUIFromData];
 }
 
+
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
+/*    
     var page = [pageViewController page];
     var cmd = 'jQT.goTo("#' + page.navigationId + '");';
-    //console.log("didFinishLoadForFrame " + cmd);
+    console.log("didFinishLoadForFrame " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
     //FIXME Here some redrawing action?
     //previewView._DOMElement.style.webkitTransformOrigin = "10 10";
     //[[theWindow contentView] layoutIfNeeded];
     //[[theWindow contentView] needsDisplay]; 
-    //[[theWindow contentView] display]   
+    //[[theWindow contentView] display]  
+*/ 
 }
 
 
