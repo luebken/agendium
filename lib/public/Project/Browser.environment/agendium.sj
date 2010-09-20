@@ -120,7 +120,7 @@ with(_3f){
 objj_msgSend(_42,"didReceiveCheckName:",_41);
 }
 })]);
-p;15;AppController.jt;8821;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8623;
+p;15;AppController.jt;8745;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8547;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -285,7 +285,6 @@ objj_msgSend(_2f,"refreshUIFromData");
 }
 }),new objj_method(sel_getUid("didReceiveCheckName:"),function(_32,_33,_34){
 with(_32){
-console.log("didReceiveCheckName "+_34);
 _32.nameOKServer=_34;
 objj_msgSend(_32,"refreshUIFromData");
 }
@@ -302,7 +301,6 @@ objj_msgSend(_39,"refreshUIFromData");
 with(_3b){
 if(tag==="login"){
 _3b.userid=_3d;
-console.log("panelDidClose "+_3d);
 objj_msgSend(theWindow,"orderFront:",_3b);
 }
 if(tag==="open"){
@@ -388,7 +386,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100920-21:53:28";
+BUILDDATE="v20100920-22:38:07";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
