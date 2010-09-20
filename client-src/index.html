@@ -4,11 +4,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns = "http://www.w3.org/1999/xhtml" xml:lang = "en" lang = "en">
 <!--
- index.html
- test2
-
- Created by You on May 26, 2010.
- Copyright 2010, Your Company All rights reserved.
+ Copyright 2010, Matthias Lübken All rights reserved.
 -->
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
@@ -24,8 +20,8 @@
         <style type = "text/css">
             body{margin:0; padding:0;}
             #container {position: absolute; top:50%; left:50%;}
-            #content {width:800px; text-align:center; margin-left: -400px; height:50px; margin-top:-25px; line-height: 50px;}
-            #content {font-family: "Helvetica", "Arial", sans-serif; font-size: 18px; color: black; text-shadow: 0px 1px 0px white; }
+            #content {height:50px; margin-top:-25px; line-height: 50px;}
+            .content {font-family: "Helvetica", "Arial", sans-serif; font-size: 18px; color: black; text-shadow: 0px 1px 0px white; text-align:center;  width:800px; margin-left: -400px; }
             #loadgraphic {margin-right: 0.2em; margin-bottom:-2px;}
         </style>
 
@@ -41,9 +37,9 @@
     <body style="">
         <div id="loadingcontainer" style=" background-color: #eeeeee; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;">
             <script type = "text/javascript">
-                document.write("<div id='container'><p id='content'>" +
+                document.write("<div id='container'><p id='content' class='content'>" +
                                "<img id='loadgraphic' width='16' height='16' src='Resources/spinner.gif' /> " +
-                               "Loading Touchium...</p></div>");
+                               "Loading Touchium... </p><p class='content'>This takes a while. Hold on.</p></div>");
             </script>
     
             <noscript>
