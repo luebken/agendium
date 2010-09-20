@@ -71,34 +71,54 @@ vows.describe('app').addBatch({
             assert.isUndefined(page);
         }
     }
-}).addBatch({
+})
+.addBatch({
     'initial save works': {
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'name':'hurz', '_id':'undefined'}, self.callback ) 
+                pageProvider.save({'name':'hurz', '_id':'undefined', 'userid':'123'}, self.callback ) 
             });
         },
         'no error and inserted page is fine': function (error, inserted_page) {
             assert.isNull(error);
             assert.equal(inserted_page.name, 'hurz');
+            assert.equal(inserted_page.userid, '123');
             assert.notStrictEqual(undefined, inserted_page._id);            
         }    
     }
-}).addBatch({ 
+})
+.addBatch({
+    'save doesnt work because of missing userid': {
+        topic: function() { 
+            var self = this;
+            pageProvider.removeAll(function() {
+                pageProvider.save({'name':'hurz828', '_id':'undefined'}, self.callback ) 
+            });
+        },
+        'error and no inserted pagex': function (error, inserted_page) {
+            //assert.isNotNull(error);
+            //assert.isNotNull(error);
+            //assert.notStrictEqual(undefined, inserted_page);
+        }    
+    }
+})
+.addBatch({ 
     'update works': {
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
-                     pageProvider.save({'name':'schnurz', '_id':inserted_page._id}, self.callback );
+                pageProvider.save({'name':'hurz', '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
+                     pageProvider.save({'name':'schnurz', '_id':inserted_page._id, 'userid':'123'}, self.callback );
                 }); 
             });
         },
         'no error and inserted page is fine': function (error, inserted_page) {
             assert.isNull(error);
             assert.equal(inserted_page.name, 'schnurz');
+            assert.equal(inserted_page.userid, '123');
             assert.notStrictEqual(undefined, inserted_page._id);
+            
         }
     }
 }).addBatch({
@@ -106,7 +126,7 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'name':'hurz', '_id':'undefined'}, function(error, inserted_page) {
+                pageProvider.save({'name':'hurz', '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
                     pageProvider.findById(inserted_page._id.toHexString(), self.callback);
                 }); 
             });
@@ -121,14 +141,15 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'rootpage':{'title': 'hurx'}, '_id':'undefined'}, function(error, inserted_page) {
+                pageProvider.save({'rootpage':{'title': 'hurx'}, '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
                     pageProvider.findByName('hurx', self.callback);
                 }); 
             });
         },
-        'result not empty': function (error, page) {
+        'result not empty without id': function (error, page) {
             assert.isNull(error);
             assert.notStrictEqual(undefined, page);
+            assert.equal(undefined, page.userid); 
         }
     }
 }).addBatch({
@@ -136,8 +157,8 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
-                    pageProvider.findByName('neu', self.callback);
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
+                    pageProvider.findByName('NEU', self.callback);
                 }); 
             });
         },
@@ -164,7 +185,7 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
                     pageProvider.isNameOK('neu', inserted_page._id.toHexString(), self.callback);
                 }); 
             });        
@@ -180,7 +201,7 @@ vows.describe('app').addBatch({
         topic: function() { 
             var self = this;
             pageProvider.removeAll(function() {
-                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined'}, function(error, inserted_page) {
+                pageProvider.save({'rootpage':{'title': 'neu'}, '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
                     pageProvider.isNameOK('neu', '123', self.callback);
                 }); 
             });        

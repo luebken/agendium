@@ -20,8 +20,8 @@
 }
 
 
-- (void) loadAgenda:(CPString)name delegate:(id)delegate {
-    var request = [CPURLRequest requestWithURL:BASEURL+"agenda/" + name];
+- (void) loadAgendaFor:(CPString)userid andName:(CPString)name withDelegate:(id)delegate {
+    var request = [CPURLRequest requestWithURL:BASEURL+"agenda/"+userid+"/" + name];
     [request setHTTPMethod:'GET'];
     listConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     listDelegate = delegate;
@@ -34,10 +34,10 @@
     loginDelegate = delegate;
 }
 
-- (void) saveAgenda:(id)appId rootPage:(Page) rootPage userId:(CPString)userId delegate:(id)delegate {
+- (void) saveAgenda:(id)appId rootPage:(Page) rootPage userid:(CPString)userid delegate:(id)delegate {
     var request = [CPURLRequest requestWithURL:BASEURL + "agenda"];
     [request setHTTPMethod:'POST'];
-    var jsonData = '{"_id":"' + appId + '","userid":"'+userId+'", "rootpage":'+ [rootPage toJSON] + '}';
+    var jsonData = '{"_id":"' + appId + '","userid":"' + userid + '", "rootpage":'+ [rootPage toJSON] + '}';
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];

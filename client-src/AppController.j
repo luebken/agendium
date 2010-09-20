@@ -36,7 +36,7 @@
     @outlet CPView pageView;
     PageViewController pageViewController;
     CPString appId;
-    CPString userId;
+    CPString userid;
     CPString nameOKServer;
 
     AgendiumConnection aConnection;
@@ -243,7 +243,7 @@
 
 - (@action) save:(id)sender {
     if(validName && nameOKServer === 'true'){
-        [aConnection saveAgenda:appId rootPage:rootPage userId:userId delegate:self];
+        [aConnection saveAgenda:appId rootPage:rootPage userid:userid delegate:self];
     }
 }
 
@@ -265,7 +265,6 @@
 
 }
 - (void)didReceiveCheckName:(id)nameOK {
-    console.log('didReceiveCheckName ' + nameOK);
     self.nameOKServer = nameOK;
     [self refreshUIFromData];
 }
@@ -294,13 +293,13 @@
 
 //LoginPanel and OpenPanel Delegate
 - (void) panelDidClose:(id)tag data:(CPString)data {
-    if(tag === "login") {
-        self.userId = data;
+    if(tag === "login") {        
+        self.userid = data;
         [theWindow orderFront:self];
     }  
     if(tag === "open") {
-        console.log("Loading Agenda for name: " + data);
-        [aConnection loadAgenda:data delegate:self];
+        console.log("Loading Agenda for " + self.userid + " and name " + data);
+        [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
     }
     if(tag === "empty") {
         [appnameField setObjectValue:""];
