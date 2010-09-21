@@ -217,6 +217,7 @@
     rootPage.navigationId = "r";
     pageViewController.page = rootPage;
     appId = null; 
+    [self controlTextDidChange:null];
 }
 - (void) openMobileApp {
     if(namechanged) {
