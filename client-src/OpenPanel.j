@@ -9,7 +9,7 @@
     CPTextField field;
 }
 
-- (id)init:(id) delegate2
+- (id)initWithName:(CPString)name andDelegate:(id) delegate2
 {
     self = [self initWithContentRect:CGRectMake(200.0, 150.0, 330.0, 140.0) 
     styleMask:CPHUDBackgroundWindowMask];
@@ -30,7 +30,7 @@
         [titleLabel setFrameOrigin:CGPointMake(45,5)];
         [contentView addSubview:titleLabel];
 
-        field = [CPTextField textFieldWithStringValue:"" placeholder:"" width:200];
+        field = [CPTextField textFieldWithStringValue:name placeholder:"" width:200];
         [field setFrameOrigin:CGPointMake(70,35)];
         [contentView addSubview:field];
 

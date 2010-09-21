@@ -231,7 +231,8 @@
 // Actions
 //
 - (@action) load:(id)sender {
-    [[[OpenPanel alloc] init:self] orderFront:nil];    
+    var name = [appnameField objectValue];
+    [[[OpenPanel alloc] initWithName:name andDelegate:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
     //[[[LoginPanel alloc] init:self] orderFront:nil];
