@@ -18,7 +18,7 @@ vows.describe('app').addBatch({
         topic: function() { pageProvider.connect(this.callback); },
         'db is not null': function(db, db2) {
             assert.isNotNull(db);
-            assert.notStrictEqual(undefined, db);
+            assert.isDefined(db);
             assert.isNotNull(pageProvider.database);
             assert.equal(db, pageProvider.database);
         }
@@ -84,7 +84,7 @@ vows.describe('app').addBatch({
             assert.isNull(error);
             assert.equal(inserted_page.name, 'hurz');
             assert.equal(inserted_page.userid, '123');
-            assert.notStrictEqual(undefined, inserted_page._id);            
+            assert.isDefined(inserted_page._id);    
         }    
     }
 })
@@ -117,7 +117,7 @@ vows.describe('app').addBatch({
             assert.isNull(error);
             assert.equal(inserted_page.name, 'schnurz');
             assert.equal(inserted_page.userid, '123');
-            assert.notStrictEqual(undefined, inserted_page._id);
+            assert.isDefined(inserted_page._id);
             
         }
     }
@@ -133,7 +133,7 @@ vows.describe('app').addBatch({
         },
         'result not empty': function (error, page) {
             assert.isNull(error);
-            assert.notStrictEqual(undefined, page);           
+            assert.isDefined(page);           
         }
     }
 }).addBatch({
@@ -148,8 +148,8 @@ vows.describe('app').addBatch({
         },
         'result not empty without id': function (error, page) {
             assert.isNull(error);
-            assert.notStrictEqual(undefined, page);
-            assert.equal(undefined, page.userid); 
+            assert.isDefined(page);
+            assert.isNull(page.userid); 
         }
     }
 }).addBatch({
@@ -164,7 +164,7 @@ vows.describe('app').addBatch({
         },
         'result not empty': function (error, page) {
             assert.isNull(error);
-            assert.notStrictEqual(undefined, page.rootpage.title);
+            assert.isDefined(page.rootpage.title);
             assert.equal('neu', page.rootpage.title);
         }
     }
@@ -176,7 +176,7 @@ vows.describe('app').addBatch({
         },
         'result is true': function (error, result) {
             assert.isNull(error);
-            assert.equal(true, result);
+            assert.isTrue(result);
         }
     }
 })
@@ -192,7 +192,7 @@ vows.describe('app').addBatch({
         },
         'result is true': function (error, result) {
             assert.isNull(error);
-            assert.equal(result, true);
+            assert.isTrue(result);
         }
     }
 })
@@ -208,7 +208,7 @@ vows.describe('app').addBatch({
         },
         'result is true': function (error, result) {
             assert.isNull(error);
-            assert.equal(result, false);
+            assert.isFalse(result);
         }
     }
 })
