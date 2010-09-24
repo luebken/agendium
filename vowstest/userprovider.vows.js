@@ -62,7 +62,7 @@ vows.describe('app').addBatch({
         'no error and inserted user is fine': function (error, inserted_users) {
             assert.equal(inserted_users[0].email, 'hurz');
             assert.equal(inserted_users[0].password, 'secure');
-            assert.notStrictEqual(undefined, inserted_users[0]._id);            
+            assert.isDefined(inserted_users[0]._id);            
         }    
     }
 })
@@ -73,13 +73,12 @@ vows.describe('app').addBatch({
             userprovider.removeAll(function() {
                 userprovider.save([{'email':'hurz2', 'password':'secure'}], function (error, inserted_users) {
                     userprovider.checkUser('hurz2', 'sdfsd', self.callback) 
-                    
                 } ) 
             });
         },
         'no error and user is false': function (error, user) {
             assert.isNull(error);
-            assert.isTrue(user == undefined);          
+            assert.isUndefined(user);          
         }    
     }
 })
@@ -96,7 +95,7 @@ vows.describe('app').addBatch({
         },
         'no error and user is fine': function (error, user) {
             assert.isNull(error);
-            assert.isTrue(user != undefined);     
+            assert.isDefined(user);     
             assert.equal('hurz3', user.email);  
             assert.equal('secure', user.password);
         }    
