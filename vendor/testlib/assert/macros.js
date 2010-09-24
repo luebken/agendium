@@ -128,6 +128,11 @@ assert.isUndefined = function (actual, message) {
         assert.fail(actual, undefined, message || "expected {actual} to be {expected}", "===", assert.isUndefined);
     }
 };
+assert.isDefined = function (actual, message) { // by MDL
+    if (actual === undefined) {
+        assert.fail(actual, undefined, message || "expected {actual} to be {expected}", "===", assert.isUndefined);
+    }
+};
 assert.isString = function (actual, message) {
     assertTypeOf(actual, 'string', message || "expected {actual} to be a String", assert.isString);
 };
@@ -142,6 +147,7 @@ assert.instanceOf = function (actual, expected, message) {
         assert.fail(actual, expected, message || "expected {actual} to be an instance of {expected}", "instanceof", assert.instanceOf);
     }
 };
+
 
 //
 // Utility functions
