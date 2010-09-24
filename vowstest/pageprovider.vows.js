@@ -7,7 +7,8 @@ var vows = require('vows'),
 var PageProvider = require('../lib/pageprovider').PageProvider;
 var pageProvider = new PageProvider();
 
-vows.describe('app').addBatch({
+vows.describe('pageprovider')
+.addBatch({
     'app is configured': {
         topic: function(){return pageProvider},
         'app is not null': function (pageProvider) {

@@ -7,7 +7,8 @@ var vows = require('vows'),
 var UserProvider = require('../lib/userprovider').UserProvider;
 var userprovider = new UserProvider();
 
-vows.describe('app').addBatch({
+vows.describe('userprovider')
+.addBatch({
     'app is configured': {
         topic: function(){ return userprovider },
         'app is not null': function (userprovider) {

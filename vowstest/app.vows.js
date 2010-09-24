@@ -5,11 +5,9 @@ var vows = require('vows'),
 
 var http = require('http'),
      app = require('../lib/app').app;
-
-//app.pageProvider = {};
      
 app.listen(8000);
-var client = http.createClient(80, 'localhost');
+var client = http.createClient(8000, 'localhost');
 
 //helper
 function assertStatus(code) {
@@ -28,14 +26,16 @@ var api = {
 };
 
 // Create a Test Suite
-vows.describe('app').addBatch({
+vows.describe('app')
+.addBatch({
     'app is configured': {
         topic: null,
         'app is not null': function (topic) {
             assert.isNotNull (app);
         }
     }
-}).addBatch({
+})
+.addBatch({
     'app serves root file': {
         topic: api.get('/'),
         'should respond with a 200': assertStatus(200)
@@ -48,9 +48,11 @@ vows.describe('app').addBatch({
         topic: api.get('/asdasda'),
         'should respond with a 404': assertStatus(404)
     }
-}).addBatch({
+})
+.addBatch({
     'app doesnt serve unknown agenda ': {
         topic: api.get('/agenda/unknownagenda'),
         'should respond with a 404': assertStatus(404)
     }
-}).run(); // Run it
+})
+.run();
