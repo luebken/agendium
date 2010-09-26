@@ -20,11 +20,12 @@ vows.describe('pageprovider')
         'db is not null': function(db, db2) {
             assert.isNotNull(db);
             assert.isDefined(db);
-            assert.isNotNull(pageProvider.database);
-            assert.equal(db, pageProvider.database);
+            assert.isNotNull(pageProvider.db);
+            assert.equal(db, pageProvider.db);
         }
     }
-}).addBatch({
+})
+.addBatch({
     'collection creation': {
         topic: function() { pageProvider.getCollection(this.callback)},
         'collection returned and has the right name': function (error, page_collection) {
@@ -45,7 +46,8 @@ vows.describe('pageprovider')
             assert.equal(0, n);
         }
     }
-}).addBatch({
+})
+.addBatch({
     'test initially cant find by id': {
         topic: function() { 
             var self = this;
@@ -217,8 +219,9 @@ vows.describe('pageprovider')
     'database connection closed': {
         topic: function() { pageProvider.close(); return null;},
         'db is not null': function() {
-            assert.isNull(pageProvider.database);
+            assert.isNull(pageProvider.db);
         }
     }
 })
+
 .run();

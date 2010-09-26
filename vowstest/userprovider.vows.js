@@ -23,7 +23,10 @@ vows.describe('userprovider')
             assert.isNull(error);
             assert.equal('users', user_collection.collectionName);
         }
-    },
+    }
+})
+
+.addBatch({
     'collection is empty': {
         topic: function() { 
             var self = this;
@@ -38,6 +41,7 @@ vows.describe('userprovider')
         }
     }
 })
+
 .addBatch({
     'test initially checkuser false': {
         topic: function() { 
@@ -52,6 +56,7 @@ vows.describe('userprovider')
         }
     }
 })
+
 .addBatch({
     'initial save works': {
         topic: function() { 
@@ -102,4 +107,14 @@ vows.describe('userprovider')
         }    
     }
 })
+
+.addBatch({
+    'database connection closed': {
+        topic: function() { userprovider.close(); return null;},
+        'db is not null': function() {
+            assert.isNull(userprovider.db);
+        }
+    }
+})
+
 .run();
