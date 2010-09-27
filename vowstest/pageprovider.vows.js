@@ -112,7 +112,7 @@ vows.describe('pageprovider')
             var self = this;
             pageProvider.removeAll(function() {
                 pageProvider.save({'name':'hurz', '_id':'undefined', 'userid':'123'}, function(error, inserted_page) {
-                     pageProvider.save({'name':'schnurz', '_id':inserted_page._id, 'userid':'123'}, self.callback );
+                     pageProvider.save({'name':'schnurz', '_id':inserted_page._id.toHexString(), 'userid':'123'}, self.callback );
                 }); 
             });
         },
@@ -124,7 +124,8 @@ vows.describe('pageprovider')
             
         }
     }
-}).addBatch({
+})
+.addBatch({
     'test find by id after save': {
         topic: function() { 
             var self = this;
