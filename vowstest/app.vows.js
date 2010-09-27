@@ -4,10 +4,10 @@ var vows = require('vows'),
     assert = require('assert');   
 
 var http = require('http'),
-     app = require('../lib/app').app;
+   app = require('../lib/app').app;
      
-app.listen(8000);
-var client = http.createClient(8000, 'localhost');
+var client;
+var app;
 
 //helper
 function assertStatus(code) {
@@ -29,12 +29,17 @@ var api = {
 vows.describe('app')
 .addBatch({
     'app is configured': {
-        topic: null,
+        topic: function () {
+            app.listen(8000);            
+            client = http.createClient(8000, 'localhost');
+            return null;
+        },
         'app is not null': function (topic) {
-            assert.isNotNull (app);
+            assert.isNotNull(app);
         }
     }
 })
+
 .addBatch({
     'app serves root file': {
         topic: api.get('/'),
@@ -49,10 +54,26 @@ vows.describe('app')
         'should respond with a 404': assertStatus(404)
     }
 })
+
 .addBatch({
     'app doesnt serve unknown agenda ': {
         topic: api.get('/agenda/unknownagenda'),
         'should respond with a 404': assertStatus(404)
     }
 })
+
+
+.addBatch({
+    'app is closed': {
+        topic: function() {
+            app.close();
+            app = null;
+            return null;
+        },
+        'app is null': function (topic) {
+            assert.isNull(app);
+        }
+    }
+})
+
 .run();
