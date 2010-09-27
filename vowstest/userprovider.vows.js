@@ -25,7 +25,6 @@ vows.describe('userprovider')
         }
     }
 })
-
 .addBatch({
     'collection is empty': {
         topic: function() { 
@@ -41,7 +40,6 @@ vows.describe('userprovider')
         }
     }
 })
-
 .addBatch({
     'test initially checkuser false': {
         topic: function() { 
@@ -56,7 +54,6 @@ vows.describe('userprovider')
         }
     }
 })
-
 .addBatch({
     'initial save works': {
         topic: function() { 
@@ -107,7 +104,6 @@ vows.describe('userprovider')
         }    
     }
 })
-
 .addBatch({
     'database connection closed': {
         topic: function() { userprovider.close(); return null;},
@@ -116,5 +112,4 @@ vows.describe('userprovider')
         }
     }
 })
-
 .run();
