@@ -9,7 +9,6 @@ module.exports = {
          assert.isNotNull(userProvider);
      }, 
      'test connect': function(assert, beforeExit){
-         console.log('test connect');
          userProvider.connect(function(db) {
               assert.isNotNull(db);
               assert.isDefined(db);
