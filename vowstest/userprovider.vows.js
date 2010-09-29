@@ -112,4 +112,4 @@ vows.describe('userprovider')
         }
     }
 })
-.run();
+.export(module)

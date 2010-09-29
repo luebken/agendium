@@ -225,4 +225,4 @@ vows.describe('pageprovider')
     }
 })
 
-.run();
+.export(module)

@@ -75,5 +75,4 @@ vows.describe('app')
         }
     }
 })
-
-.run();
+.export(module)
