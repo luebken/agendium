@@ -12,6 +12,7 @@
 @import "PageViewController.j"
 @import "LoginPanel.j"
 @import "OpenPanel.j"
+@import "SharePanel.j"
 @import "NewPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
@@ -25,6 +26,7 @@
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     @outlet CPButton logoutButton;
+    @outlet CPButton shareButton;
 
     CPWebView previewView;
 
@@ -184,6 +186,7 @@
 //
 - (void) refreshUIFromData {
     [saveButton setEnabled:validName && nameOKServer === 'true'];
+    [shareButton setEnabled:validName && nameOKServer === 'true'];
     if(!validName) {
         var containsWhiteSpace = /\s/.test(rootPage.title);
         if(containsWhiteSpace){
@@ -205,6 +208,7 @@
         var previewlink = BASEURL + "prev/" + appId;
         [previewView setMainFrameURL:previewlink];
         [previewButton setTitle:applink]; 
+        [previewButton sizeToFit];
     } else {
         [previewButton setTitle:""]; 
         //FIXME preview ohne ständiges nachladen 
@@ -242,11 +246,13 @@
 - (@action) new:(id)sender {
     [[[NewPanel alloc] init:self] orderFront:nil];
 }
-
 - (@action) save:(id)sender {
     if(validName && nameOKServer === 'true'){
         [aConnection saveAgenda:appId rootPage:rootPage userid:userid delegate:self];
     }
+}
+- (@action) share:(id)sender {
+    [[[SharePanel alloc] init:self andAppname:rootPage.title] orderFront:nil];
 }
 
 //
