@@ -7,6 +7,10 @@ body {
     margin: 0px;
 }
 
+#container, #containerapp img {
+    border: 0px;
+}
+
 #container, #containerapp {
     text-align: left;
     margin: 0px auto;
