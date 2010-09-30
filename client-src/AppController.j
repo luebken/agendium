@@ -177,7 +177,7 @@
     var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
     if(reverse) cmd += ', "reverse"';
     cmd += ');'
-    console.log("cmd " + cmd);
+    if(console) console.log("cmd " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
 }
 
@@ -306,7 +306,7 @@
         [theWindow orderFront:self];
     }  
     if(tag === "open") {
-        console.log("Loading Agenda for " + self.userid + " and name " + data);
+        if(console)  console.log("Loading Agenda for " + self.userid + " and name " + data);
         [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
     }
     if(tag === "empty") {

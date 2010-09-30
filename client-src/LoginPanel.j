@@ -87,10 +87,9 @@
 
 - (void) buttonAction:(id) sender {
     if([sender tag] == "login") {
-        console.log('trying to login ' + [emailField objectValue]);
+        if(console) console.log('trying to login ' + [emailField objectValue]);
         [aConnection checkUser:[emailField objectValue] withPassword:[passwordField objectValue] delegate:self];
     } else if([sender tag] == "logincancel") {
-        console.log(@"login canceled");
         history.go(-1);
         [self close];
     }    
@@ -104,7 +103,6 @@
 }
 - (void) loginFailed{
     [titleLabel setObjectValue:'Login failed. Please try again.'];
-    console.log('loginFailed');
 }
 
 - (void) signup {

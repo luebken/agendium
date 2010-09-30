@@ -76,20 +76,20 @@
     }
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
-    console.log("didFailWithError: " + error);
+    if(console) console.log("didFailWithError: " + error);
     alert(error);
 }
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    console.log("didReceiveResponse for URL:" + [response URL]);
+    if(console) console.log("didReceiveResponse for URL:" + [response URL]);
 }
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
-    console.log("didFailWithError: " + error);
+    if(console) console.log("didFailWithError: " + error);
     alert(error);
 }
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    console.log("didReceiveResponse for URL:" + [response URL]);
+    if(console) console.log("didReceiveResponse for URL:" + [response URL]);
 }
 
 //
@@ -104,7 +104,7 @@
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 
     } else {
-        console.log('failureWhileReceivingAgenda');
+        if(console) console.log('failureWhileReceivingAgenda');
         [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
     }
 }
@@ -118,7 +118,7 @@
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 
     } else {
-        console.log('failureWhileReceivingAgenda');
+        if(console) console.log('failureWhileReceivingAgenda');
         [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
     }
 }

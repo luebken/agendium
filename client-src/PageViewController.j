@@ -230,7 +230,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     //[textfield setSelectedRange:CPMakeRange(0, 0)];
 }
 - (id)tableView:(CPTableView)table2 isGroupRow:(id)row {
-    console.log("isGroupRow:" + row);
     return YES;
 }
 
@@ -305,7 +304,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 -(void)animationDidEnd:(CPAnimation)animation {
-    console.log("animationDidEnd");
+    if(console) console.log("animationDidEnd");
 }
 
 - (@action)backButtonClicked:(id)sender {
