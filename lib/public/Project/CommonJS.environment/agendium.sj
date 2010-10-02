@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;4938;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4871;
+@STATIC;1.0;p;20;AgendiumConnection.jt;5028;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;4961;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -59,21 +59,29 @@ objj_msgSend(_1e,"didReceiveCheckNameData:delegate:",_21,checkNameDelegate);
 }
 }),new objj_method(sel_getUid("connection:didFailWithError:"),function(_22,_23,_24,_25){
 with(_22){
+if(console){
 console.log("didFailWithError: "+_25);
+}
 alert(_25);
 }
 }),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_26,_27,_28,_29){
 with(_26){
+if(console){
 console.log("didReceiveResponse for URL:"+objj_msgSend(_29,"URL"));
+}
 }
 }),new objj_method(sel_getUid("connection:didFailWithError:"),function(_2a,_2b,_2c,_2d){
 with(_2a){
+if(console){
 console.log("didFailWithError: "+_2d);
+}
 alert(_2d);
 }
 }),new objj_method(sel_getUid("connection:didReceiveResponse:"),function(_2e,_2f,_30,_31){
 with(_2e){
+if(console){
 console.log("didReceiveResponse for URL:"+objj_msgSend(_31,"URL"));
+}
 }
 }),new objj_method(sel_getUid("didReceiveSaveData:delegate:"),function(_32,_33,_34,_35){
 with(_32){
@@ -86,7 +94,9 @@ catch(e){
 objj_msgSend(_35,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
+if(console){
 console.log("failureWhileReceivingAgenda");
+}
 objj_msgSend(_35,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
@@ -102,7 +112,9 @@ catch(e){
 objj_msgSend(_39,"failureWhileReceivingAgenda:","Error while parsing Data: "+e);
 }
 }else{
+if(console){
 console.log("failureWhileReceivingAgenda");
+}
 objj_msgSend(_39,"failureWhileReceivingAgenda:","Couldn't find the Agenda");
 }
 }
@@ -120,7 +132,7 @@ with(_3f){
 objj_msgSend(_42,"didReceiveCheckName:",_41);
 }
 })]);
-p;15;AppController.jt;9260;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;12;SharePanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9045;
+p;15;AppController.jt;9290;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;12;SharePanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9075;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -199,7 +211,9 @@ if(_14){
 cmd+=", \"reverse\"";
 }
 cmd+=");";
+if(console){
 console.log("cmd "+cmd);
+}
 objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
 }),new objj_method(sel_getUid("refreshUIFromData"),function(_15,_16){
@@ -313,7 +327,9 @@ _3f.userid=_41;
 objj_msgSend(theWindow,"orderFront:",_3f);
 }
 if(tag==="open"){
+if(console){
 console.log("Loading Agenda for "+_3f.userid+" and name "+_41);
+}
 objj_msgSend(aConnection,"loadAgendaFor:andName:withDelegate:",_3f.userid,_41,_3f);
 }
 if(tag==="empty"){
@@ -395,7 +411,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20100929-22:16:01";
+BUILDDATE="v20101002-20:31:35";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -591,7 +607,7 @@ objj_msgSend(_f,"encodeObject:forKey:",textfield,"textfield");
 objj_msgSend(_f,"encodeObject:forKey:",imageView,"imageView");
 }
 })]);
-p;12;LoginPanel.jt;4626;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4560;
+p;12;LoginPanel.jt;4582;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4516;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
@@ -663,11 +679,12 @@ return _8;
 }),new objj_method(sel_getUid("buttonAction:"),function(_12,_13,_14){
 with(_12){
 if(objj_msgSend(_14,"tag")=="login"){
+if(console){
 console.log("trying to login "+objj_msgSend(emailField,"objectValue"));
+}
 objj_msgSend(aConnection,"checkUser:withPassword:delegate:",objj_msgSend(emailField,"objectValue"),objj_msgSend(passwordField,"objectValue"),_12);
 }else{
 if(objj_msgSend(_14,"tag")=="logincancel"){
-console.log("login canceled");
 history.go(-1);
 objj_msgSend(_12,"close");
 }
@@ -683,7 +700,6 @@ objj_msgSend(_15,"close");
 }),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
 with(_18){
 objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
-console.log("loginFailed");
 }
 }),new objj_method(sel_getUid("signup"),function(_1a,_1b){
 with(_1a){
@@ -994,7 +1010,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;10939;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10818;
+p;20;PageViewController.jt;10922;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;CPPropertyAnimation.ji;21;ImageTextColumnView.jt;10801;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("ButtonColumnView.j",YES);
 objj_executeFile("CPPropertyAnimation.j",YES);
@@ -1169,7 +1185,6 @@ objj_msgSend(table,"reloadData");
 }
 }),new objj_method(sel_getUid("tableView:isGroupRow:"),function(_38,_39,_3a,row){
 with(_38){
-console.log("isGroupRow:"+row);
 return YES;
 }
 }),new objj_method(sel_getUid("addItemToList:"),function(_3b,_3c,_3d){
@@ -1223,7 +1238,9 @@ objj_msgSend(_45,"deleteItemFromList:",objj_msgSend(_47,"object"));
 }
 }),new objj_method(sel_getUid("animationDidEnd:"),function(_48,_49,_4a){
 with(_48){
+if(console){
 console.log("animationDidEnd");
+}
 }
 }),new objj_method(sel_getUid("backButtonClicked:"),function(_4b,_4c,_4d){
 with(_4b){

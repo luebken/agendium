@@ -1,2 +1,2 @@
 BASEURL = "http://touchium.com/";
-BUILDDATE = "v20100929-22:16:01";
+BUILDDATE = "v20101002-20:31:35";
