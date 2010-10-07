@@ -33,3 +33,35 @@
     font-weight: bold;
     text-decoration: none;
 }
+a.staroff, a.staron  {
+    background: url(../images/star-off.png) 0 0 no-repeat;
+    display: inline;
+    width: 22px;
+    height:22px;
+    padding: 2px 10px 0px 10px;
+    margin: 0px;
+    border: 0px;
+    text-decoration: none;    
+}
+a.staron  {
+    background: url(../images/star-on.png) 0 0 no-repeat;
+}
+
+ul li.staron {
+    /* gradient broken */    
+    background-image: url(../images/favourite.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));    
+    background-position: -1px -1px;
+    background-repeat: no-repeat;
+}
+ul li.staroff { /* workaround because of broken gradient */
+    background-image: none;    
+}
+ul li.staron img{
+    padding: -5px;
+    margin: -5px;
+    position: relative;
+    top: -6px;
+    left: -6px;
+    display:inline;
+    overflow:auto;
+}
