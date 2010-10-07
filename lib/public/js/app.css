@@ -34,11 +34,12 @@
     text-decoration: none;
 }
 a.staroff, a.staron  {
+    float:right;
     background: url(../images/star-off.png) 0 0 no-repeat;
     display: inline;
     width: 22px;
     height:22px;
-    padding: 2px 10px 0px 10px;
+    padding: 2px;
     margin: 0px;
     border: 0px;
     text-decoration: none;    
@@ -55,13 +56,4 @@ ul li.staron {
 }
 ul li.staroff { /* workaround because of broken gradient */
     background-image: none;    
-}
-ul li.staron img{
-    padding: -5px;
-    margin: -5px;
-    position: relative;
-    top: -6px;
-    left: -6px;
-    display:inline;
-    overflow:auto;
-}
+}   
