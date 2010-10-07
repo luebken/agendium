@@ -38,7 +38,7 @@ a.staroff, a.staron  {
     background: url(../images/star-off.png) 0 0 no-repeat;
     display: inline;
     width: 22px;
-    height:22px;
+    height: 22px;
     padding: 2px;
     margin: 0px;
     border: 0px;
@@ -54,6 +54,12 @@ ul li.staron {
     background-position: -1px -1px;
     background-repeat: no-repeat;
 }
+ul li div.chevron{
+    background-image: url(../images/chevron.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
 ul li.staroff { /* workaround because of broken gradient */
     background-image: none;    
 }   
