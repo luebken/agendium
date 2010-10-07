@@ -5,15 +5,14 @@
     Page page;
 }
 
-- (void)setup 
+- (void)setUp 
 {
-    self.page = [[Page alloc] initWithTitle:"A Title" andSubtitle:"test12" andType:"test" andNavigationId:"navid"];    
+    page = [[Page alloc] initWithTitle:"A Title" andSubtitle:"A Subtitle" andType:"pagetype" andNavigationId:"anavid"];    
 }
 
 - (void)testThatInitializationWorks
 {
-    self.page = [[Page alloc] initWithTitle:"A Title" andSubtitle:"A Subtitle" andType:"pagetype" andNavigationId:"anavid"];    
-    [self assertNotNull:self.page];
+    [self assertNotNull:page];
     [self assert:page.title equals:"A Title"];
     [self assert:page.subtitle equals:"A Subtitle"];
     [self assert:page.type equals:"pagetype"];
