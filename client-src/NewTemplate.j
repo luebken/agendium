@@ -8,14 +8,24 @@
 {
 }
 
++ (CPString) stantardDateFormat: (CPDate)dt {
+    return [CPString stringWithFormat:@"%02d.%02d.%04d", dt.getDate(), dt.getMonth()+1, dt.getFullYear()];
+}
++ (CPString) dateFormatForUpdate: (CPDate)dt {
+    return [CPString stringWithFormat:@"Update: %02d.%02d.", dt.getDate(), dt.getMonth()+1];
+}
+
 + (id) data: (CPString) choice {
     if(choice == 'onedayonetrack') {
-        return [NewTemplate dataonedayonetrack];
+        return [NewTemplate dataonedayonetrack:new Date() withFirstDate:new Date()];
     } else {
-        return [NewTemplate datathreedaystwotracks];
+        return [NewTemplate datathreedaystwotracks:new Date() withFirstDate:new Date()];
     }
 }
-+ (id) dataonedayonetrack {
++ (id) dataonedayonetrack:(CPDate)now withFirstDate:(CPDate)firstDate {
+    var stantardDate = [NewTemplate stantardDateFormat:firstDate];
+    var updateDate = [NewTemplate dateFormatForUpdate:now];
+    
     var data2 = { 
       rootpage: { 
           type: 'Navigation',
@@ -24,7 +34,7 @@
             {
               type: 'Detail',
               title: 'News',
-              subtitle: 'Update: 12.12. / 9:00',
+              subtitle: updateDate,
               children : [],
               attributes : [
                   {'key':'Info', 'value':'This is a perfect place to put in some information about agenda changes.'}
@@ -39,7 +49,7 @@
             {
               type: 'Navigation',
               title: 'Sessions',
-              subtitle: '04 October, 2010',
+              subtitle: stantardDate,
               children : [
                   {
                       type: 'Detail',
@@ -87,7 +97,14 @@
     };
     return JSON.stringify(data2);
 }
-+ (id) datathreedaystwotracks {
++ (id) datathreedaystwotracks:(CPDate)now withFirstDate:(CPDate)firstDate {
+    var firstDay = [NewTemplate stantardDateFormat:firstDate];
+    firstDate.setDate(firstDate.getDate() + 1);
+    var secondDay = [NewTemplate stantardDateFormat:firstDate];
+    firstDate.setDate(firstDate.getDate() + 1);
+    var thirdDay = [NewTemplate stantardDateFormat:firstDate];
+    var updateDate = [NewTemplate dateFormatForUpdate:now];
+    
     var data2 = { 
       rootpage: { 
           type: 'Navigation',
@@ -96,7 +113,7 @@
             {
               type: 'Detail',
               title: 'News',
-              subtitle: 'Update: 12.12. / 9:00',
+              subtitle: updateDate,
               children : [],
               attributes : [
                   {'key':'Info', 'value':'This is a perfect place to put in some information about agenda changes.'}
@@ -111,7 +128,7 @@
               {
                 type: 'Navigation',
                 title: 'Day 01',
-                subtitle: '04 October, 2010',
+                subtitle: firstDay,
                 children : [
                           {
                               type: 'Spacer',
@@ -229,7 +246,7 @@
                 {
                   type: 'Navigation',
                   title: 'Day 02',
-                  subtitle: '05 October, 2010',
+                  subtitle: secondDay,
                   children : [
                             {
                                 type: 'Spacer',
@@ -347,7 +364,7 @@
                 {
                   type: 'Navigation',
                   title: 'Day 03',
-                  subtitle: '06 October, 2010',
+                  subtitle: thirdDay,
                   children : [
                             {
                                 type: 'Spacer',
