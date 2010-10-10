@@ -76,20 +76,20 @@
     }
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
-    if(console) console.log("didFailWithError: " + error);
+    CPLog("didFailWithError: " + error);
     alert(error);
 }
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    if(console) console.log("didReceiveResponse for URL:" + [response URL]);
+    CPLog("didReceiveResponse for URL:" + [response URL]);
 }
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
-    if(console) console.log("didFailWithError: " + error);
+    CPLog("didFailWithError: " + error);
     alert(error);
 }
 //CPURLConnection delegate
 -(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response {
-    if(console) console.log("didReceiveResponse for URL:" + [response URL]);
+    CPLog("didReceiveResponse for URL:" + [response URL]);
 }
 
 //

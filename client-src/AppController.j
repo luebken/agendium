@@ -306,7 +306,7 @@
         [theWindow orderFront:self];
     }  
     if(tag === "open") {
-        if(console)  console.log("Loading Agenda for " + self.userid + " and name " + data);
+        CPLog("Loading Agenda for " + self.userid + " and name " + data);
         [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
     }
     if(tag === "empty") {
