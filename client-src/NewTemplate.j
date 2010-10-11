@@ -15,11 +15,11 @@
     return [CPString stringWithFormat:@"Update: %02d.%02d.", dt.getDate(), dt.getMonth()+1];
 }
 
-+ (id) data: (CPString) choice {
-    if(choice == 'onedayonetrack') {
-        return [NewTemplate dataonedayonetrack:new Date() withFirstDate:new Date()];
++ (id) jsonDataForTemplate: (CPString) template withStartingDate:(CPDate) date {
+    if(template == 'onedayonetrack') {
+        return [NewTemplate dataonedayonetrack:new Date() withFirstDate:date];
     } else {
-        return [NewTemplate datathreedaystwotracks:new Date() withFirstDate:new Date()];
+        return [NewTemplate datathreedaystwotracks:new Date() withFirstDate:date];
     }
 }
 + (id) dataonedayonetrack:(CPDate)now withFirstDate:(CPDate)firstDate {

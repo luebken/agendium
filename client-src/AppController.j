@@ -300,7 +300,7 @@
 }
 
 //LoginPanel and OpenPanel Delegate
-- (void) panelDidClose:(id)tag data:(CPString)data {
+- (void) panelDidClose:(id)tag data:(id)data {
     if(tag === "login") {        
         self.userid = data;
         [theWindow orderFront:self];
@@ -317,7 +317,7 @@
     if(tag === "threedaytwotracks" || tag === "onedayonetrack"){
         [appnameField setObjectValue:""];
         [self resetData];
-        var obj = JSON.parse([NewTemplate data:tag]);
+        var obj = JSON.parse([NewTemplate jsonDataForTemplate:tag withStartingDate:data]);
         var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
         [self didReceiveAgenda:undefined withRootPage:rootPage];        
     }
