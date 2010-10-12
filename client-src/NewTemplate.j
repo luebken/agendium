@@ -5,13 +5,15 @@
 @import <Foundation/CPObject.j>
 
 var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 @implementation NewTemplate : CPObject
 {
 }
 
 + (CPString) stantardDateFormat: (CPDate)dt {
-    return [CPString stringWithFormat:@"%02d. %s. %04d", dt.getDate(), MONTHS[dt.getMonth()], dt.getFullYear()];
+    var weekday = WEEKDAYS[(dt.getDay() + 6) % 7];    
+    return [CPString stringWithFormat:@"%s, %02d %s %04d", weekday, dt.getDate(), MONTHS[dt.getMonth()], dt.getFullYear()];
 }
 
 + (CPString) dateFormatForUpdate: (CPDate)dt {

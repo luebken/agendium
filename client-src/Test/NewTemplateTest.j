@@ -11,7 +11,7 @@
 
 - (void)testOnedayOneTrack
 {
-    var firstdate = new Date(2010, 09-1, 04); 
+    var firstdate = new Date(2010, 09-1, 05); 
     var updatedate = new Date(2010, 07-1, 01);    
     var data = [NewTemplate dataonedayonetrack:updatedate withFirstDate:firstdate];
     [self assertNotNull:data];
@@ -24,7 +24,7 @@
     [self assert:obj.rootpage.children[0].subtitle equals:'Update: 01. Jul.'];
     [self assert:obj.rootpage.children[2].type equals:'Navigation'];
     [self assert:obj.rootpage.children[2].title equals:'Sessions'];
-    [self assert:obj.rootpage.children[2].subtitle equals:'04. Sep. 2010'];
+    [self assert:obj.rootpage.children[2].subtitle equals:'Sun, 05 Sep 2010'];
 }
 - (void)testThreedaysTwotracks
 {
@@ -40,11 +40,9 @@
     
     [self assert:obj.rootpage.children[2].type equals:'Navigation'];
     [self assert:obj.rootpage.children[2].title equals:'Day 01'];
-    [self assert:obj.rootpage.children[2].subtitle equals:'30. Sep. 2010'];
-    [self assert:obj.rootpage.children[3].subtitle equals:'01. Oct. 2010'];
-    [self assert:obj.rootpage.children[4].subtitle equals:'02. Oct. 2010'];
-    
-    
+    [self assert:obj.rootpage.children[2].subtitle equals:'Thu, 30 Sep 2010'];
+    [self assert:obj.rootpage.children[3].subtitle equals:'Fri, 01 Oct 2010'];
+    [self assert:obj.rootpage.children[4].subtitle equals:'Sat, 02 Oct 2010'];
 }
 
 @end
