@@ -4,15 +4,18 @@
 
 @import <Foundation/CPObject.j>
 
+var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 @implementation NewTemplate : CPObject
 {
 }
 
 + (CPString) stantardDateFormat: (CPDate)dt {
-    return [CPString stringWithFormat:@"%02d.%02d.%04d", dt.getDate(), dt.getMonth()+1, dt.getFullYear()];
+    return [CPString stringWithFormat:@"%02d. %s. %04d", dt.getDate(), MONTHS[dt.getMonth()], dt.getFullYear()];
 }
+
 + (CPString) dateFormatForUpdate: (CPDate)dt {
-    return [CPString stringWithFormat:@"Update: %02d.%02d.", dt.getDate(), dt.getMonth()+1];
+    return [CPString stringWithFormat:@"Update: %02d. %s.", dt.getDate(), MONTHS[dt.getMonth()]];
 }
 
 + (id) jsonDataForTemplate: (CPString) template withStartingDate:(CPDate) date {
