@@ -401,7 +401,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101011-20:45:23";
+BUILDDATE="v20101013-21:01:55";
 p;21;CPPropertyAnimation.jt;5747;@STATIC;1.0;I;20;AppKit/CPAnimation.jt;5703;
 objj_executeFile("AppKit/CPAnimation.j",NO);
 var _1=objj_allocateClassPair(CPAnimation,"CPPropertyAnimation"),_2=_1.isa;
@@ -779,43 +779,46 @@ objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_19,"tag"),objj_msgSend
 objj_msgSend(_17,"close");
 }
 })]);
-p;13;NewTemplate.jt;10202;@STATIC;1.0;I;21;Foundation/CPObject.jt;10156;
+p;13;NewTemplate.jt;10380;@STATIC;1.0;I;21;Foundation/CPObject.jt;10334;
 objj_executeFile("Foundation/CPObject.j",NO);
-var _1=objj_allocateClassPair(CPObject,"NewTemplate"),_2=_1.isa;
-objj_registerClassPair(_1);
-class_addMethods(_2,[new objj_method(sel_getUid("stantardDateFormat:"),function(_3,_4,dt){
-with(_3){
-return objj_msgSend(CPString,"stringWithFormat:","%02d.%02d.%04d",dt.getDate(),dt.getMonth()+1,dt.getFullYear());
-}
-}),new objj_method(sel_getUid("dateFormatForUpdate:"),function(_5,_6,dt){
+var _1=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var _2=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+var _3=objj_allocateClassPair(CPObject,"NewTemplate"),_4=_3.isa;
+objj_registerClassPair(_3);
+class_addMethods(_4,[new objj_method(sel_getUid("stantardDateFormat:"),function(_5,_6,dt){
 with(_5){
-return objj_msgSend(CPString,"stringWithFormat:","Update: %02d.%02d.",dt.getDate(),dt.getMonth()+1);
+var _7=_2[(dt.getDay()+6)%7];
+return objj_msgSend(CPString,"stringWithFormat:","%s, %02d %s %04d",_7,dt.getDate(),_1[dt.getMonth()],dt.getFullYear());
 }
-}),new objj_method(sel_getUid("jsonDataForTemplate:withStartingDate:"),function(_7,_8,_9,_a){
-with(_7){
-if(_9=="onedayonetrack"){
-return objj_msgSend(NewTemplate,"dataonedayonetrack:withFirstDate:",new Date(),_a);
+}),new objj_method(sel_getUid("dateFormatForUpdate:"),function(_8,_9,dt){
+with(_8){
+return objj_msgSend(CPString,"stringWithFormat:","Update: %02d. %s.",dt.getDate(),_1[dt.getMonth()]);
+}
+}),new objj_method(sel_getUid("jsonDataForTemplate:withStartingDate:"),function(_a,_b,_c,_d){
+with(_a){
+if(_c=="onedayonetrack"){
+return objj_msgSend(NewTemplate,"dataonedayonetrack:withFirstDate:",new Date(),_d);
 }else{
-return objj_msgSend(NewTemplate,"datathreedaystwotracks:withFirstDate:",new Date(),_a);
+return objj_msgSend(NewTemplate,"datathreedaystwotracks:withFirstDate:",new Date(),_d);
 }
 }
-}),new objj_method(sel_getUid("dataonedayonetrack:withFirstDate:"),function(_b,_c,_d,_e){
-with(_b){
-var _f=objj_msgSend(NewTemplate,"stantardDateFormat:",_e);
-var _10=objj_msgSend(NewTemplate,"dateFormatForUpdate:",_d);
-var _11={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:_10,children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Sessions",subtitle:_f,children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
-return JSON.stringify(_11);
+}),new objj_method(sel_getUid("dataonedayonetrack:withFirstDate:"),function(_e,_f,now,_10){
+with(_e){
+var _11=objj_msgSend(NewTemplate,"stantardDateFormat:",_10);
+var _12=objj_msgSend(NewTemplate,"dateFormatForUpdate:",now);
+var _13={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:_12,children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Sessions",subtitle:_11,children:[{type:"Detail",title:"A great session",subtitle:"9:00 - 10:30 in Room 1",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"A great session",subtitle:"11:00 - 12:30 in Room 2",attributes:[],children:[]},{type:"Detail",title:"A great session",subtitle:"14:00 - 15:30 in Room 3",attributes:[],children:[]}]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
+return JSON.stringify(_13);
 }
-}),new objj_method(sel_getUid("datathreedaystwotracks:withFirstDate:"),function(_12,_13,now,_14){
-with(_12){
-var _15=objj_msgSend(NewTemplate,"stantardDateFormat:",_14);
-_14.setDate(_14.getDate()+1);
-var _16=objj_msgSend(NewTemplate,"stantardDateFormat:",_14);
-_14.setDate(_14.getDate()+1);
-var _17=objj_msgSend(NewTemplate,"stantardDateFormat:",_14);
-var _18=objj_msgSend(NewTemplate,"dateFormatForUpdate:",now);
-var _19={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:_18,children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:_15,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 02",subtitle:_16,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 03",subtitle:_17,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
-return JSON.stringify(_19);
+}),new objj_method(sel_getUid("datathreedaystwotracks:withFirstDate:"),function(_14,_15,now,_16){
+with(_14){
+var _17=objj_msgSend(NewTemplate,"stantardDateFormat:",_16);
+_16.setDate(_16.getDate()+1);
+var _18=objj_msgSend(NewTemplate,"stantardDateFormat:",_16);
+_16.setDate(_16.getDate()+1);
+var _19=objj_msgSend(NewTemplate,"stantardDateFormat:",_16);
+var _1a=objj_msgSend(NewTemplate,"dateFormatForUpdate:",now);
+var _1b={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:_1a,children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Spacer",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:_17,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 02",subtitle:_18,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 03",subtitle:_19,children:[{type:"Spacer",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Spacer",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Spacer",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
+return JSON.stringify(_1b);
 }
 })]);
 p;11;OpenPanel.jt;2416;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2350;
@@ -2549,7 +2552,7 @@ objj_msgSend(_22,"setDoubleValue:",objj_msgSend(_22,"doubleValue")-objj_msgSend(
 objj_msgSend(_22,"sendAction:to:",objj_msgSend(_22,"action"),objj_msgSend(_22,"target"));
 }
 })]);
-p;22;Test/NewTemplateTest.jt;2081;@STATIC;1.0;I;21;Foundation/CPObject.ji;16;../NewTemplate.jt;2015;
+p;22;Test/NewTemplateTest.jt;2109;@STATIC;1.0;I;21;Foundation/CPObject.ji;16;../NewTemplate.jt;2043;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("../NewTemplate.j",YES);
 var _1=objj_allocateClassPair(OJTestCase,"NewTemplateTest"),_2=_1.isa;
@@ -2560,7 +2563,7 @@ CPLogRegister(CPLogPrint);
 }
 }),new objj_method(sel_getUid("testOnedayOneTrack"),function(_5,_6){
 with(_5){
-var _7=new Date(2010,9-1,4);
+var _7=new Date(2010,9-1,5);
 var _8=new Date(2010,7-1,1);
 var _9=objj_msgSend(NewTemplate,"dataonedayonetrack:withFirstDate:",_8,_7);
 objj_msgSend(_5,"assertNotNull:",_9);
@@ -2568,10 +2571,10 @@ var _a=JSON.parse(_9);
 objj_msgSend(_5,"assert:notSame:",_9,undefined);
 objj_msgSend(_5,"assert:notSame:",_a.rootpage,undefined);
 objj_msgSend(_5,"assert:same:",_a.rootpage.type,"Navigation");
-objj_msgSend(_5,"assert:equals:",_a.rootpage.children[0].subtitle,"Update: 01.07.");
+objj_msgSend(_5,"assert:equals:",_a.rootpage.children[0].subtitle,"Update: 01. Jul.");
 objj_msgSend(_5,"assert:equals:",_a.rootpage.children[2].type,"Navigation");
 objj_msgSend(_5,"assert:equals:",_a.rootpage.children[2].title,"Sessions");
-objj_msgSend(_5,"assert:equals:",_a.rootpage.children[2].subtitle,"04.09.2010");
+objj_msgSend(_5,"assert:equals:",_a.rootpage.children[2].subtitle,"Sun, 05 Sep 2010");
 }
 }),new objj_method(sel_getUid("testThreedaysTwotracks"),function(_b,_c){
 with(_b){
@@ -2583,12 +2586,12 @@ var obj=JSON.parse(_f);
 objj_msgSend(_b,"assert:notSame:",_f,undefined);
 objj_msgSend(_b,"assert:notSame:",obj.rootpage,undefined);
 objj_msgSend(_b,"assert:same:",obj.rootpage.type,"Navigation");
-objj_msgSend(_b,"assert:equals:",obj.rootpage.children[0].subtitle,"Update: 01.07.");
+objj_msgSend(_b,"assert:equals:",obj.rootpage.children[0].subtitle,"Update: 01. Jul.");
 objj_msgSend(_b,"assert:equals:",obj.rootpage.children[2].type,"Navigation");
 objj_msgSend(_b,"assert:equals:",obj.rootpage.children[2].title,"Day 01");
-objj_msgSend(_b,"assert:equals:",obj.rootpage.children[2].subtitle,"30.09.2010");
-objj_msgSend(_b,"assert:equals:",obj.rootpage.children[3].subtitle,"01.10.2010");
-objj_msgSend(_b,"assert:equals:",obj.rootpage.children[4].subtitle,"02.10.2010");
+objj_msgSend(_b,"assert:equals:",obj.rootpage.children[2].subtitle,"Thu, 30 Sep 2010");
+objj_msgSend(_b,"assert:equals:",obj.rootpage.children[3].subtitle,"Fri, 01 Oct 2010");
+objj_msgSend(_b,"assert:equals:",obj.rootpage.children[4].subtitle,"Sat, 02 Oct 2010");
 }
 })]);
 p;15;Test/PageTest.jt;876;@STATIC;1.0;I;21;Foundation/CPObject.ji;9;../Page.jt;819;
