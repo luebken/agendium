@@ -72,7 +72,14 @@
     copy.title = self.title;
     copy.subtitle = self.subtitle;
     copy.type = self.type;
-    //TODO CHILDREN
+    copy.navigationId = self.navigationId;
+    for (var i=0; i < children.length; i++) {
+        var child = [children[i] deepCopy];
+        [copy addChild:child atIndex:i];
+    }
+    for (var i=0; i < attributes.length; i++) {
+        [[copy attributes] insertObject:attributes[i] atIndex:i];
+    }
     return copy;
 }
 
