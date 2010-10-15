@@ -1,7 +1,6 @@
 
 @import <Foundation/CPObject.j>
 @import "ButtonColumnView.j"
-@import "CPPropertyAnimation.j"
 @import "ImageTextColumnView.j"
 @import "LPKit/LPSlideView.j"
 
