@@ -30,59 +30,62 @@
     }
     return self;
 }
+
+- (void) initTable {
+        table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
+
+      var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
+      var imageColumn = [[ImageTextColumnView alloc] 
+                      initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
+      [column0 setDataView:imageColumn];
+      [[column0 headerView] setStringValue:""];    
+      [column0 setWidth:75.0];
+      [column0 setEditable:NO];
+      [table addTableColumn:column0];
+
+      var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
+      [[column1 headerView] setStringValue:"Title"];
+      var field = [CPTextField labelWithTitle:@""];
+      [field setFont:[CPFont systemFontOfSize:14.0]];
+      [field setVerticalAlignment:CPCenterTextAlignment];
+      [field setLineBreakMode:CPLineBreakByWordWrapping];
+      [column1 setDataView:field];
+
+      //var fieldColumn = [[TextFieldColumnView alloc] 
+      //                initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
+      //[column1 setDataView:fieldColumn];
+      [column1 setWidth:170.0];
+      [column1 setEditable:YES];
+      [table addTableColumn:column1];
+
+      var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
+      //[column2 setDataView:fieldColumn];
+      [[column2 headerView] setStringValue:@"Subtitle"];
+      [column2 setWidth:230.0];
+      [column2 setEditable:YES];
+      [column2 setDataView:field];
+
+      [table addTableColumn:column2]; 
+
+      var buttonColumn = [[ButtonColumnView alloc] 
+                      initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
+                      andDelegate:self];
+      var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
+      [column3 setDataView:buttonColumn];
+      [column3 setWidth:30.0];
+      [column3 setEditable:YES];
+      [table addTableColumn:column3];
+
+      [table setUsesAlternatingRowBackgroundColors:YES];
+      [table setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
+
+      [table setRowHeight:50];
+      [table setDataSource:self];
+      [table setDelegate:self];
+      [table setAllowsColumnSelection:NO];
+}
 - (void) awakeFromCib {    
-    table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
- 
-    var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
-    var imageColumn = [[ImageTextColumnView alloc] 
-                    initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
-    [column0 setDataView:imageColumn];
-    [[column0 headerView] setStringValue:""];    
-    [column0 setWidth:75.0];
-    [column0 setEditable:NO];
-    [table addTableColumn:column0];
- 
-    var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
-    [[column1 headerView] setStringValue:"Title"];
-    var field = [CPTextField labelWithTitle:@""];
-    [field setFont:[CPFont systemFontOfSize:14.0]];
-    [field setVerticalAlignment:CPCenterTextAlignment];
-    [field setLineBreakMode:CPLineBreakByWordWrapping];
-    [column1 setDataView:field];
-        
-    //var fieldColumn = [[TextFieldColumnView alloc] 
-    //                initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
-    //[column1 setDataView:fieldColumn];
-    [column1 setWidth:170.0];
-    [column1 setEditable:YES];
-    [table addTableColumn:column1];
-
-    var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
-    //[column2 setDataView:fieldColumn];
-    [[column2 headerView] setStringValue:@"Subtitle"];
-    [column2 setWidth:230.0];
-    [column2 setEditable:YES];
-    [column2 setDataView:field];
-    
-    [table addTableColumn:column2]; 
-
-    var buttonColumn = [[ButtonColumnView alloc] 
-                    initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
-                    andDelegate:self];
-    var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
-    [column3 setDataView:buttonColumn];
-    [column3 setWidth:30.0];
-    [column3 setEditable:YES];
-    [table addTableColumn:column3];
-
-    [table setUsesAlternatingRowBackgroundColors:YES];
-    [table setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
-    
-    [table setRowHeight:50];
-    [table setDataSource:self];
-    [table setDelegate:self];
-    [table setAllowsColumnSelection:NO];
-    
+    [self initTable];
     [scrollView setDocumentView:table]; 
 
     [backButton setEnabled:NO];
@@ -295,14 +298,13 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if(![self editing]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
-        [self myRefresh];
-        
-        var oldView =[slideView subviews][0];
-        var newScrollView =[[CPScrollView alloc] initWithFrame:[oldView bounds]];
+        var bounds = [[slideView subviews][0] bounds];
+        var newScrollView =[[CPScrollView alloc] initWithFrame:bounds];
+        [self initTable];
         [newScrollView setDocumentView:table]; 
         [slideView addSubview:newScrollView];
         [slideView slideToView:newScrollView];
-        
+        [self myRefresh];
         [delegate selectedPage:page reverse:NO];        
     } else {
         [self deleteItemFromList:[notification object]];
@@ -316,8 +318,9 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)backButtonClicked:(id)sender {
     page = [page ancestor];
-    var oldView =[slideView subviews][0];
-    var newScrollView =[[CPScrollView alloc] initWithFrame:[oldView bounds]];
+    var bounds = [[slideView subviews][0] bounds];
+    var newScrollView =[[CPScrollView alloc] initWithFrame:bounds];
+    [self initTable];
     [newScrollView setDocumentView:table]; 
     [slideView addSubview:newScrollView];
     [slideView slideToView:newScrollView direction:LPSlideViewNegativeDirection];
