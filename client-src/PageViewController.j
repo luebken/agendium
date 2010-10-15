@@ -68,12 +68,23 @@
 
       var buttonColumn = [[ButtonColumnView alloc] 
                       initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
+                      andTitle:"▶" andEditingTitle: "−"
                       andDelegate:self];
-      var column3 = [[CPTableColumn alloc] initWithIdentifier:"button"]; 
+      var column3 = [[CPTableColumn alloc] initWithIdentifier:"button1"]; 
       [column3 setDataView:buttonColumn];
       [column3 setWidth:30.0];
       [column3 setEditable:YES];
       [table addTableColumn:column3];
+      
+      var buttonColumn2 = [[ButtonColumnView alloc] 
+                      initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
+                      andTitle:"" andEditingTitle: "⏎"
+                      andDelegate:self];
+      var column4 = [[CPTableColumn alloc] initWithIdentifier:"button2"]; 
+      [column4 setDataView:buttonColumn2];
+      [column4 setWidth:30.0];
+      [column4 setEditable:YES];
+      [table addTableColumn:column4];
 
       [table setUsesAlternatingRowBackgroundColors:YES];
       [table setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
@@ -186,9 +197,13 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             visible = pageAtRow.type !== 'Spacer';
             //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
             return [pageAtRow subtitle];
+        } else if([[tableColumn identifier] isEqual:"button2"]) {
+            visible = pageAtRow.type !== 'Spacer' && editing;
+            //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
+            return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
         } else {
             visible = pageAtRow.type !== 'Spacer';
-            return {row:row, visible:visible, editing:editing};
+            return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
         }
     } else {
         var attribute = [[page attributes] objectAtIndex:row];
@@ -203,7 +218,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             //return {title: value, row:row, visible:YES, editing:editing};
             return value;
         } else {
-            return {visible:NO, row:row, editing:editing};
+            return {visible:NO, row:row, editing:editing, column:[tableColumn identifier]};
         }
     }
 }
@@ -289,13 +304,27 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     }
     [table deselectAll];
     [table reloadData];
-    //[self tableViewSelectionDidChange:null];
+}
+
+- (void)duplicateItemFromList:(id)row {
+    if([page isNavigationType]) {
+        [page duplicateChild:row];
+    } else {
+        //[[page attributes] removeObjectAtIndex:row];
+    }
+    [table deselectAll];
+    [table reloadData];
 }
 
 
+
+
 - (void) rowClicked:(id)notification {
+    var o = JSON.parse([notification object]); //workaround 
+    var row = o.row;
+    var column = o.column;
+    
     if(![self editing]) {
-        var row = [notification object];
         page = [[page children] objectAtIndex:row];
         var bounds = [[slideView subviews][0] bounds];
         var newScrollView =[[CPScrollView alloc] initWithFrame:bounds];
@@ -306,7 +335,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [self myRefresh];
         [delegate selectedPage:page reverse:NO];        
     } else {
-        [self deleteItemFromList:[notification object]];
+        if(column === "button1"){
+            [self deleteItemFromList:row];
+        } else {
+            [self duplicateItemFromList:row];            
+        }
     }
     //[table removeFromSuperview]
 }

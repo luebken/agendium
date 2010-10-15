@@ -1,7 +1,5 @@
 
-
 @import <Foundation/CPObject.j>
-
 
 @implementation Page : CPObject
 {
@@ -61,12 +59,29 @@
     if(index < 0) index = children.length;
     [children insertObject:child atIndex:index];
 }
+
 - (Bool) isRootPage {
     return self.ancestor == null;
 }
 - (id) removeChild: (int) index {
     [children removeObjectAtIndex:index];
 }
+
+- (id) deepCopy {
+    var copy = [[Page alloc] init];
+    copy.title = self.title;
+    copy.subtitle = self.subtitle;
+    copy.type = self.type;
+    //TODO CHILDREN
+    return copy;
+}
+
+- (id) duplicateChild: (int) index {
+    var child = [children objectAtIndex:index];
+    var clone = [child deepCopy];
+    [self addChild:clone atIndex:index+1];
+}
+
 
 //FIXME OK this looks stupid. How would Objective-J guys do this
 - (id) toJSON {
