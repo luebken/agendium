@@ -3,7 +3,7 @@
 @import "ButtonColumnView.j"
 @import "CPPropertyAnimation.j"
 @import "ImageTextColumnView.j"
-
+@import "LPKit/LPSlideView.j"
 
 @implementation PageViewController : CPViewController
 {
@@ -16,6 +16,7 @@
     id delegate;
     CPTableView table;
     @outlet CPTextField titleField;
+    @outlet LPSlideView slideView;
 
     boolean editing @accessors;
 }
@@ -291,13 +292,18 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 
 - (void) rowClicked:(id)notification {
-    //FIXME remove/hide column 
     if(![self editing]) {
         var row = [notification object];
         page = [[page children] objectAtIndex:row];
-        [[CPPropertyAnimation slideLeft:self view:scrollView] startAnimation];
-        [delegate selectedPage:page reverse:NO];
         [self myRefresh];
+        
+        var oldView =[slideView subviews][0];
+        var newScrollView =[[CPScrollView alloc] initWithFrame:[oldView bounds]];
+        [newScrollView setDocumentView:table]; 
+        [slideView addSubview:newScrollView];
+        [slideView slideToView:newScrollView];
+        
+        [delegate selectedPage:page reverse:NO];        
     } else {
         [self deleteItemFromList:[notification object]];
     }
@@ -309,8 +315,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action)backButtonClicked:(id)sender {
-    [[CPPropertyAnimation slideRight:self view:scrollView] startAnimation];
     page = [page ancestor];
+    var oldView =[slideView subviews][0];
+    var newScrollView =[[CPScrollView alloc] initWithFrame:[oldView bounds]];
+    [newScrollView setDocumentView:table]; 
+    [slideView addSubview:newScrollView];
+    [slideView slideToView:newScrollView direction:LPSlideViewNegativeDirection];
     [delegate selectedPage:page reverse:YES];
     [self myRefresh];
 }
