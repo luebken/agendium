@@ -46,6 +46,7 @@
     var field = [CPTextField labelWithTitle:@""];
     [field setFont:[CPFont systemFontOfSize:14.0]];
     [field setVerticalAlignment:CPCenterTextAlignment];
+    [field setLineBreakMode:CPLineBreakByWordWrapping];
     [column1 setDataView:field];
         
     //var fieldColumn = [[TextFieldColumnView alloc] 
@@ -135,7 +136,7 @@
         field = [CPTextField labelWithTitle:@""];
         [field setFont:[CPFont systemFontOfSize:14.0]];
         [field setVerticalAlignment:CPCenterTextAlignment];
-        
+        [field setLineBreakMode:CPLineBreakByWordWrapping];
         [[CPNotificationCenter defaultCenter] 
             postNotificationName:@"EditingDoneNotification" 
             object:nil];
