@@ -1,0 +1,21 @@
+!!! 5
+%html
+  %head
+    %title= rootpage.title
+    %script{ src: '/js2/jquery-1.4.3.min.js' }
+    %script{ src: '/js2/jquery.mobile-1.0a1.min.js' }
+    %script{ src: '/js2/app.js' }
+    %script{ src: '/data/'+ rootpage.title }
+    %link{ rel: 'stylesheet', href: '/js/app.css' }
+    %link{ rel: 'stylesheet', href: '/js2/jquery.mobile-1.0a1.min.css' }
+  %body
+  #current{'data-role': 'page'}
+    #header{'data-role': 'header'}
+      %h1= 'Touchium'
+    #content{'data-role': 'content'}
+      %ul{'data-role': 'listview', 'data-inset': 'true'}
+        %li
+          %a{href: '#r'}= 'Agenda of ' +  rootpage.title
+      %br 
+      %br
+      %div This agenda is powered by Touchium. To learn more go to http://touchium.com.
