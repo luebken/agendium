@@ -5,3 +5,20 @@
     float: left;
     padding: 15px 15px 15px 15px;
 }
+a[role=button]  {
+    float:right;
+}
+a.staron  {
+    background: url(../images/star-on.png) 0 0 no-repeat;
+}
+
+ul li.staron {
+    /* gradient broken */    
+    background-image: url(../images/favourite.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));    
+    background-position: -1px -1px;
+    background-repeat: no-repeat;
+}
+
+.ui-icon-staron {
+    background-image: url(../images/staron.png) !important;
+}
