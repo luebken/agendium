@@ -320,11 +320,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 
 - (void) rowClicked:(id)notification {
-    var o = JSON.parse([notification object]); //workaround 
+    var o = JSON.parse([notification object]); //workaround strange notification behaviour
     var row = o.row;
     var column = o.column;
     
     if(![self editing]) {
+        var oldpageid = page.navigationId;
         page = [[page children] objectAtIndex:row];
         var bounds = [[slideView subviews][0] bounds];
         var newScrollView =[[CPScrollView alloc] initWithFrame:bounds];
@@ -333,7 +334,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [slideView addSubview:newScrollView];
         [slideView slideToView:newScrollView];
         [self myRefresh];
-        [delegate selectedPage:page reverse:NO];        
+        [delegate changePage:oldpageid to:page.navigationId reverse:NO];        
     } else {
         if(column === "button1"){
             [self deleteItemFromList:row];

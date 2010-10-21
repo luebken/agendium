@@ -173,10 +173,11 @@
 */
 
 //PageViewController Delegate
-- (void) selectedPage:(Page) page reverse:(Boolean) reverse {
-    var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
-    if(reverse) cmd += ', "reverse"';
-    cmd += ');'
+- (void) changePage:(CPString) oldPageid to:(CPString) pageid reverse:(Boolean) reverse {
+//    var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
+    var cmd = "$.changePage($('#"+oldPageid+"'), $('#"+pageid+"'), 'slide', false)"
+ //   if(reverse) cmd += ', "reverse"';
+ //   cmd += ');'
     if(console) console.log("cmd " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
 }
@@ -208,7 +209,7 @@
         var previewlink = BASEURL + "prev/" + appId;
         [previewView setMainFrameURL:previewlink];
         [previewButton setTitle:applink]; 
-        [previewButton sizeToFit];
+        [previewButton sizeToFit];        
     } else {
         [previewButton setTitle:""]; 
         //FIXME preview ohne ständiges nachladen 
@@ -279,6 +280,9 @@
 
 
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
+    console.log('didFinishLoadForFrame');
+    [self changePage:'current' to:'r' reverse:NO];
+    
 /*    
     var page = [pageViewController page];
     var cmd = 'jQT.goTo("#' + page.navigationId + '");';
