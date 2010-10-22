@@ -228,7 +228,7 @@
     if(namechanged) {
         window.alert('Please save before opening the app.')
     } else {
-        var link = BASEURL + "a/" + rootPage.title;
+        var link = BASEURL + "m/" + rootPage.title;
         window.open (link,"mywindow");
     }
 }
