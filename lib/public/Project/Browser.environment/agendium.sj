@@ -252,7 +252,7 @@ with(_1d){
 if(namechanged){
 window.alert("Please save before opening the app.");
 }else{
-var _1f=BASEURL+"a/"+rootPage.title;
+var _1f=BASEURL+"m/"+rootPage.title;
 window.open(_1f,"mywindow");
 }
 }
@@ -406,7 +406,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101022-21:29:51";
+BUILDDATE="v20101022-21:42:02";
 p;21;ImageTextColumnView.jt;2138;@STATIC;1.0;I;15;AppKit/CPView.jt;2099;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPView,"ImageTextColumnView"),_2=_1.isa;
