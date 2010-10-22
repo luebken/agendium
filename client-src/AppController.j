@@ -205,7 +205,7 @@
     
     [pageViewController myRefresh];
     if(appId){
-        var applink = BASEURL + "a/" + rootPage.title;
+        var applink = BASEURL + "m/" + rootPage.title;
         var previewlink = BASEURL + "prev/" + appId;
         [previewView setMainFrameURL:previewlink];
         [previewButton setTitle:applink]; 
