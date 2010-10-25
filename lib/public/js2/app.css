@@ -26,3 +26,10 @@ ul li.staron {
 .ui-icon-staron {
     background-image: url(../images/staron.png) !important;
 }
+
+.attribute {
+    margin: 0px 10px 10px 0px;
+}
+.attribute .key {
+    font-weight: bold;
+}
