@@ -142,6 +142,9 @@ body {
     background: #ffee66 url(../images/bg-btn-dwn.png) repeat-x 0px 0px;
 }
 
+#container img {
+    border: 0px;
+}
 /* ==================== footer ====================*/
 
 
