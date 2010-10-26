@@ -99,7 +99,7 @@
     if(data != null && data != '' && data != 'null') {
         try {
             var obj = JSON.parse(data);
-            [delegate didReceiveAgenda:obj._id]
+            [delegate didReceiveAgenda:obj._id withRootPage:undefined];
         } catch (e) {
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 

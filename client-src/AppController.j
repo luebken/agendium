@@ -135,7 +135,7 @@
     
     [buildDateLabel setObjectValue:BUILDDATE];
     [self resetData];
-    [self didReceiveAgenda:undefined];     
+    [self didReceiveAgenda:undefined withRootPage:undefined];     
 }
 
 
@@ -178,7 +178,7 @@
     var cmd = "$.changePage($('#"+oldPageid+"'), $('#"+pageid+"'), 'slide', false)"
  //   if(reverse) cmd += ', "reverse"';
  //   cmd += ');'
-    if(console) console.log("cmd " + cmd);
+    CPLog("cmd " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
 }
 
@@ -190,7 +190,7 @@
     [shareButton setEnabled:validName && nameOKServer === 'true'];
     if(!validName) {
         var containsWhiteSpace = /\s/.test(rootPage.title);
-        if(containsWhiteSpace){
+        if(containsWhiteSpace) {
             [appnameProblemLabel setObjectValue:"< Please remove whitespaces."];
         } else if(rootPage.title.length < 5) {
             [appnameProblemLabel setObjectValue:""];            
@@ -216,14 +216,18 @@
         [previewView setMainFrameURL:BASEURL + "preview"];
     }
 }
+
 - (void)resetData {
     rootPage = [[Page alloc] init];
-    [rootPage setTitle:[appnameField objectValue]];
     rootPage.navigationId = "r";
     pageViewController.page = rootPage;
     appId = null; 
+    validName = true;
+    namechanged = false;
+    nameOKServer = 'true';
     [self controlTextDidChange:null];
 }
+
 - (void) openMobileApp {
     if(namechanged) {
         window.alert('Please save before opening the app.')
@@ -260,19 +264,16 @@
 // AgendiumConnection Delegate
 //
 -(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
-    self.namechanged = false;
-    [appnameField setObjectValue:newRootpage.title];
+    self.nameOKServer = "true";
     self.appId = appId2;
-    self.rootPage = newRootpage
-    [pageViewController setPage:newRootpage];
+    if(newRootpage) {
+        self.rootPage = newRootpage;
+        [appnameField setObjectValue:newRootpage.title];        
+        [pageViewController setPage:newRootpage];
+    }
     [self refreshUIFromData];
 }
--(void)didReceiveAgenda:(id)appId2 {
-    self.namechanged = false;    
-    self.appId = appId2;
-    [self refreshUIFromData];
 
-}
 - (void)didReceiveCheckName:(id)nameOK {
     self.nameOKServer = nameOK;
     [self refreshUIFromData];
@@ -280,7 +281,7 @@
 
 
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
-    console.log('didFinishLoadForFrame');
+    CPLog('didFinishLoadForFrame');
     [self changePage:'current' to:'r' reverse:NO];
     
 /*    
@@ -316,7 +317,7 @@
     if(tag === "empty") {
         [appnameField setObjectValue:""];
         [self resetData];
-        [self didReceiveAgenda:undefined];
+        [self didReceiveAgenda:undefined withRootPage:undefined];
     }
     if(tag === "threedaytwotracks" || tag === "onedayonetrack"){
         [appnameField setObjectValue:""];
