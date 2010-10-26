@@ -175,7 +175,7 @@
 //PageViewController Delegate
 - (void) changePage:(CPString) oldPageid to:(CPString) pageid reverse:(Boolean) reverse {
 //    var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
-    var cmd = "$.changePage($('#"+oldPageid+"'), $('#"+pageid+"'), 'slide', false)"
+    var cmd = "$.changePage($('#"+oldPageid+"'), $('#"+pageid+"'), 'slide', "+reverse+")"
  //   if(reverse) cmd += ', "reverse"';
  //   cmd += ');'
     CPLog("cmd " + cmd);

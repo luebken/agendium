@@ -318,7 +318,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 
 
-
 - (void) rowClicked:(id)notification {
     var o = JSON.parse([notification object]); //workaround strange notification behaviour
     var row = o.row;
@@ -346,10 +345,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 -(void)animationDidEnd:(CPAnimation)animation {
-    if(console) console.log("animationDidEnd");
+    CPLog("animationDidEnd");
 }
 
 - (@action)backButtonClicked:(id)sender {
+    var oldpageid = page.navigationId;
     page = [page ancestor];
     var bounds = [[slideView subviews][0] bounds];
     var newScrollView =[[CPScrollView alloc] initWithFrame:bounds];
@@ -357,7 +357,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [newScrollView setDocumentView:table]; 
     [slideView addSubview:newScrollView];
     [slideView slideToView:newScrollView direction:LPSlideViewNegativeDirection];
-    [delegate selectedPage:page reverse:YES];
+    [delegate changePage:oldpageid to:page.navigationId reverse:YES];        
     [self myRefresh];
 }
 
