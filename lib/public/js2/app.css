@@ -33,3 +33,9 @@ ul li.staron {
 .attribute .key {
     font-weight: bold;
 }
+
+.link {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
