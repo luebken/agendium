@@ -265,6 +265,7 @@
 //
 -(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
     self.nameOKServer = "true";
+    self.namechanged = false;
     self.appId = appId2;
     if(newRootpage) {
         self.rootPage = newRootpage;
