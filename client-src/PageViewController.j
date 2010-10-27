@@ -347,20 +347,26 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 
     [titleField setObjectValue:title];
+    var oldtype = [[itemtypeButton selectedItem] title];
     [itemtypeButton removeAllItems];
     var header0 = [[table tableColumns][0] headerView];
     var header1 = [[table tableColumns][1] headerView];
     var header2 = [[table tableColumns][2] headerView];
+    var types;
     [header0 setStringValue:@"Type"];
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
-        [itemtypeButton addItemsWithTitles: ['Navigationpage', 'Detailpage', 'Spacer']];
+        types = ['Navigationpage', 'Detailpage', 'Spacer'];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
-        [itemtypeButton addItemsWithTitles: ['Text']];//, 'Link', 'Tweeter']];
+        types = ['Text'];//, 'Link', 'Tweeter']];
     } 
+    [itemtypeButton addItemsWithTitles: types];
+    if([types containsObject:oldtype]) {
+        [itemtypeButton selectItemWithTitle:oldtype];        
+    }
 }
 
 @end
