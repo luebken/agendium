@@ -261,9 +261,9 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 
 - (@action)addItemToList:(id)sender {    
     var index = [table selectedRow];
-    if(index < 0) index = page.children.length;
 
     if([page isNavigationType]) {
+        if(index < 0) index = page.children.length;
         var itemtype = [[itemtypeButton selectedItem] title];
         var newpage;
         var navigationId = page.navigationId + "c" + index;
@@ -285,6 +285,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         }
         [page addChild:newpage atIndex:index];            
     } else {
+        if(index < 0) index = page.attributes.length;
         var attribute = { key:"A key", value:"A value" };
         [[page attributes] insertObject:attribute atIndex:index];
     }
