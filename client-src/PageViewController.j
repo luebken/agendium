@@ -332,19 +332,12 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 - (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
-    
     [table deselectAll];
+    
     var title = page.title;
-    if(page.subtitle != null) {
-        title += " / " + page.subtitle;
-    }
-    if(!page.title) {
-        title = "Untitled"    
-    }
-    if(![page isRootPage]) {
-        title += " (" + page.type + ")";
-    }
-
+    if(page.subtitle) title += " / " + page.subtitle;
+    if(!page.title) title = "Untitled";
+    if(![page isRootPage]) title += " (" + page.type + ")";
 
     [titleField setObjectValue:title];
     var oldtype = [[itemtypeButton selectedItem] title];
