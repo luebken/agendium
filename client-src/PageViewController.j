@@ -19,16 +19,6 @@
 
     boolean editing @accessors;
 }
-- (id) initWithCibName: (CPString) aCibNameOrNil
-                bundle: (CPBundle) aCibBundleOrNil
-{
-    if (self = [super initWithCibName:aCibNameOrNil bundle:aCibBundleOrNil])
-    {
-        //console.log('PageViewController1 :' + scrollView);  
-
-    }
-    return self;
-}
 
 - (void) initTable {
         table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
@@ -50,15 +40,11 @@
       [field setLineBreakMode:CPLineBreakByWordWrapping];
       [column1 setDataView:field];
 
-      //var fieldColumn = [[TextFieldColumnView alloc] 
-      //                initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
-      //[column1 setDataView:fieldColumn];
       [column1 setWidth:170.0];
       [column1 setEditable:YES];
       [table addTableColumn:column1];
 
       var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
-      //[column2 setDataView:fieldColumn];
       [[column2 headerView] setStringValue:@"Subtitle"];
       [column2 setWidth:230.0];
       [column2 setEditable:YES];
@@ -107,27 +93,11 @@
     [titleField setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
 
 
-/*
-    [[CPNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(tableViewSelectionDidChange:)
-               name:CPTableViewSelectionDidChangeNotification
-             object:nil];
-*/
-
     [[CPNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(rowClicked:)
                name:@"RowClickedNotification"
              object:nil];
-             
-    /*
-    [addButton setTheme:nil];
-    var plusImg = [[CPImage alloc] initWithContentsOfFile:@"Resources/plus.png"]; 
-    [addButton setImage:plusImg]; 
-    var plusAltImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/plus_down.png"]; 
-    [addButton setAlternateImage: plusAltImage];     
-    */
 }
 
 - (void) setDelegate:(id)delegate2 {
@@ -244,9 +214,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         }
     }
     [table reloadData];
-    //[table setSelectedRow:0];
-    //var textfield = [tableColumn dataView];
-    //[textfield setSelectedRange:CPMakeRange(0, 0)];
 }
 - (id)tableView:(CPTableView)table2 isGroupRow:(id)row {
     return YES;
@@ -365,9 +332,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 - (void) myRefresh {
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
-    //var color = [page isListType] ? [CPColor blackColor] : [CPColor grayColor]; 
-    //[itemsLabel setTextColor:color];
-
+    
     [table deselectAll];
     var title = page.title;
     if(page.subtitle != null) {
@@ -396,7 +361,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [header2 setStringValue:@"Value"];
         [itemtypeButton addItemsWithTitles: ['Text']];//, 'Link', 'Tweeter']];
     } 
-    //[pagetypeButton selectItemWithTitle:page.type];
 }
 
 @end
