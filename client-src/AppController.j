@@ -301,8 +301,8 @@
 
 -(void)failureWhileReceivingAgenda:(CPString)msg  {
     alert(msg);    
-    [self resetData];
-    [self refreshUIFromData]
+//    [self resetData];
+//    [self refreshUIFromData]
 }
 
 //LoginPanel and OpenPanel Delegate
