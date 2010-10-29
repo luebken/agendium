@@ -1,0 +1,9 @@
+
+.x-panel .mylistitem {
+ height: 40px;
+}
+
+.x-panel .mylistitem em {
+ font-weight: bold;
+ font-size: 18px;
+}
