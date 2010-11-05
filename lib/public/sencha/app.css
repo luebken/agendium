@@ -4,6 +4,13 @@
 }
 
 .x-panel .mylistitem em {
- font-weight: bold;
+  font-weight: bold;
  font-size: 18px;
+}
+
+.details {
+    padding: 15px 15px 0px 15px  ;
+}
+.details h2{
+    font-weight: bold;
 }
