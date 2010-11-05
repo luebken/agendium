@@ -9,8 +9,11 @@
 }
 
 .details {
-    padding: 15px 15px 0px 15px  ;
+    padding: 15px 15px 0px 15px ;
 }
 .details h2{
     font-weight: bold;
+}
+.starbutton{
+    margin: 15px;
 }
