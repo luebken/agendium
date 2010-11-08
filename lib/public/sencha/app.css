@@ -1,11 +1,14 @@
 
 .x-panel .mylistitem {
  height: 40px;
+ text-overflow: ellipsis; 
+ overflow: hidden; 
+ white-space: nowrap;
 }
 
 .x-panel .mylistitem em {
   font-weight: bold;
- font-size: 18px;
+  font-size: 18px;
 }
 
 .details {
