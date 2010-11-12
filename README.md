@@ -35,6 +35,11 @@ MAIN TODOs
 
 Features / Bugs
 =====
+Feature:
+- Spacer => Group umbennend
+- Typ ändern Detail => Content
+- Kopieren von Items
+
 * New-Template
 * iphone preview
 * nach Safe nicht zurück springen
