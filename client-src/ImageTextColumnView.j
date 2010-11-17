@@ -29,8 +29,8 @@
     var file;
     if(value == 'Navigation'){
         file = @"Resources/navigation.png"; 
-    }else if(value == 'Spacer'){
-        file = @"Resources/spacer2.png"; 
+    }else if(value == 'Group'){
+        file = @"Resources/group.png"; 
     }else if(value == 'Text'){
         file = @"Resources/text2.png"; 
     }else {

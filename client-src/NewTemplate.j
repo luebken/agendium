@@ -46,7 +46,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
               ]
             },
             {
-              type: 'Spacer',
+              type: 'Group',
               title: 'Conference',
               subtitle: '',
               children : [ ]
@@ -87,7 +87,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
             }
           ,
           {
-            type: 'Spacer',
+            type: 'Group',
             title: '',
             subtitle: '',
             children : []
@@ -125,7 +125,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
               ]
             },
             {
-              type: 'Spacer',
+              type: 'Group',
               title: 'Conference',
               subtitle: '',
               children : [ ]
@@ -136,7 +136,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                 subtitle: firstDay,
                 children : [
                           {
-                              type: 'Spacer',
+                              type: 'Group',
                               title: 'Morning',
                               subtitle: '',
                               children : [ ]
@@ -196,7 +196,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                               children : []
                           },
                           {
-                              type: 'Spacer',
+                              type: 'Group',
                               title: 'Afternoon',
                               subtitle: '',
                               children : [ ]
@@ -254,7 +254,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                   subtitle: secondDay,
                   children : [
                             {
-                                type: 'Spacer',
+                                type: 'Group',
                                 title: 'Morning',
                                 subtitle: '',
                                 children : [ ]
@@ -314,7 +314,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                                 children : []
                             },
                             {
-                                type: 'Spacer',
+                                type: 'Group',
                                 title: 'Afternoon',
                                 subtitle: '',
                                 children : [ ]
@@ -372,7 +372,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                   subtitle: thirdDay,
                   children : [
                             {
-                                type: 'Spacer',
+                                type: 'Group',
                                 title: 'Morning',
                                 subtitle: '',
                                 children : [ ]
@@ -432,7 +432,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                                 children : []
                             },
                             {
-                                type: 'Spacer',
+                                type: 'Group',
                                 title: 'Afternoon',
                                 subtitle: '',
                                 children : [ ]
@@ -485,7 +485,7 @@ var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
                         ] 
                 },
         {
-            type: 'Spacer',
+            type: 'Group',
             title: '',
             subtitle: '',
             children : []

@@ -164,15 +164,15 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             //return {title: [pageAtRow title], row:row, visible:visible, type:pageAtRow.type, editing:editing};
             return [pageAtRow title];
         } else if([[tableColumn identifier] isEqual:"second"]) {
-            visible = pageAtRow.type !== 'Spacer';
+            visible = pageAtRow.type !== 'Group';
             //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
             return [pageAtRow subtitle];
         } else if([[tableColumn identifier] isEqual:"button2"]) {
-            visible = pageAtRow.type !== 'Spacer' && editing;
+            visible = pageAtRow.type !== 'Group' && editing;
             //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
             return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
         } else {
-            visible = pageAtRow.type !== 'Spacer';
+            visible = pageAtRow.type !== 'Group';
             return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
         }
     } else {
@@ -247,7 +247,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         } else {
             newpage = [[Page alloc] initWithTitle:"A group title" 
                                           andSubtitle:"" 
-                                              andType:"Spacer"
+                                              andType:"Group"
                                       andNavigationId: navigationId ];
         }
         [page addChild:newpage atIndex:index];            
@@ -350,7 +350,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         [header1 setStringValue:@"Title"];
         [header2 setStringValue:@"Subtitle"];
-        types = ['Navigationpage', 'Detailpage', 'Spacer'];
+        types = ['Navigationpage', 'Detailpage', 'Group'];
     } else {
         [header1 setStringValue:@"Attribute"];
         [header2 setStringValue:@"Value"];
