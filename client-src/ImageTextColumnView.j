@@ -30,11 +30,11 @@
     if(value == 'Navigation'){
         file = @"Resources/navigation.png"; 
     }else if(value == 'Group'){
-        file = @"Resources/group.png"; 
+        file = @"Resources/group2.png"; 
     }else if(value == 'Text'){
         file = @"Resources/text2.png"; 
     }else {
-        file = @"Resources/detail.png"; 
+        file = @"Resources/detail2.png"; 
     }
     [imageView setImage:[[CPImage alloc] initWithContentsOfFile:file]];
 }

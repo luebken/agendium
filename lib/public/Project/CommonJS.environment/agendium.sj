@@ -395,8 +395,8 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101120-11:46:42";
-p;21;ImageTextColumnView.jt;2135;@STATIC;1.0;I;15;AppKit/CPView.jt;2096;
+BUILDDATE="v20101120-11:51:17";
+p;21;ImageTextColumnView.jt;2137;@STATIC;1.0;I;15;AppKit/CPView.jt;2098;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPView,"ImageTextColumnView"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("textfield"),new objj_ivar("imageView")]);
@@ -422,12 +422,12 @@ if(_8=="Navigation"){
 _9="Resources/navigation.png";
 }else{
 if(_8=="Group"){
-_9="Resources/group.png";
+_9="Resources/group2.png";
 }else{
 if(_8=="Text"){
 _9="Resources/text2.png";
 }else{
-_9="Resources/detail.png";
+_9="Resources/detail2.png";
 }
 }
 }
