@@ -118,7 +118,7 @@ with(_3b){
 objj_msgSend(_3e,"didReceiveCheckName:",_3d);
 }
 })]);
-p;15;AppController.jt;9180;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;12;SharePanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;8965;
+p;15;AppController.jt;9324;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;12;SharePanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9109;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -192,7 +192,7 @@ objj_msgSend(aConnection,"checkAppName:forId:delegate:",_e,appId,_b);
 }
 }),new objj_method(sel_getUid("changePage:to:reverse:"),function(_11,_12,_13,_14,_15){
 with(_11){
-var cmd="$.changePage($('#"+_13+"'), $('#"+_14+"'), 'slide', "+_15+")";
+var cmd="if($.mobile.activePage.attr('id') != $('#"+_14+"').attr('id')) $.mobile.changePage($('#"+_14+"'), 'slide', "+_15+")";
 CPLog("cmd "+cmd);
 objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
 }
@@ -293,33 +293,35 @@ objj_msgSend(_34,"refreshUIFromData");
 }),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_37,_38,_39,_3a){
 with(_37){
 CPLog("didFinishLoadForFrame");
-objj_msgSend(_37,"changePage:to:reverse:","current","r",NO);
+var _3b=pageViewController.page.navigationId;
+CPLog("didFinishLoadForFrame navId "+_3b);
+objj_msgSend(_37,"changePage:to:reverse:","current",_3b,NO);
 }
-}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_3b,_3c,msg){
-with(_3b){
+}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_3c,_3d,msg){
+with(_3c){
 alert(msg);
 }
-}),new objj_method(sel_getUid("panelDidClose:data:"),function(_3d,_3e,tag,_3f){
-with(_3d){
+}),new objj_method(sel_getUid("panelDidClose:data:"),function(_3e,_3f,tag,_40){
+with(_3e){
 if(tag==="login"){
-_3d.userid=_3f;
-objj_msgSend(theWindow,"orderFront:",_3d);
+_3e.userid=_40;
+objj_msgSend(theWindow,"orderFront:",_3e);
 }
 if(tag==="open"){
-CPLog("Loading Agenda for "+_3d.userid+" and name "+_3f);
-objj_msgSend(aConnection,"loadAgendaFor:andName:withDelegate:",_3d.userid,_3f,_3d);
+CPLog("Loading Agenda for "+_3e.userid+" and name "+_40);
+objj_msgSend(aConnection,"loadAgendaFor:andName:withDelegate:",_3e.userid,_40,_3e);
 }
 if(tag==="empty"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3d,"resetData");
-objj_msgSend(_3d,"didReceiveAgenda:withRootPage:",undefined,undefined);
+objj_msgSend(_3e,"resetData");
+objj_msgSend(_3e,"didReceiveAgenda:withRootPage:",undefined,undefined);
 }
 if(tag==="threedaytwotracks"||tag==="onedayonetrack"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3d,"resetData");
-var obj=JSON.parse(objj_msgSend(NewTemplate,"jsonDataForTemplate:withStartingDate:",tag,_3f));
-var _40=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_3d,"didReceiveAgenda:withRootPage:",undefined,_40);
+objj_msgSend(_3e,"resetData");
+var obj=JSON.parse(objj_msgSend(NewTemplate,"jsonDataForTemplate:withStartingDate:",tag,_40));
+var _41=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_3e,"didReceiveAgenda:withRootPage:",undefined,_41);
 }
 }
 })]);
@@ -395,7 +397,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101120-11:51:17";
+BUILDDATE="v20101122-21:53:22";
 p;21;ImageTextColumnView.jt;2137;@STATIC;1.0;I;15;AppKit/CPView.jt;2098;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPView,"ImageTextColumnView"),_2=_1.isa;

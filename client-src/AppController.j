@@ -174,10 +174,7 @@
 
 //PageViewController Delegate
 - (void) changePage:(CPString) oldPageid to:(CPString) pageid reverse:(Boolean) reverse {
-//    var cmd = 'jQT.goTo("#' + page.navigationId + '", "slide"';
-    var cmd = "$.changePage($('#"+oldPageid+"'), $('#"+pageid+"'), 'slide', "+reverse+")"
- //   if(reverse) cmd += ', "reverse"';
- //   cmd += ');'
+    var cmd = "if($.mobile.activePage.attr('id') != $('#"+pageid+"').attr('id')) $.mobile.changePage($('#"+pageid+"'), 'slide', "+reverse+")"
     CPLog("cmd " + cmd);
     [[previewView windowScriptObject] evaluateWebScript:cmd];
 }
@@ -283,7 +280,10 @@
 
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
     CPLog('didFinishLoadForFrame');
-    [self changePage:'current' to:'r' reverse:NO];
+    var navId = pageViewController.page.navigationId;
+    CPLog('didFinishLoadForFrame navId ' + navId);
+    //Initial noch falsch. Sonst prima
+    [self changePage:'current' to:navId reverse:NO];
     
 /*    
     var page = [pageViewController page];
