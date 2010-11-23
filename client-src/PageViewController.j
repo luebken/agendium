@@ -1,7 +1,7 @@
 
 @import <Foundation/CPObject.j>
 @import "LPKit/LPSlideView.j"
-@import "TMTableView.j"
+@import "Table/TMTableView.j"
 
 
 @implementation PageViewController : CPViewController
