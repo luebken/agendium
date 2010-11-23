@@ -50,6 +50,7 @@
     delegate = delegate2;
 }
 
+//CPTableViewDelegate
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
     [self setEditing:NO];//so switch always back to YES in toggleEditing
@@ -83,7 +84,6 @@
     [cols[2] setDataView:field];
     [self myRefresh];
 }
-
 
 
 //table datasource method
@@ -139,6 +139,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     }
 }
 
+//table datasource method
 - (void)tableView:(CPTableView)aTableView 
     setObjectValue:(id)aValue 
     forTableColumn:(CPTableColumn)tableColumn 
