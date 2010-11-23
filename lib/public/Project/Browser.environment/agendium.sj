@@ -118,15 +118,15 @@ with(_3b){
 objj_msgSend(_3e,"didReceiveCheckName:",_3d);
 }
 })]);
-p;15;AppController.jt;9324;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;12;LoginPanel.ji;11;OpenPanel.ji;12;SharePanel.ji;10;NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9109;
+p;15;AppController.jt;9380;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9137;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
 objj_executeFile("PageViewController.j",YES);
-objj_executeFile("LoginPanel.j",YES);
-objj_executeFile("OpenPanel.j",YES);
-objj_executeFile("SharePanel.j",YES);
-objj_executeFile("NewPanel.j",YES);
+objj_executeFile("Panels/LoginPanel.j",YES);
+objj_executeFile("Panels/OpenPanel.j",YES);
+objj_executeFile("Panels/SharePanel.j",YES);
+objj_executeFile("Panels/NewPanel.j",YES);
 objj_executeFile("NewTemplate.j",YES);
 objj_executeFile("AgendiumConnection.j",YES);
 objj_executeFile("Config.j",YES);
@@ -395,9 +395,9 @@ BASEURL="http://localhost:8000/";
 BUILDDATE="vDEVBUILD";
 p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
-p;8;Config.jt;82;@STATIC;1.0;t;65;
-BASEURL="http://touchium.com/";
-BUILDDATE="v20101122-21:53:22";
+p;8;Config.jt;75;@STATIC;1.0;t;58;
+BASEURL="http://localhost:8000/";
+BUILDDATE="vDEVBUILD";
 p;21;ImageTextColumnView.jt;2137;@STATIC;1.0;I;15;AppKit/CPView.jt;2098;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPView,"ImageTextColumnView"),_2=_1.isa;
@@ -449,105 +449,6 @@ objj_msgSend(_f,"encodeObject:forKey:",textfield,"textfield");
 objj_msgSend(_f,"encodeObject:forKey:",imageView,"imageView");
 }
 })]);
-p;12;LoginPanel.jt;4582;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4516;
-objj_executeFile("Foundation/CPObject.j",NO);
-objj_executeFile("AppKit/CPPanel.j",NO);
-var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("titleLabel"),new objj_ivar("emailField"),new objj_ivar("passwordField"),new objj_ivar("aConnection")]);
-objj_registerClassPair(_1);
-class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
-with(_3){
-return delegate;
-}
-}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
-with(_5){
-delegate=_7;
-}
-}),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
-with(_8){
-_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(250,150,350,170),CPHUDBackgroundWindowMask);
-if(_8){
-_8.delegate=_a;
-objj_msgSend(_8,"setTitle:","Private Beta Login");
-objj_msgSend(_8,"setFloatingPanel:",YES);
-var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
-titleLabel=objj_msgSend(CPTextField,"labelWithTitle:","Enter your email and password to login.");
-objj_msgSend(titleLabel,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(titleLabel,"sizeToFit");
-objj_msgSend(titleLabel,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(titleLabel,"setFrameOrigin:",CGPointMake(45,5));
-objj_msgSend(_b,"addSubview:",titleLabel);
-var _d=objj_msgSend(CPTextField,"labelWithTitle:","Email:");
-objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_d,"setFrameOrigin:",CGPointMake(62,40));
-objj_msgSend(_b,"addSubview:",_d);
-emailField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
-objj_msgSend(emailField,"setFrameOrigin:",CGPointMake(100,35));
-objj_msgSend(_b,"addSubview:",emailField);
-var _e=objj_msgSend(CPTextField,"labelWithTitle:","Password:");
-objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_e,"setFrameOrigin:",CGPointMake(40,70));
-objj_msgSend(_b,"addSubview:",_e);
-passwordField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
-objj_msgSend(passwordField,"setFrameOrigin:",CGPointMake(100,65));
-objj_msgSend(passwordField,"setSecure:",YES);
-objj_msgSend(_b,"addSubview:",passwordField);
-var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_f,"setFrame:",CGRectMake(250,110,70,20));
-objj_msgSend(_b,"addSubview:",_f);
-objj_msgSend(_f,"setTag:","login");
-objj_msgSend(_f,"setTarget:",_8);
-objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
-var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_10,"setFrame:",CGRectMake(170,110,70,20));
-objj_msgSend(_b,"addSubview:",_10);
-objj_msgSend(_10,"setTag:","logincancel");
-var _11=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
-objj_msgSend(_11,"sizeToFit");
-objj_msgSend(_11,"setFrameOrigin:",CGPointMake(80,140));
-objj_msgSend(_11,"setBordered:",NO);
-objj_msgSend(_11,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
-_11._DOMElement.style.textDecoration="underline";
-objj_msgSend(_11,"setTarget:",_8);
-objj_msgSend(_11,"setAction:",sel_getUid("signup"));
-_11._DOMElement.style.cursor="pointer";
-objj_msgSend(_b,"addSubview:",_11);
-objj_msgSend(_10,"setTarget:",_8);
-objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
-aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
-}
-return _8;
-}
-}),new objj_method(sel_getUid("buttonAction:"),function(_12,_13,_14){
-with(_12){
-if(objj_msgSend(_14,"tag")=="login"){
-if(console){
-console.log("trying to login "+objj_msgSend(emailField,"objectValue"));
-}
-objj_msgSend(aConnection,"checkUser:withPassword:delegate:",objj_msgSend(emailField,"objectValue"),objj_msgSend(passwordField,"objectValue"),_12);
-}else{
-if(objj_msgSend(_14,"tag")=="logincancel"){
-history.go(-1);
-objj_msgSend(_12,"close");
-}
-}
-}
-}),new objj_method(sel_getUid("loginSuccess:"),function(_15,_16,_17){
-with(_15){
-if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
-objj_msgSend(delegate,"panelDidClose:data:","login",_17);
-objj_msgSend(_15,"close");
-}
-}
-}),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
-with(_18){
-objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
-}
-}),new objj_method(sel_getUid("signup"),function(_1a,_1b){
-with(_1a){
-window.open("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
-}
-})]);
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -555,82 +456,6 @@ objj_executeFile("AppController.j",YES);
 main=function(_1,_2){
 CPApplicationMain(_1,_2);
 };
-p;10;NewPanel.jt;3646;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.ji;23;DatePicker/DatePicker.jt;3552;
-objj_executeFile("Foundation/CPObject.j",NO);
-objj_executeFile("AppKit/CPPanel.j",NO);
-objj_executeFile("DatePicker/DatePicker.j",YES);
-var _1=objj_allocateClassPair(CPPanel,"NewPanel"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("theDatePicker")]);
-objj_registerClassPair(_1);
-class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
-with(_3){
-return delegate;
-}
-}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
-with(_5){
-delegate=_7;
-}
-}),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
-with(_8){
-_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,110,310,160),CPHUDBackgroundWindowMask);
-if(_8){
-_8.delegate=_a;
-objj_msgSend(_8,"setTitle:","New Agenda");
-objj_msgSend(_8,"setFloatingPanel:",YES);
-var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
-var _d=objj_msgSend(CPTextField,"labelWithTitle:","Starting date:");
-objj_msgSend(_d,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(_d,"sizeToFit");
-objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_d,"setFrameOrigin:",CGPointMake(30,15));
-objj_msgSend(_b,"addSubview:",_d);
-theDatePicker=objj_msgSend(objj_msgSend(DatePicker,"alloc"),"initWithFrame:",CGRectMake(120,10,100,30));
-objj_msgSend(theDatePicker,"displayPreset:",1);
-objj_msgSend(theDatePicker,"setDelegate:",_8);
-var _e=objj_msgSend(CPTextField,"labelWithTitle:","Choose your agenda template:");
-objj_msgSend(_e,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(_e,"sizeToFit");
-objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_e,"setFrameOrigin:",CGPointMake(30,50));
-objj_msgSend(_b,"addSubview:",_e);
-var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","1 day 1 track",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_f,"setFrame:",CGRectMake(30,80,110,20));
-objj_msgSend(_b,"addSubview:",_f);
-objj_msgSend(_f,"setTag:","onedayonetrack");
-objj_msgSend(_f,"setTarget:",_8);
-objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
-var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","3 days 2 tracks",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_10,"setFrame:",CGRectMake(170,80,110,20));
-objj_msgSend(_b,"addSubview:",_10);
-objj_msgSend(_10,"setTag:","threedaytwotracks");
-objj_msgSend(_10,"setTarget:",_8);
-objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
-var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","Empty",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_11,"setFrame:",CGRectMake(30,110,110,20));
-objj_msgSend(_b,"addSubview:",_11);
-objj_msgSend(_11,"setTag:","empty");
-objj_msgSend(_11,"setTarget:",_8);
-objj_msgSend(_11,"setAction:",sel_getUid("buttonAction:"));
-var _12=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_12,"setFrame:",CGRectMake(170,110,110,20));
-objj_msgSend(_b,"addSubview:",_12);
-objj_msgSend(_12,"setTag:","cancel");
-objj_msgSend(_12,"setTarget:",_8);
-objj_msgSend(_12,"setAction:",sel_getUid("buttonAction:"));
-objj_msgSend(_b,"addSubview:",theDatePicker);
-}
-return _8;
-}
-}),new objj_method(sel_getUid("datePickerDidChange:"),function(_13,_14,_15){
-with(_13){
-var _16=objj_msgSend(objj_msgSend(_15,"object"),"date");
-}
-}),new objj_method(sel_getUid("buttonAction:"),function(_17,_18,_19){
-with(_17){
-objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_19,"tag"),objj_msgSend(theDatePicker,"date"));
-objj_msgSend(_17,"close");
-}
-})]);
 p;13;NewTemplate.jt;10370;@STATIC;1.0;I;21;Foundation/CPObject.jt;10324;
 objj_executeFile("Foundation/CPObject.j",NO);
 var _1=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -671,60 +496,6 @@ var _19=objj_msgSend(NewTemplate,"stantardDateFormat:",_16);
 var _1a=objj_msgSend(NewTemplate,"dateFormatForUpdate:",now);
 var _1b={rootpage:{type:"Navigation",title:"",children:[{type:"Detail",title:"News",subtitle:_1a,children:[],attributes:[{"key":"Info","value":"This is a perfect place to put in some information about agenda changes."}]},{type:"Group",title:"Conference",subtitle:"",children:[]},{type:"Navigation",title:"Day 01",subtitle:_17,children:[{type:"Group",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Group",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 02",subtitle:_18,children:[{type:"Group",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Group",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Navigation",title:"Day 03",subtitle:_19,children:[{type:"Group",title:"Morning",subtitle:"",children:[]},{type:"Detail",title:"First Session",subtitle:"Track A | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Second Session",subtitle:"Track B | 9:00-10:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Third Session",subtitle:"Track A | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Fourth Session",subtitle:"Track B | 10:45-11:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Lunch",subtitle:"11:30-13:00",attributes:[{"key":"Location","value":"Get great food and drinks down in the main area."},{"key":"Exhibition","value":"Walk around the exhibition and meet great people."}],children:[]},{type:"Group",title:"Afternoon",subtitle:"",children:[]},{type:"Detail",title:"Fifth Session",subtitle:"Track A | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Sixth Session",subtitle:"Track B | 13:00-14:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Seventh Session",subtitle:"Track A | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},{type:"Detail",title:"Eigth Session",subtitle:"Track B | 15:00-16:30",attributes:[{"key":"Speaker","value":"Some speaker"},{"key":"Desc","value":"A detailed description about his session"},{"key":"Link","value":"http://www.agendium.de"}],children:[]},]},{type:"Group",title:"",subtitle:"",children:[]},{type:"Navigation",title:"Infos",subtitle:"General information",children:[]}]}};
 return JSON.stringify(_1b);
-}
-})]);
-p;11;OpenPanel.jt;2416;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2350;
-objj_executeFile("Foundation/CPObject.j",NO);
-objj_executeFile("AppKit/CPPanel.j",NO);
-var _1=objj_allocateClassPair(CPPanel,"OpenPanel"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("field")]);
-objj_registerClassPair(_1);
-class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
-with(_3){
-return delegate;
-}
-}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
-with(_5){
-delegate=_7;
-}
-}),new objj_method(sel_getUid("initWithName:andDelegate:"),function(_8,_9,_a,_b){
-with(_8){
-_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,150,330,140),CPHUDBackgroundWindowMask);
-if(_8){
-_8.delegate=_b;
-objj_msgSend(_8,"setTitle:","Open Agenda");
-objj_msgSend(_8,"setFloatingPanel:",YES);
-var _c=objj_msgSend(_8,"contentView"),_d=objj_msgSend(_c,"bounds");
-var _e=objj_msgSend(CPTextField,"labelWithTitle:","Enter the name of your agenda.");
-objj_msgSend(_e,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(_e,"sizeToFit");
-objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
-objj_msgSend(_e,"setFrameOrigin:",CGPointMake(45,5));
-objj_msgSend(_c,"addSubview:",_e);
-field=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:",_a,"",200);
-objj_msgSend(field,"setFrameOrigin:",CGPointMake(70,35));
-objj_msgSend(_c,"addSubview:",field);
-var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Open",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_f,"setFrame:",CGRectMake(250,90,70,20));
-objj_msgSend(_c,"addSubview:",_f);
-objj_msgSend(_f,"setTag:","open");
-objj_msgSend(_f,"setTarget:",_8);
-objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
-var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
-objj_msgSend(_10,"setFrame:",CGRectMake(170,90,70,20));
-objj_msgSend(_c,"addSubview:",_10);
-objj_msgSend(_10,"setTag:","opencancel");
-objj_msgSend(_10,"setTarget:",_8);
-objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
-}
-return _8;
-}
-}),new objj_method(sel_getUid("buttonAction:"),function(_11,_12,_13){
-with(_11){
-if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
-objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_13,"tag"),objj_msgSend(field,"objectValue"));
-}
-objj_msgSend(_11,"close");
 }
 })]);
 p;6;Page.jt;4890;@STATIC;1.0;I;21;Foundation/CPObject.jt;4845;
@@ -1224,7 +995,718 @@ objj_msgSend(itemtypeButton,"selectItemWithTitle:",_5a);
 }
 }
 })]);
-p;12;SharePanel.jt;2876;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2810;
+p;13;PreviewView.jt;184;@STATIC;1.0;I;21;Foundation/CPObject.jt;140;
+objj_executeFile("Foundation/CPObject.j",NO);
+var _1=objj_allocateClassPair(CPObject,"PreviewView"),_2=_1.isa;
+objj_registerClassPair(_1);
+p;21;TextFieldColumnView.jt;1171;@STATIC;1.0;I;15;AppKit/CPView.jt;1132;
+objj_executeFile("AppKit/CPView.j",NO);
+var _1=objj_allocateClassPair(CPTextField,"TextFieldColumnView"),_2=_1.isa;
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("initWithFrame:"),function(_3,_4,_5){
+with(_3){
+_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("TextFieldColumnView").super_class},"initWithFrame:",_5);
+objj_msgSend(_3,"setLineBreakMode:",CPLineBreakByTruncatingTail);
+objj_msgSend(_3,"setValue:forThemeAttribute:",objj_msgSend(CPColor,"colorWithHexString:","333333"),"text-color");
+objj_msgSend(_3,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"whiteColor"),"text-color",CPThemeStateSelected);
+objj_msgSend(_3,"setValue:forThemeAttribute:inState:",objj_msgSend(CPFont,"boldSystemFontOfSize:",12),"font",CPThemeStateSelected);
+objj_msgSend(_3,"setValue:forThemeAttribute:",CPCenterVerticalTextAlignment,"vertical-alignment");
+return _3;
+}
+}),new objj_method(sel_getUid("setObjectValue:"),function(_6,_7,_8){
+with(_6){
+var s=_8?_8.title:"";
+objj_msgSendSuper({receiver:_6,super_class:objj_getClass("TextFieldColumnView").super_class},"setObjectValue:",s);
+}
+})]);
+p;19;LPKit/LPSlideView.jt;5255;@STATIC;1.0;I;15;AppKit/CPView.ji;17;LPViewAnimation.jt;5194;
+objj_executeFile("AppKit/CPView.j",NO);
+objj_executeFile("LPViewAnimation.j",YES);
+LPSlideViewHorizontalDirection=0;
+LPSlideViewVerticalDirection=1;
+LPSlideViewPositiveDirection=2;
+LPSlideViewNegativeDirection=4;
+var _1=objj_allocateClassPair(CPView,"LPSlideView"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("slideDirection"),new objj_ivar("currentView"),new objj_ivar("previousView"),new objj_ivar("animationDuration"),new objj_ivar("animationCurve"),new objj_ivar("isSliding"),new objj_ivar("_delegate")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("slideDirection"),function(_3,_4){
+with(_3){
+return slideDirection;
+}
+}),new objj_method(sel_getUid("setSlideDirection:"),function(_5,_6,_7){
+with(_5){
+slideDirection=_7;
+}
+}),new objj_method(sel_getUid("currentView"),function(_8,_9){
+with(_8){
+return currentView;
+}
+}),new objj_method(sel_getUid("setCurrentView:"),function(_a,_b,_c){
+with(_a){
+currentView=_c;
+}
+}),new objj_method(sel_getUid("previousView"),function(_d,_e){
+with(_d){
+return previousView;
+}
+}),new objj_method(sel_getUid("setPreviousView:"),function(_f,_10,_11){
+with(_f){
+previousView=_11;
+}
+}),new objj_method(sel_getUid("animationDuration"),function(_12,_13){
+with(_12){
+return animationDuration;
+}
+}),new objj_method(sel_getUid("setAnimationDuration:"),function(_14,_15,_16){
+with(_14){
+animationDuration=_16;
+}
+}),new objj_method(sel_getUid("animationCurve"),function(_17,_18){
+with(_17){
+return animationCurve;
+}
+}),new objj_method(sel_getUid("setAnimationCurve:"),function(_19,_1a,_1b){
+with(_19){
+animationCurve=_1b;
+}
+}),new objj_method(sel_getUid("isSliding"),function(_1c,_1d){
+with(_1c){
+return isSliding;
+}
+}),new objj_method(sel_getUid("delegate"),function(_1e,_1f){
+with(_1e){
+return _delegate;
+}
+}),new objj_method(sel_getUid("setDelegate:"),function(_20,_21,_22){
+with(_20){
+_delegate=_22;
+}
+}),new objj_method(sel_getUid("initWithFrame:"),function(_23,_24,_25){
+with(_23){
+if(_23=objj_msgSendSuper({receiver:_23,super_class:objj_getClass("LPSlideView").super_class},"initWithFrame:",_25)){
+animationCurve=CPAnimationEaseOut;
+slideDirection=LPSlideViewHorizontalDirection;
+animationDuration=0.5;
+isSliding=NO;
+}
+return _23;
+}
+}),new objj_method(sel_getUid("addSubview:"),function(_26,_27,_28){
+with(_26){
+if(!currentView){
+currentView=_28;
+}else{
+objj_msgSend(_28,"setHidden:",YES);
+}
+objj_msgSend(_28,"setFrame:",objj_msgSend(_26,"bounds"));
+objj_msgSend(_28,"setAutoresizingMask:",CPViewWidthSizable|CPViewHeightSizable);
+objj_msgSendSuper({receiver:_26,super_class:objj_getClass("LPSlideView").super_class},"addSubview:",_28);
+}
+}),new objj_method(sel_getUid("slideToView:"),function(_29,_2a,_2b){
+with(_29){
+objj_msgSend(_29,"slideToView:direction:animationProgress:",_2b,nil,nil);
+}
+}),new objj_method(sel_getUid("slideToView:direction:"),function(_2c,_2d,_2e,_2f){
+with(_2c){
+objj_msgSend(_2c,"slideToView:direction:animationProgress:",_2e,_2f,nil);
+}
+}),new objj_method(sel_getUid("slideToView:direction:animationProgress:"),function(_30,_31,_32,_33,_34){
+with(_30){
+if(_32==currentView||isSliding){
+return;
+}
+isSliding=YES;
+if(_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("slideView:willMoveToView:"))){
+objj_msgSend(_delegate,"slideView:willMoveToView:",_30,_32);
+}
+var _35=objj_msgSend(objj_msgSend(_30,"subviews"),"indexOfObject:",_32),_36=objj_msgSend(objj_msgSend(_30,"subviews"),"indexOfObject:",currentView),_37=objj_msgSend(_30,"frame").size;
+objj_msgSend(_32,"setHidden:",NO);
+var _38=CGPointMake(0,0),_39=CGPointMake(0,0);
+if(slideDirection==LPSlideViewHorizontalDirection){
+var _3a,_3b;
+if((_33&&_33==LPSlideViewNegativeDirection)||(!_33&&_35<_36)){
+_3a=-_37.width;
+_3b=_37.width;
+}
+if((_33&&_33==LPSlideViewPositiveDirection)||(!_33&&_35>_36)){
+_3a=_37.width;
+_3b=-_37.width;
+}
+_38.x=_3a;
+_39.x=_3b;
+}else{
+if(slideDirection==LPSlideViewVerticalDirection){
+var _3c,_3d;
+if((_33&&_33==LPSlideViewNegativeDirection)||(!_33&&_35>_36)){
+_3c=_37.height;
+_3d=-_37.height;
+}
+if((_33&&_33==LPSlideViewPositiveDirection)||(!_33&&_35<_36)){
+_3c=-_37.height;
+_3d=_37.height;
+}
+_38.y=_3c;
+_39.y=_3d;
+if(_34){
+_38.y-=(_34*_38.y);
+_39.y-=(_34*_39.y);
+}
+}
+}
+var _3e=objj_msgSend(objj_msgSend(LPViewAnimation,"alloc"),"initWithViewAnimations:",[{"target":_32,"animations":[[LPOriginAnimationKey,_38,CGPointMake(0,0)]]},{"target":currentView,"animations":[[LPOriginAnimationKey,CGPointMakeZero(),_39]]}]);
+objj_msgSend(_3e,"setAnimationCurve:",animationCurve);
+objj_msgSend(_3e,"setDuration:",animationDuration);
+objj_msgSend(_3e,"setDelegate:",_30);
+objj_msgSend(_3e,"startAnimation");
+previousView=currentView;
+currentView=_32;
+}
+}),new objj_method(sel_getUid("animationDidEnd"),function(_3f,_40){
+with(_3f){
+if(_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("slideView:didMoveToView:"))){
+objj_msgSend(_delegate,"slideView:didMoveToView:",_3f,currentView);
+}
+objj_msgSend(previousView,"setHidden:",YES);
+isSliding=NO;
+}
+}),new objj_method(sel_getUid("animationDidEnd:"),function(_41,_42,_43){
+with(_41){
+objj_msgSend(_41,"animationDidEnd");
+}
+}),new objj_method(sel_getUid("animationDidStop:"),function(_44,_45,_46){
+with(_44){
+objj_msgSend(_44,"animationDidEnd");
+}
+})]);
+p;23;LPKit/LPViewAnimation.jt;8134;@STATIC;1.0;I;21;Foundation/CPObject.jt;8089;
+objj_executeFile("Foundation/CPObject.j",NO);
+LPCSSAnimationsAreAvailable=NO;
+var _1=["webkit","Moz","moz","o","ms"],_2=nil;
+LPFadeAnimationKey="LPFadeAnimation";
+LPFrameAnimationKey="LPFrameAnimation";
+LPOriginAnimationKey="LPOriginAnimation";
+LPTestCSSFeature=function(_3){
+if(typeof document==="undefined"){
+return NO;
+}
+if(!_2){
+_2=document.createElement("div");
+}
+var _4=[_3];
+for(var i=0;i<_1.length;i++){
+_4.push(_1[i]+_3);
+}
+for(var i=0;i<_4.length;i++){
+if(typeof _2.style[_4[i]]!=="undefined"){
+return YES;
+}
+}
+return NO;
+};
+LPCSSAnimationsAreAvailable=LPTestCSSFeature("AnimationName");
+var _5=function(_6,_7,_8,_9){
+if(_9){
+_6.style[_8]=_6.style[_8]+", "+_7;
+}else{
+_6.style[_8]=_7;
+}
+};
+var _a=objj_allocateClassPair(CPAnimation,"LPViewAnimation"),_b=_a.isa;
+class_addIvars(_a,[new objj_ivar("_isAnimating"),new objj_ivar("_viewAnimations"),new objj_ivar("_animationDidEndTimeout"),new objj_ivar("_shouldUseCSSAnimations"),new objj_ivar("_c1"),new objj_ivar("_c2")]);
+objj_registerClassPair(_a);
+class_addMethods(_a,[new objj_method(sel_getUid("viewAnimations"),function(_c,_d){
+with(_c){
+return _viewAnimations;
+}
+}),new objj_method(sel_getUid("setViewAnimations:"),function(_e,_f,_10){
+with(_e){
+_viewAnimations=_10;
+}
+}),new objj_method(sel_getUid("shouldUseCSSAnimations"),function(_11,_12){
+with(_11){
+return _shouldUseCSSAnimations;
+}
+}),new objj_method(sel_getUid("setShouldUseCSSAnimations:"),function(_13,_14,_15){
+with(_13){
+_shouldUseCSSAnimations=_15;
+}
+}),new objj_method(sel_getUid("initWithViewAnimations:"),function(_16,_17,_18){
+with(_16){
+if(_16=objj_msgSend(_16,"initWithDuration:animationCurve:",1,CPAnimationLinear)){
+_isAnimating=NO;
+_viewAnimations=_18;
+_shouldUseCSSAnimations=NO;
+}
+return _16;
+}
+}),new objj_method(sel_getUid("setAnimationCurve:"),function(_19,_1a,_1b){
+with(_19){
+objj_msgSendSuper({receiver:_19,super_class:objj_getClass("LPViewAnimation").super_class},"setAnimationCurve:",_1b);
+_c1=[];
+_c2=[];
+objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",1,_c1);
+objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",2,_c2);
+}
+}),new objj_method(sel_getUid("startAnimation"),function(_1c,_1d){
+with(_1c){
+if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
+if(_isAnimating){
+return;
+}
+_isAnimating=YES;
+var i=_viewAnimations.length;
+while(i--){
+var _1e=_viewAnimations[i],_1f=_1e["target"];
+objj_msgSend(_1c,"target:setCSSAnimationDuration:",_1f,_duration);
+objj_msgSend(_1c,"target:setCSSAnimationCurve:",_1f,_animationCurve);
+var x=_1e["animations"].length;
+while(x--){
+var _20=_1e["animations"][x],_21=_20[0],_22=_20[1],end=_20[2];
+if(_21===LPFadeAnimationKey){
+objj_msgSend(_1f,"setAlphaValue:",_22);
+objj_msgSend(_1c,"target:addCSSAnimationPropertyForKey:append:",_1f,_21,x!==0);
+setTimeout(function(_23,_24){
+_23._DOMElement.style["-webkit-transform"]="translate3d(0px, 0px, 0px)";
+objj_msgSend(_23,"setAlphaValue:",_24);
+},0,_1f,end);
+}else{
+if(_21===LPOriginAnimationKey){
+if(!CGPointEqualToPoint(_22,end)){
+objj_msgSend(_1f,"setFrameOrigin:",_22);
+objj_msgSend(_1c,"target:addCSSAnimationPropertyForKey:append:",_1f,_21,x!==0);
+setTimeout(function(_25,_26,_27){
+var x=_27.x-_26.x,y=_27.y-_26.y;
+_25._DOMElement.style["-webkit-transform"]="translate3d("+x+"px, "+y+"px, 0px)";
+setTimeout(function(){
+objj_msgSend(_1c,"_clearCSS");
+_25._DOMElement.style["-webkit-transform"]="translate3d(0px, 0px, 0px)";
+objj_msgSend(_25,"setFrameOrigin:",_27);
+},(1000*_duration)+100);
+},0,_1f,_22,end);
+}
+}else{
+if(_21===LPFrameAnimationKey){
+CPLog.error("LPViewAnimation does not currently support CSS frame animations. This should fall back to the regular javascript animation.");
+}
+}
+}
+}
+}
+if(_animationDidEndTimeout){
+clearTimeout(_animationDidEndTimeout);
+}
+_animationDidEndTimeout=setTimeout(function(_28){
+_isAnimating=NO;
+objj_msgSend(_28,"_clearCSS");
+if(objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("animationDidEnd:"))){
+objj_msgSend(_delegate,"animationDidEnd:",_28);
+}
+},(1000*_duration)+100,_1c);
+}else{
+var i=_viewAnimations.length;
+while(i--){
+var _1e=_viewAnimations[i],_1f=_1e["target"];
+var x=_1e["animations"].length;
+while(x--){
+var _20=_1e["animations"][x],_21=_20[0],_22=_20[1],end=_20[2];
+switch(_21){
+case LPFadeAnimationKey:
+objj_msgSend(_1f,"setAlphaValue:",_22);
+break;
+case LPOriginAnimationKey:
+objj_msgSend(_1f,"setFrameOrigin:",_22);
+break;
+case LPFrameAnimationKey:
+objj_msgSend(_1f,"setFrame:",_22);
+break;
+}
+}
+}
+objj_msgSendSuper({receiver:_1c,super_class:objj_getClass("LPViewAnimation").super_class},"startAnimation");
+}
+}
+}),new objj_method(sel_getUid("setCurrentProgress:"),function(_29,_2a,_2b){
+with(_29){
+_progress=_2b;
+var _2c=_2d(_progress,_c1[0],_c1[1],_c2[0],_c2[1],_duration),i=_viewAnimations.length;
+while(i--){
+var _2e=_viewAnimations[i],_2f=_2e["target"],x=_2e["animations"].length;
+while(x--){
+var _30=_2e["animations"][x],_31=_30[0],_32=_30[1],end=_30[2];
+switch(_31){
+case LPFadeAnimationKey:
+objj_msgSend(_2f,"setAlphaValue:",(_2c*(end-_32))+_32);
+break;
+case LPOriginAnimationKey:
+objj_msgSend(_2f,"setFrameOrigin:",CGPointMake(_32.x+(_2c*(end.x-_32.x)),_32.y+(_2c*(end.y-_32.y))));
+break;
+case LPFrameAnimationKey:
+objj_msgSend(_2f,"setFrame:",CGRectMake(_32.origin.x+(_2c*(end.origin.x-_32.origin.x)),_32.origin.y+(_2c*(end.origin.y-_32.origin.y)),_32.size.width+(_2c*(end.size.width-_32.size.width)),_32.size.height+(_2c*(end.size.height-_32.size.height))));
+}
+}
+}
+}
+}),new objj_method(sel_getUid("isAnimating"),function(_33,_34){
+with(_33){
+if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
+return _isAnimating;
+}else{
+return objj_msgSendSuper({receiver:_33,super_class:objj_getClass("LPViewAnimation").super_class},"isAnimating");
+}
+}
+}),new objj_method(sel_getUid("stopAnimation"),function(_35,_36){
+with(_35){
+if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
+}else{
+objj_msgSendSuper({receiver:_35,super_class:objj_getClass("LPViewAnimation").super_class},"stopAnimation");
+}
+}
+}),new objj_method(sel_getUid("_clearCSS"),function(_37,_38){
+with(_37){
+for(var i=0;i<_viewAnimations.length;i++){
+_viewAnimations[i]["target"]._DOMElement.style["-webkit-transition-property"]="none";
+}
+}
+}),new objj_method(sel_getUid("target:setCSSAnimationDuration:"),function(_39,_3a,_3b,_3c){
+with(_39){
+_3b._DOMElement.style["-webkit-transition-duration"]=_3c+"s";
+}
+}),new objj_method(sel_getUid("target:setCSSAnimationCurve:"),function(_3d,_3e,_3f,_40){
+with(_3d){
+var _41=nil;
+switch(_40){
+case CPAnimationLinear:
+_41="linear";
+break;
+case CPAnimationEaseIn:
+_41="ease-in";
+break;
+case CPAnimationEaseOut:
+_41="ease-out";
+break;
+case CPAnimationEaseInOut:
+_41="ease-in-out";
+break;
+}
+_3f._DOMElement.style["-webkit-transition-timing-function"]=_41;
+}
+}),new objj_method(sel_getUid("target:addCSSAnimationPropertyForKey:append:"),function(_42,_43,_44,_45,_46){
+with(_42){
+var _47=nil;
+switch(_45){
+case LPFadeAnimationKey:
+_47="-webkit-transform, opacity";
+break;
+case LPOriginAnimationKey:
+_47="-webkit-transform";
+break;
+case LPFrameAnimationKey:
+_47="top, left, width, height";
+break;
+default:
+_47="none";
+}
+_5(_44._DOMElement,_47,"-webkit-transition-property",_46);
+}
+})]);
+var _2d=_2d=function(t,p1x,p1y,p2x,p2y,_48){
+var ax=0,bx=0,cx=0,ay=0,by=0,cy=0;
+sampleCurveX=function(t){
+return ((ax*t+bx)*t+cx)*t;
+};
+sampleCurveY=function(t){
+return ((ay*t+by)*t+cy)*t;
+};
+sampleCurveDerivativeX=function(t){
+return (3*ax*t+2*bx)*t+cx;
+};
+solveEpsilon=function(_49){
+return 1/(200*_49);
+};
+solve=function(x,_4a){
+return sampleCurveY(solveCurveX(x,_4a));
+};
+solveCurveX=function(x,_4b){
+var t0,t1,t2,x2,d2,i;
+fabs=function(n){
+if(n>=0){
+return n;
+}else{
+return 0-n;
+}
+};
+for(t2=x,i=0;i<8;i++){
+x2=sampleCurveX(t2)-x;
+if(fabs(x2)<_4b){
+return t2;
+}
+d2=sampleCurveDerivativeX(t2);
+if(fabs(d2)<0.000001){
+break;
+}
+t2=t2-x2/d2;
+}
+t0=0;
+t1=1;
+t2=x;
+if(t2<t0){
+return t0;
+}
+if(t2>t1){
+return t1;
+}
+while(t0<t1){
+x2=sampleCurveX(t2);
+if(fabs(x2-x)<_4b){
+return t2;
+}
+if(x>x2){
+t0=t2;
+}else{
+t1=t2;
+}
+t2=(t1-t0)*0.5+t0;
+}
+return t2;
+};
+cx=3*p1x;
+bx=3*(p2x-p1x)-cx;
+ax=1-cx-bx;
+cy=3*p1y;
+by=3*(p2y-p1y)-cy;
+ay=1-cy-by;
+return solve(t,solveEpsilon(_48));
+};
+p;19;Panels/LoginPanel.jt;4582;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;4516;
+objj_executeFile("Foundation/CPObject.j",NO);
+objj_executeFile("AppKit/CPPanel.j",NO);
+var _1=objj_allocateClassPair(CPPanel,"LoginPanel"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("titleLabel"),new objj_ivar("emailField"),new objj_ivar("passwordField"),new objj_ivar("aConnection")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
+with(_3){
+return delegate;
+}
+}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
+with(_5){
+delegate=_7;
+}
+}),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
+with(_8){
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(250,150,350,170),CPHUDBackgroundWindowMask);
+if(_8){
+_8.delegate=_a;
+objj_msgSend(_8,"setTitle:","Private Beta Login");
+objj_msgSend(_8,"setFloatingPanel:",YES);
+var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
+titleLabel=objj_msgSend(CPTextField,"labelWithTitle:","Enter your email and password to login.");
+objj_msgSend(titleLabel,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(titleLabel,"sizeToFit");
+objj_msgSend(titleLabel,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(titleLabel,"setFrameOrigin:",CGPointMake(45,5));
+objj_msgSend(_b,"addSubview:",titleLabel);
+var _d=objj_msgSend(CPTextField,"labelWithTitle:","Email:");
+objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_d,"setFrameOrigin:",CGPointMake(62,40));
+objj_msgSend(_b,"addSubview:",_d);
+emailField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
+objj_msgSend(emailField,"setFrameOrigin:",CGPointMake(100,35));
+objj_msgSend(_b,"addSubview:",emailField);
+var _e=objj_msgSend(CPTextField,"labelWithTitle:","Password:");
+objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_e,"setFrameOrigin:",CGPointMake(40,70));
+objj_msgSend(_b,"addSubview:",_e);
+passwordField=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:","","",200);
+objj_msgSend(passwordField,"setFrameOrigin:",CGPointMake(100,65));
+objj_msgSend(passwordField,"setSecure:",YES);
+objj_msgSend(_b,"addSubview:",passwordField);
+var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Login",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_f,"setFrame:",CGRectMake(250,110,70,20));
+objj_msgSend(_b,"addSubview:",_f);
+objj_msgSend(_f,"setTag:","login");
+objj_msgSend(_f,"setTarget:",_8);
+objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_10,"setFrame:",CGRectMake(170,110,70,20));
+objj_msgSend(_b,"addSubview:",_10);
+objj_msgSend(_10,"setTag:","logincancel");
+var _11=objj_msgSend(CPButton,"buttonWithTitle:","Want to be part of the fun? Sign up.");
+objj_msgSend(_11,"sizeToFit");
+objj_msgSend(_11,"setFrameOrigin:",CGPointMake(80,140));
+objj_msgSend(_11,"setBordered:",NO);
+objj_msgSend(_11,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
+_11._DOMElement.style.textDecoration="underline";
+objj_msgSend(_11,"setTarget:",_8);
+objj_msgSend(_11,"setAction:",sel_getUid("signup"));
+_11._DOMElement.style.cursor="pointer";
+objj_msgSend(_b,"addSubview:",_11);
+objj_msgSend(_10,"setTarget:",_8);
+objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
+aConnection=objj_msgSend(objj_msgSend(AgendiumConnection,"alloc"),"init");
+}
+return _8;
+}
+}),new objj_method(sel_getUid("buttonAction:"),function(_12,_13,_14){
+with(_12){
+if(objj_msgSend(_14,"tag")=="login"){
+if(console){
+console.log("trying to login "+objj_msgSend(emailField,"objectValue"));
+}
+objj_msgSend(aConnection,"checkUser:withPassword:delegate:",objj_msgSend(emailField,"objectValue"),objj_msgSend(passwordField,"objectValue"),_12);
+}else{
+if(objj_msgSend(_14,"tag")=="logincancel"){
+history.go(-1);
+objj_msgSend(_12,"close");
+}
+}
+}
+}),new objj_method(sel_getUid("loginSuccess:"),function(_15,_16,_17){
+with(_15){
+if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
+objj_msgSend(delegate,"panelDidClose:data:","login",_17);
+objj_msgSend(_15,"close");
+}
+}
+}),new objj_method(sel_getUid("loginFailed"),function(_18,_19){
+with(_18){
+objj_msgSend(titleLabel,"setObjectValue:","Login failed. Please try again.");
+}
+}),new objj_method(sel_getUid("signup"),function(_1a,_1b){
+with(_1a){
+window.open("https://spreadsheets.google.com/viewform?formkey=dFJWN29DR09fanRfRnVic255Z1hVMEE6MQ","_self");
+}
+})]);
+p;17;Panels/NewPanel.jt;3646;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.ji;23;DatePicker/DatePicker.jt;3552;
+objj_executeFile("Foundation/CPObject.j",NO);
+objj_executeFile("AppKit/CPPanel.j",NO);
+objj_executeFile("DatePicker/DatePicker.j",YES);
+var _1=objj_allocateClassPair(CPPanel,"NewPanel"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("theDatePicker")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
+with(_3){
+return delegate;
+}
+}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
+with(_5){
+delegate=_7;
+}
+}),new objj_method(sel_getUid("init:"),function(_8,_9,_a){
+with(_8){
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,110,310,160),CPHUDBackgroundWindowMask);
+if(_8){
+_8.delegate=_a;
+objj_msgSend(_8,"setTitle:","New Agenda");
+objj_msgSend(_8,"setFloatingPanel:",YES);
+var _b=objj_msgSend(_8,"contentView"),_c=objj_msgSend(_b,"bounds");
+var _d=objj_msgSend(CPTextField,"labelWithTitle:","Starting date:");
+objj_msgSend(_d,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(_d,"sizeToFit");
+objj_msgSend(_d,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_d,"setFrameOrigin:",CGPointMake(30,15));
+objj_msgSend(_b,"addSubview:",_d);
+theDatePicker=objj_msgSend(objj_msgSend(DatePicker,"alloc"),"initWithFrame:",CGRectMake(120,10,100,30));
+objj_msgSend(theDatePicker,"displayPreset:",1);
+objj_msgSend(theDatePicker,"setDelegate:",_8);
+var _e=objj_msgSend(CPTextField,"labelWithTitle:","Choose your agenda template:");
+objj_msgSend(_e,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(_e,"sizeToFit");
+objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_e,"setFrameOrigin:",CGPointMake(30,50));
+objj_msgSend(_b,"addSubview:",_e);
+var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","1 day 1 track",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_f,"setFrame:",CGRectMake(30,80,110,20));
+objj_msgSend(_b,"addSubview:",_f);
+objj_msgSend(_f,"setTag:","onedayonetrack");
+objj_msgSend(_f,"setTarget:",_8);
+objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","3 days 2 tracks",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_10,"setFrame:",CGRectMake(170,80,110,20));
+objj_msgSend(_b,"addSubview:",_10);
+objj_msgSend(_10,"setTag:","threedaytwotracks");
+objj_msgSend(_10,"setTarget:",_8);
+objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
+var _11=objj_msgSend(CPButton,"buttonWithTitle:theme:","Empty",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_11,"setFrame:",CGRectMake(30,110,110,20));
+objj_msgSend(_b,"addSubview:",_11);
+objj_msgSend(_11,"setTag:","empty");
+objj_msgSend(_11,"setTarget:",_8);
+objj_msgSend(_11,"setAction:",sel_getUid("buttonAction:"));
+var _12=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_12,"setFrame:",CGRectMake(170,110,110,20));
+objj_msgSend(_b,"addSubview:",_12);
+objj_msgSend(_12,"setTag:","cancel");
+objj_msgSend(_12,"setTarget:",_8);
+objj_msgSend(_12,"setAction:",sel_getUid("buttonAction:"));
+objj_msgSend(_b,"addSubview:",theDatePicker);
+}
+return _8;
+}
+}),new objj_method(sel_getUid("datePickerDidChange:"),function(_13,_14,_15){
+with(_13){
+var _16=objj_msgSend(objj_msgSend(_15,"object"),"date");
+}
+}),new objj_method(sel_getUid("buttonAction:"),function(_17,_18,_19){
+with(_17){
+objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_19,"tag"),objj_msgSend(theDatePicker,"date"));
+objj_msgSend(_17,"close");
+}
+})]);
+p;18;Panels/OpenPanel.jt;2416;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2350;
+objj_executeFile("Foundation/CPObject.j",NO);
+objj_executeFile("AppKit/CPPanel.j",NO);
+var _1=objj_allocateClassPair(CPPanel,"OpenPanel"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("delegate"),new objj_ivar("field")]);
+objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("delegate"),function(_3,_4){
+with(_3){
+return delegate;
+}
+}),new objj_method(sel_getUid("setDelegate:"),function(_5,_6,_7){
+with(_5){
+delegate=_7;
+}
+}),new objj_method(sel_getUid("initWithName:andDelegate:"),function(_8,_9,_a,_b){
+with(_8){
+_8=objj_msgSend(_8,"initWithContentRect:styleMask:",CGRectMake(200,150,330,140),CPHUDBackgroundWindowMask);
+if(_8){
+_8.delegate=_b;
+objj_msgSend(_8,"setTitle:","Open Agenda");
+objj_msgSend(_8,"setFloatingPanel:",YES);
+var _c=objj_msgSend(_8,"contentView"),_d=objj_msgSend(_c,"bounds");
+var _e=objj_msgSend(CPTextField,"labelWithTitle:","Enter the name of your agenda.");
+objj_msgSend(_e,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(_e,"sizeToFit");
+objj_msgSend(_e,"setTextColor:",objj_msgSend(CPColor,"whiteColor"));
+objj_msgSend(_e,"setFrameOrigin:",CGPointMake(45,5));
+objj_msgSend(_c,"addSubview:",_e);
+field=objj_msgSend(CPTextField,"textFieldWithStringValue:placeholder:width:",_a,"",200);
+objj_msgSend(field,"setFrameOrigin:",CGPointMake(70,35));
+objj_msgSend(_c,"addSubview:",field);
+var _f=objj_msgSend(CPButton,"buttonWithTitle:theme:","Open",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_f,"setFrame:",CGRectMake(250,90,70,20));
+objj_msgSend(_c,"addSubview:",_f);
+objj_msgSend(_f,"setTag:","open");
+objj_msgSend(_f,"setTarget:",_8);
+objj_msgSend(_f,"setAction:",sel_getUid("buttonAction:"));
+var _10=objj_msgSend(CPButton,"buttonWithTitle:theme:","Cancel",objj_msgSend(CPTheme,"themeNamed:","Aristo-HUD"));
+objj_msgSend(_10,"setFrame:",CGRectMake(170,90,70,20));
+objj_msgSend(_c,"addSubview:",_10);
+objj_msgSend(_10,"setTag:","opencancel");
+objj_msgSend(_10,"setTarget:",_8);
+objj_msgSend(_10,"setAction:",sel_getUid("buttonAction:"));
+}
+return _8;
+}
+}),new objj_method(sel_getUid("buttonAction:"),function(_11,_12,_13){
+with(_11){
+if(objj_msgSend(delegate,"respondsToSelector:",sel_getUid("panelDidClose:data:"))){
+objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_13,"tag"),objj_msgSend(field,"objectValue"));
+}
+objj_msgSend(_11,"close");
+}
+})]);
+p;19;Panels/SharePanel.jt;2876;@STATIC;1.0;I;21;Foundation/CPObject.jI;16;AppKit/CPPanel.jt;2810;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("AppKit/CPPanel.j",NO);
 var _1=objj_allocateClassPair(CPPanel,"SharePanel"),_2=_1.isa;
@@ -1288,27 +1770,7 @@ objj_msgSend(delegate,"panelDidClose:data:",objj_msgSend(_14,"tag"),nil);
 objj_msgSend(_12,"close");
 }
 })]);
-p;21;TextFieldColumnView.jt;1171;@STATIC;1.0;I;15;AppKit/CPView.jt;1132;
-objj_executeFile("AppKit/CPView.j",NO);
-var _1=objj_allocateClassPair(CPTextField,"TextFieldColumnView"),_2=_1.isa;
-objj_registerClassPair(_1);
-class_addMethods(_1,[new objj_method(sel_getUid("initWithFrame:"),function(_3,_4,_5){
-with(_3){
-_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("TextFieldColumnView").super_class},"initWithFrame:",_5);
-objj_msgSend(_3,"setLineBreakMode:",CPLineBreakByTruncatingTail);
-objj_msgSend(_3,"setValue:forThemeAttribute:",objj_msgSend(CPColor,"colorWithHexString:","333333"),"text-color");
-objj_msgSend(_3,"setValue:forThemeAttribute:inState:",objj_msgSend(CPColor,"whiteColor"),"text-color",CPThemeStateSelected);
-objj_msgSend(_3,"setValue:forThemeAttribute:inState:",objj_msgSend(CPFont,"boldSystemFontOfSize:",12),"font",CPThemeStateSelected);
-objj_msgSend(_3,"setValue:forThemeAttribute:",CPCenterVerticalTextAlignment,"vertical-alignment");
-return _3;
-}
-}),new objj_method(sel_getUid("setObjectValue:"),function(_6,_7,_8){
-with(_6){
-var s=_8?_8.title:"";
-objj_msgSendSuper({receiver:_6,super_class:objj_getClass("TextFieldColumnView").super_class},"setObjectValue:",s);
-}
-})]);
-p;23;DatePicker/DatePicker.jt;39991;@STATIC;1.0;I;18;AppKit/CPControl.ji;9;Stepper.jt;39935;
+p;30;Panels/DatePicker/DatePicker.jt;39991;@STATIC;1.0;I;18;AppKit/CPControl.ji;9;Stepper.jt;39935;
 objj_executeFile("AppKit/CPControl.j",NO);
 objj_executeFile("Stepper.j",YES);
 CPLogRegister(CPLogConsole);
@@ -2370,7 +2832,7 @@ objj_msgSend(_10c,"encodeObject:forKey:",_theView,datePickerView);
 objj_msgSend(_10c,"encodeObject:forKey:",_theStepper,datePickerStepper);
 }
 })]);
-p;20;DatePicker/Stepper.jt;4655;@STATIC;1.0;I;18;AppKit/CPControl.jI;17;AppKit/CPButton.jt;4591;
+p;27;Panels/DatePicker/Stepper.jt;4655;@STATIC;1.0;I;18;AppKit/CPControl.jI;17;AppKit/CPButton.jt;4591;
 objj_executeFile("AppKit/CPControl.j",NO);
 objj_executeFile("AppKit/CPButton.j",NO);
 var _1=objj_allocateClassPair(CPControl,"Stepper"),_2=_1.isa;
@@ -2471,464 +2933,6 @@ objj_msgSend(_22,"setDoubleValue:",objj_msgSend(_22,"doubleValue")-objj_msgSend(
 objj_msgSend(_22,"sendAction:to:",objj_msgSend(_22,"action"),objj_msgSend(_22,"target"));
 }
 })]);
-p;19;LPKit/LPSlideView.jt;5255;@STATIC;1.0;I;15;AppKit/CPView.ji;17;LPViewAnimation.jt;5194;
-objj_executeFile("AppKit/CPView.j",NO);
-objj_executeFile("LPViewAnimation.j",YES);
-LPSlideViewHorizontalDirection=0;
-LPSlideViewVerticalDirection=1;
-LPSlideViewPositiveDirection=2;
-LPSlideViewNegativeDirection=4;
-var _1=objj_allocateClassPair(CPView,"LPSlideView"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("slideDirection"),new objj_ivar("currentView"),new objj_ivar("previousView"),new objj_ivar("animationDuration"),new objj_ivar("animationCurve"),new objj_ivar("isSliding"),new objj_ivar("_delegate")]);
-objj_registerClassPair(_1);
-class_addMethods(_1,[new objj_method(sel_getUid("slideDirection"),function(_3,_4){
-with(_3){
-return slideDirection;
-}
-}),new objj_method(sel_getUid("setSlideDirection:"),function(_5,_6,_7){
-with(_5){
-slideDirection=_7;
-}
-}),new objj_method(sel_getUid("currentView"),function(_8,_9){
-with(_8){
-return currentView;
-}
-}),new objj_method(sel_getUid("setCurrentView:"),function(_a,_b,_c){
-with(_a){
-currentView=_c;
-}
-}),new objj_method(sel_getUid("previousView"),function(_d,_e){
-with(_d){
-return previousView;
-}
-}),new objj_method(sel_getUid("setPreviousView:"),function(_f,_10,_11){
-with(_f){
-previousView=_11;
-}
-}),new objj_method(sel_getUid("animationDuration"),function(_12,_13){
-with(_12){
-return animationDuration;
-}
-}),new objj_method(sel_getUid("setAnimationDuration:"),function(_14,_15,_16){
-with(_14){
-animationDuration=_16;
-}
-}),new objj_method(sel_getUid("animationCurve"),function(_17,_18){
-with(_17){
-return animationCurve;
-}
-}),new objj_method(sel_getUid("setAnimationCurve:"),function(_19,_1a,_1b){
-with(_19){
-animationCurve=_1b;
-}
-}),new objj_method(sel_getUid("isSliding"),function(_1c,_1d){
-with(_1c){
-return isSliding;
-}
-}),new objj_method(sel_getUid("delegate"),function(_1e,_1f){
-with(_1e){
-return _delegate;
-}
-}),new objj_method(sel_getUid("setDelegate:"),function(_20,_21,_22){
-with(_20){
-_delegate=_22;
-}
-}),new objj_method(sel_getUid("initWithFrame:"),function(_23,_24,_25){
-with(_23){
-if(_23=objj_msgSendSuper({receiver:_23,super_class:objj_getClass("LPSlideView").super_class},"initWithFrame:",_25)){
-animationCurve=CPAnimationEaseOut;
-slideDirection=LPSlideViewHorizontalDirection;
-animationDuration=0.5;
-isSliding=NO;
-}
-return _23;
-}
-}),new objj_method(sel_getUid("addSubview:"),function(_26,_27,_28){
-with(_26){
-if(!currentView){
-currentView=_28;
-}else{
-objj_msgSend(_28,"setHidden:",YES);
-}
-objj_msgSend(_28,"setFrame:",objj_msgSend(_26,"bounds"));
-objj_msgSend(_28,"setAutoresizingMask:",CPViewWidthSizable|CPViewHeightSizable);
-objj_msgSendSuper({receiver:_26,super_class:objj_getClass("LPSlideView").super_class},"addSubview:",_28);
-}
-}),new objj_method(sel_getUid("slideToView:"),function(_29,_2a,_2b){
-with(_29){
-objj_msgSend(_29,"slideToView:direction:animationProgress:",_2b,nil,nil);
-}
-}),new objj_method(sel_getUid("slideToView:direction:"),function(_2c,_2d,_2e,_2f){
-with(_2c){
-objj_msgSend(_2c,"slideToView:direction:animationProgress:",_2e,_2f,nil);
-}
-}),new objj_method(sel_getUid("slideToView:direction:animationProgress:"),function(_30,_31,_32,_33,_34){
-with(_30){
-if(_32==currentView||isSliding){
-return;
-}
-isSliding=YES;
-if(_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("slideView:willMoveToView:"))){
-objj_msgSend(_delegate,"slideView:willMoveToView:",_30,_32);
-}
-var _35=objj_msgSend(objj_msgSend(_30,"subviews"),"indexOfObject:",_32),_36=objj_msgSend(objj_msgSend(_30,"subviews"),"indexOfObject:",currentView),_37=objj_msgSend(_30,"frame").size;
-objj_msgSend(_32,"setHidden:",NO);
-var _38=CGPointMake(0,0),_39=CGPointMake(0,0);
-if(slideDirection==LPSlideViewHorizontalDirection){
-var _3a,_3b;
-if((_33&&_33==LPSlideViewNegativeDirection)||(!_33&&_35<_36)){
-_3a=-_37.width;
-_3b=_37.width;
-}
-if((_33&&_33==LPSlideViewPositiveDirection)||(!_33&&_35>_36)){
-_3a=_37.width;
-_3b=-_37.width;
-}
-_38.x=_3a;
-_39.x=_3b;
-}else{
-if(slideDirection==LPSlideViewVerticalDirection){
-var _3c,_3d;
-if((_33&&_33==LPSlideViewNegativeDirection)||(!_33&&_35>_36)){
-_3c=_37.height;
-_3d=-_37.height;
-}
-if((_33&&_33==LPSlideViewPositiveDirection)||(!_33&&_35<_36)){
-_3c=-_37.height;
-_3d=_37.height;
-}
-_38.y=_3c;
-_39.y=_3d;
-if(_34){
-_38.y-=(_34*_38.y);
-_39.y-=(_34*_39.y);
-}
-}
-}
-var _3e=objj_msgSend(objj_msgSend(LPViewAnimation,"alloc"),"initWithViewAnimations:",[{"target":_32,"animations":[[LPOriginAnimationKey,_38,CGPointMake(0,0)]]},{"target":currentView,"animations":[[LPOriginAnimationKey,CGPointMakeZero(),_39]]}]);
-objj_msgSend(_3e,"setAnimationCurve:",animationCurve);
-objj_msgSend(_3e,"setDuration:",animationDuration);
-objj_msgSend(_3e,"setDelegate:",_30);
-objj_msgSend(_3e,"startAnimation");
-previousView=currentView;
-currentView=_32;
-}
-}),new objj_method(sel_getUid("animationDidEnd"),function(_3f,_40){
-with(_3f){
-if(_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("slideView:didMoveToView:"))){
-objj_msgSend(_delegate,"slideView:didMoveToView:",_3f,currentView);
-}
-objj_msgSend(previousView,"setHidden:",YES);
-isSliding=NO;
-}
-}),new objj_method(sel_getUid("animationDidEnd:"),function(_41,_42,_43){
-with(_41){
-objj_msgSend(_41,"animationDidEnd");
-}
-}),new objj_method(sel_getUid("animationDidStop:"),function(_44,_45,_46){
-with(_44){
-objj_msgSend(_44,"animationDidEnd");
-}
-})]);
-p;23;LPKit/LPViewAnimation.jt;8134;@STATIC;1.0;I;21;Foundation/CPObject.jt;8089;
-objj_executeFile("Foundation/CPObject.j",NO);
-LPCSSAnimationsAreAvailable=NO;
-var _1=["webkit","Moz","moz","o","ms"],_2=nil;
-LPFadeAnimationKey="LPFadeAnimation";
-LPFrameAnimationKey="LPFrameAnimation";
-LPOriginAnimationKey="LPOriginAnimation";
-LPTestCSSFeature=function(_3){
-if(typeof document==="undefined"){
-return NO;
-}
-if(!_2){
-_2=document.createElement("div");
-}
-var _4=[_3];
-for(var i=0;i<_1.length;i++){
-_4.push(_1[i]+_3);
-}
-for(var i=0;i<_4.length;i++){
-if(typeof _2.style[_4[i]]!=="undefined"){
-return YES;
-}
-}
-return NO;
-};
-LPCSSAnimationsAreAvailable=LPTestCSSFeature("AnimationName");
-var _5=function(_6,_7,_8,_9){
-if(_9){
-_6.style[_8]=_6.style[_8]+", "+_7;
-}else{
-_6.style[_8]=_7;
-}
-};
-var _a=objj_allocateClassPair(CPAnimation,"LPViewAnimation"),_b=_a.isa;
-class_addIvars(_a,[new objj_ivar("_isAnimating"),new objj_ivar("_viewAnimations"),new objj_ivar("_animationDidEndTimeout"),new objj_ivar("_shouldUseCSSAnimations"),new objj_ivar("_c1"),new objj_ivar("_c2")]);
-objj_registerClassPair(_a);
-class_addMethods(_a,[new objj_method(sel_getUid("viewAnimations"),function(_c,_d){
-with(_c){
-return _viewAnimations;
-}
-}),new objj_method(sel_getUid("setViewAnimations:"),function(_e,_f,_10){
-with(_e){
-_viewAnimations=_10;
-}
-}),new objj_method(sel_getUid("shouldUseCSSAnimations"),function(_11,_12){
-with(_11){
-return _shouldUseCSSAnimations;
-}
-}),new objj_method(sel_getUid("setShouldUseCSSAnimations:"),function(_13,_14,_15){
-with(_13){
-_shouldUseCSSAnimations=_15;
-}
-}),new objj_method(sel_getUid("initWithViewAnimations:"),function(_16,_17,_18){
-with(_16){
-if(_16=objj_msgSend(_16,"initWithDuration:animationCurve:",1,CPAnimationLinear)){
-_isAnimating=NO;
-_viewAnimations=_18;
-_shouldUseCSSAnimations=NO;
-}
-return _16;
-}
-}),new objj_method(sel_getUid("setAnimationCurve:"),function(_19,_1a,_1b){
-with(_19){
-objj_msgSendSuper({receiver:_19,super_class:objj_getClass("LPViewAnimation").super_class},"setAnimationCurve:",_1b);
-_c1=[];
-_c2=[];
-objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",1,_c1);
-objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",2,_c2);
-}
-}),new objj_method(sel_getUid("startAnimation"),function(_1c,_1d){
-with(_1c){
-if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
-if(_isAnimating){
-return;
-}
-_isAnimating=YES;
-var i=_viewAnimations.length;
-while(i--){
-var _1e=_viewAnimations[i],_1f=_1e["target"];
-objj_msgSend(_1c,"target:setCSSAnimationDuration:",_1f,_duration);
-objj_msgSend(_1c,"target:setCSSAnimationCurve:",_1f,_animationCurve);
-var x=_1e["animations"].length;
-while(x--){
-var _20=_1e["animations"][x],_21=_20[0],_22=_20[1],end=_20[2];
-if(_21===LPFadeAnimationKey){
-objj_msgSend(_1f,"setAlphaValue:",_22);
-objj_msgSend(_1c,"target:addCSSAnimationPropertyForKey:append:",_1f,_21,x!==0);
-setTimeout(function(_23,_24){
-_23._DOMElement.style["-webkit-transform"]="translate3d(0px, 0px, 0px)";
-objj_msgSend(_23,"setAlphaValue:",_24);
-},0,_1f,end);
-}else{
-if(_21===LPOriginAnimationKey){
-if(!CGPointEqualToPoint(_22,end)){
-objj_msgSend(_1f,"setFrameOrigin:",_22);
-objj_msgSend(_1c,"target:addCSSAnimationPropertyForKey:append:",_1f,_21,x!==0);
-setTimeout(function(_25,_26,_27){
-var x=_27.x-_26.x,y=_27.y-_26.y;
-_25._DOMElement.style["-webkit-transform"]="translate3d("+x+"px, "+y+"px, 0px)";
-setTimeout(function(){
-objj_msgSend(_1c,"_clearCSS");
-_25._DOMElement.style["-webkit-transform"]="translate3d(0px, 0px, 0px)";
-objj_msgSend(_25,"setFrameOrigin:",_27);
-},(1000*_duration)+100);
-},0,_1f,_22,end);
-}
-}else{
-if(_21===LPFrameAnimationKey){
-CPLog.error("LPViewAnimation does not currently support CSS frame animations. This should fall back to the regular javascript animation.");
-}
-}
-}
-}
-}
-if(_animationDidEndTimeout){
-clearTimeout(_animationDidEndTimeout);
-}
-_animationDidEndTimeout=setTimeout(function(_28){
-_isAnimating=NO;
-objj_msgSend(_28,"_clearCSS");
-if(objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("animationDidEnd:"))){
-objj_msgSend(_delegate,"animationDidEnd:",_28);
-}
-},(1000*_duration)+100,_1c);
-}else{
-var i=_viewAnimations.length;
-while(i--){
-var _1e=_viewAnimations[i],_1f=_1e["target"];
-var x=_1e["animations"].length;
-while(x--){
-var _20=_1e["animations"][x],_21=_20[0],_22=_20[1],end=_20[2];
-switch(_21){
-case LPFadeAnimationKey:
-objj_msgSend(_1f,"setAlphaValue:",_22);
-break;
-case LPOriginAnimationKey:
-objj_msgSend(_1f,"setFrameOrigin:",_22);
-break;
-case LPFrameAnimationKey:
-objj_msgSend(_1f,"setFrame:",_22);
-break;
-}
-}
-}
-objj_msgSendSuper({receiver:_1c,super_class:objj_getClass("LPViewAnimation").super_class},"startAnimation");
-}
-}
-}),new objj_method(sel_getUid("setCurrentProgress:"),function(_29,_2a,_2b){
-with(_29){
-_progress=_2b;
-var _2c=_2d(_progress,_c1[0],_c1[1],_c2[0],_c2[1],_duration),i=_viewAnimations.length;
-while(i--){
-var _2e=_viewAnimations[i],_2f=_2e["target"],x=_2e["animations"].length;
-while(x--){
-var _30=_2e["animations"][x],_31=_30[0],_32=_30[1],end=_30[2];
-switch(_31){
-case LPFadeAnimationKey:
-objj_msgSend(_2f,"setAlphaValue:",(_2c*(end-_32))+_32);
-break;
-case LPOriginAnimationKey:
-objj_msgSend(_2f,"setFrameOrigin:",CGPointMake(_32.x+(_2c*(end.x-_32.x)),_32.y+(_2c*(end.y-_32.y))));
-break;
-case LPFrameAnimationKey:
-objj_msgSend(_2f,"setFrame:",CGRectMake(_32.origin.x+(_2c*(end.origin.x-_32.origin.x)),_32.origin.y+(_2c*(end.origin.y-_32.origin.y)),_32.size.width+(_2c*(end.size.width-_32.size.width)),_32.size.height+(_2c*(end.size.height-_32.size.height))));
-}
-}
-}
-}
-}),new objj_method(sel_getUid("isAnimating"),function(_33,_34){
-with(_33){
-if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
-return _isAnimating;
-}else{
-return objj_msgSendSuper({receiver:_33,super_class:objj_getClass("LPViewAnimation").super_class},"isAnimating");
-}
-}
-}),new objj_method(sel_getUid("stopAnimation"),function(_35,_36){
-with(_35){
-if(LPCSSAnimationsAreAvailable&&_shouldUseCSSAnimations){
-}else{
-objj_msgSendSuper({receiver:_35,super_class:objj_getClass("LPViewAnimation").super_class},"stopAnimation");
-}
-}
-}),new objj_method(sel_getUid("_clearCSS"),function(_37,_38){
-with(_37){
-for(var i=0;i<_viewAnimations.length;i++){
-_viewAnimations[i]["target"]._DOMElement.style["-webkit-transition-property"]="none";
-}
-}
-}),new objj_method(sel_getUid("target:setCSSAnimationDuration:"),function(_39,_3a,_3b,_3c){
-with(_39){
-_3b._DOMElement.style["-webkit-transition-duration"]=_3c+"s";
-}
-}),new objj_method(sel_getUid("target:setCSSAnimationCurve:"),function(_3d,_3e,_3f,_40){
-with(_3d){
-var _41=nil;
-switch(_40){
-case CPAnimationLinear:
-_41="linear";
-break;
-case CPAnimationEaseIn:
-_41="ease-in";
-break;
-case CPAnimationEaseOut:
-_41="ease-out";
-break;
-case CPAnimationEaseInOut:
-_41="ease-in-out";
-break;
-}
-_3f._DOMElement.style["-webkit-transition-timing-function"]=_41;
-}
-}),new objj_method(sel_getUid("target:addCSSAnimationPropertyForKey:append:"),function(_42,_43,_44,_45,_46){
-with(_42){
-var _47=nil;
-switch(_45){
-case LPFadeAnimationKey:
-_47="-webkit-transform, opacity";
-break;
-case LPOriginAnimationKey:
-_47="-webkit-transform";
-break;
-case LPFrameAnimationKey:
-_47="top, left, width, height";
-break;
-default:
-_47="none";
-}
-_5(_44._DOMElement,_47,"-webkit-transition-property",_46);
-}
-})]);
-var _2d=_2d=function(t,p1x,p1y,p2x,p2y,_48){
-var ax=0,bx=0,cx=0,ay=0,by=0,cy=0;
-sampleCurveX=function(t){
-return ((ax*t+bx)*t+cx)*t;
-};
-sampleCurveY=function(t){
-return ((ay*t+by)*t+cy)*t;
-};
-sampleCurveDerivativeX=function(t){
-return (3*ax*t+2*bx)*t+cx;
-};
-solveEpsilon=function(_49){
-return 1/(200*_49);
-};
-solve=function(x,_4a){
-return sampleCurveY(solveCurveX(x,_4a));
-};
-solveCurveX=function(x,_4b){
-var t0,t1,t2,x2,d2,i;
-fabs=function(n){
-if(n>=0){
-return n;
-}else{
-return 0-n;
-}
-};
-for(t2=x,i=0;i<8;i++){
-x2=sampleCurveX(t2)-x;
-if(fabs(x2)<_4b){
-return t2;
-}
-d2=sampleCurveDerivativeX(t2);
-if(fabs(d2)<0.000001){
-break;
-}
-t2=t2-x2/d2;
-}
-t0=0;
-t1=1;
-t2=x;
-if(t2<t0){
-return t0;
-}
-if(t2>t1){
-return t1;
-}
-while(t0<t1){
-x2=sampleCurveX(t2);
-if(fabs(x2-x)<_4b){
-return t2;
-}
-if(x>x2){
-t0=t2;
-}else{
-t1=t2;
-}
-t2=(t1-t0)*0.5+t0;
-}
-return t2;
-};
-cx=3*p1x;
-bx=3*(p2x-p1x)-cx;
-ax=1-cx-bx;
-cy=3*p1y;
-by=3*(p2y-p1y)-cy;
-ay=1-cy-by;
-return solve(t,solveEpsilon(_48));
-};
 p;22;Test/NewTemplateTest.jt;2109;@STATIC;1.0;I;21;Foundation/CPObject.ji;16;../NewTemplate.jt;2043;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("../NewTemplate.j",YES);
