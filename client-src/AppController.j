@@ -17,6 +17,7 @@
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
 @import "Config.j"
+@import "PreviewView.j"
 
 @implementation AppController : CPObject
 {
@@ -28,7 +29,7 @@
     @outlet CPButton logoutButton;
     @outlet CPButton shareButton;
 
-    @outlet CPWebView previewView;
+    @outlet PreviewView previewView;
 
     Page rootPage;
     @outlet CPTextField appnameField;
@@ -68,7 +69,6 @@
     pageViewController = [[PageViewController alloc] initWithCibName:@"PageView"
                                                         bundle:nil];
     [pageViewController setPage:rootPage];
-    [pageViewController setDelegate:self];
     [[pageViewController view] setFrame:CPRectMake(1, 1, 550, 501)]
     [pageView addSubview:[pageViewController view]];
 
@@ -100,27 +100,9 @@
     [previewButton setTarget:self]; 
     [previewButton setAction:@selector(openMobileApp)]; 
     previewButton._DOMElement.style.cursor = "pointer"; 
-
-    //previewView = [[CPWebView alloc] initWithFrame:CPRectMake(540, 100, 340, 520)];
-    [previewView setFrame:CPRectMake(540, 100, 340, 520)];
-    //[[theWindow contentView] addSubview:previewView];
+    
     [previewView setFrameLoadDelegate:self];
-    //[previewView setScrollMode:CPWebViewScrollAppKit];
-    //[previewView._scrollView setAutohidesScrollers:YES];
-
-    previewView._DOMElement.style.webkitTransformOrigin = "10 10";
-    previewView._DOMElement.style.webkitTransform = "scale(0.75)";
-    //previewView._DOMElement.style.overflow = "hidden";
-    
-    //previewView._DOMElement.style.width = "340px";
-    //previewView._DOMElement.style.height = "520px";
-    
-    //previewView._iframe.style.webkitTransformOrigin = "0 0"; 
-    //previewView._iframe.style.webkitTransform = "scale(0.75)"; 
-    //previewView._iframe.style.opacity = "0"; 
-    //previewView._frameView._DOMElement.style.opacity = "0"; 
-    //previewView._scrollView._DOMElement.style.opacity = "0"; 
-    
+    [pageViewController setDelegate:previewView];
 
     [logoutButton setBordered:NO]; 
     [logoutButton setImage:[[CPImage alloc] initWithContentsOfFile:"Resources/logout2.png"]];
@@ -172,12 +154,6 @@
 }
 */
 
-//PageViewController Delegate
-- (void) changePage:(CPString) oldPageid to:(CPString) pageid reverse:(Boolean) reverse {
-    var cmd = "if($.mobile.activePage.attr('id') != $('#"+pageid+"').attr('id')) $.mobile.changePage($('#"+pageid+"'), 'slide', "+reverse+")"
-    CPLog("cmd " + cmd);
-    [[previewView windowScriptObject] evaluateWebScript:cmd];
-}
 
 //
 // private
@@ -279,11 +255,8 @@
 
 
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
-    CPLog('didFinishLoadForFrame');
     var navId = pageViewController.page.navigationId;
-    CPLog('didFinishLoadForFrame navId ' + navId);
-    //Initial noch falsch. Sonst prima
-    [self changePage:'current' to:navId reverse:NO];
+    [previewView changePage:'current' to:navId reverse:NO];
     
 /*    
     var page = [pageViewController page];

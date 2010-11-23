@@ -118,7 +118,7 @@ with(_3b){
 objj_msgSend(_3e,"didReceiveCheckName:",_3d);
 }
 })]);
-p;15;AppController.jt;9380;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.jt;9137;
+p;15;AppController.jt;8857;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.ji;13;PreviewView.jt;8596;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -130,6 +130,7 @@ objj_executeFile("Panels/NewPanel.j",YES);
 objj_executeFile("NewTemplate.j",YES);
 objj_executeFile("AgendiumConnection.j",YES);
 objj_executeFile("Config.j",YES);
+objj_executeFile("PreviewView.j",YES);
 var _1=objj_allocateClassPair(CPObject,"AppController"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("theWindow"),new objj_ivar("box"),new objj_ivar("saveButton"),new objj_ivar("loadButton"),new objj_ivar("previewButton"),new objj_ivar("logoutButton"),new objj_ivar("shareButton"),new objj_ivar("previewView"),new objj_ivar("rootPage"),new objj_ivar("appnameField"),new objj_ivar("appnameProblemLabel"),new objj_ivar("buildDateLabel"),new objj_ivar("pageView"),new objj_ivar("pageViewController"),new objj_ivar("appId"),new objj_ivar("userid"),new objj_ivar("nameOKServer"),new objj_ivar("aConnection"),new objj_ivar("validName"),new objj_ivar("namechanged")]);
 objj_registerClassPair(_1);
@@ -145,7 +146,6 @@ objj_msgSend(box,"setBorderWidth:",1);
 objj_msgSend(box,"setBorderColor:",objj_msgSend(CPColor,"grayColor"));
 pageViewController=objj_msgSend(objj_msgSend(PageViewController,"alloc"),"initWithCibName:bundle:","PageView",nil);
 objj_msgSend(pageViewController,"setPage:",rootPage);
-objj_msgSend(pageViewController,"setDelegate:",_6);
 objj_msgSend(objj_msgSend(pageViewController,"view"),"setFrame:",CPRectMake(1,1,550,501));
 objj_msgSend(pageView,"addSubview:",objj_msgSend(pageViewController,"view"));
 objj_msgSend(objj_msgSend(CPNotificationCenter,"defaultCenter"),"addObserver:selector:name:object:",_6,sel_getUid("pageDidChange:"),"PageChangedNotification",rootPage);
@@ -158,10 +158,8 @@ objj_msgSend(previewButton,"setAlignment:",CPLeftTextAlignment);
 objj_msgSend(previewButton,"setTarget:",_6);
 objj_msgSend(previewButton,"setAction:",sel_getUid("openMobileApp"));
 previewButton._DOMElement.style.cursor="pointer";
-objj_msgSend(previewView,"setFrame:",CPRectMake(540,100,340,520));
 objj_msgSend(previewView,"setFrameLoadDelegate:",_6);
-previewView._DOMElement.style.webkitTransformOrigin="10 10";
-previewView._DOMElement.style.webkitTransform="scale(0.75)";
+objj_msgSend(pageViewController,"setDelegate:",previewView);
 objj_msgSend(logoutButton,"setBordered:",NO);
 objj_msgSend(logoutButton,"setImage:",objj_msgSend(objj_msgSend(CPImage,"alloc"),"initWithContentsOfFile:","Resources/logout2.png"));
 logoutButton._DOMElement.style.textDecoration="underline";
@@ -190,19 +188,13 @@ if(validName){
 objj_msgSend(aConnection,"checkAppName:forId:delegate:",_e,appId,_b);
 }
 }
-}),new objj_method(sel_getUid("changePage:to:reverse:"),function(_11,_12,_13,_14,_15){
+}),new objj_method(sel_getUid("refreshUIFromData"),function(_11,_12){
 with(_11){
-var cmd="if($.mobile.activePage.attr('id') != $('#"+_14+"').attr('id')) $.mobile.changePage($('#"+_14+"'), 'slide', "+_15+")";
-CPLog("cmd "+cmd);
-objj_msgSend(objj_msgSend(previewView,"windowScriptObject"),"evaluateWebScript:",cmd);
-}
-}),new objj_method(sel_getUid("refreshUIFromData"),function(_16,_17){
-with(_16){
 objj_msgSend(saveButton,"setEnabled:",validName&&nameOKServer==="true");
 objj_msgSend(shareButton,"setEnabled:",validName&&nameOKServer==="true");
 if(!validName){
-var _18=/\s/.test(rootPage.title);
-if(_18){
+var _13=/\s/.test(rootPage.title);
+if(_13){
 objj_msgSend(appnameProblemLabel,"setObjectValue:","< Please remove whitespaces.");
 }else{
 if(rootPage.title.length<5){
@@ -220,18 +212,18 @@ objj_msgSend(appnameProblemLabel,"setObjectValue:","");
 }
 objj_msgSend(pageViewController,"myRefresh");
 if(appId){
-var _19=BASEURL+"m/"+rootPage.title;
-var _1a=BASEURL+"prev/"+appId;
-objj_msgSend(previewView,"setMainFrameURL:",_1a);
-objj_msgSend(previewButton,"setTitle:",_19);
+var _14=BASEURL+"m/"+rootPage.title;
+var _15=BASEURL+"prev/"+appId;
+objj_msgSend(previewView,"setMainFrameURL:",_15);
+objj_msgSend(previewButton,"setTitle:",_14);
 objj_msgSend(previewButton,"sizeToFit");
 }else{
 objj_msgSend(previewButton,"setTitle:","");
 objj_msgSend(previewView,"setMainFrameURL:",BASEURL+"preview");
 }
 }
-}),new objj_method(sel_getUid("resetData"),function(_1b,_1c){
-with(_1b){
+}),new objj_method(sel_getUid("resetData"),function(_16,_17){
+with(_16){
 rootPage=objj_msgSend(objj_msgSend(Page,"alloc"),"init");
 rootPage.navigationId="r";
 pageViewController.page=rootPage;
@@ -239,89 +231,87 @@ appId=null;
 validName=true;
 namechanged=false;
 nameOKServer="true";
-objj_msgSend(_1b,"controlTextDidChange:",null);
+objj_msgSend(_16,"controlTextDidChange:",null);
 }
-}),new objj_method(sel_getUid("openMobileApp"),function(_1d,_1e){
-with(_1d){
+}),new objj_method(sel_getUid("openMobileApp"),function(_18,_19){
+with(_18){
 if(namechanged){
 window.alert("Please save before opening the app.");
 }else{
-var _1f=BASEURL+"m/"+rootPage.title;
-window.open(_1f,"mywindow");
+var _1a=BASEURL+"m/"+rootPage.title;
+window.open(_1a,"mywindow");
 }
 }
-}),new objj_method(sel_getUid("load:"),function(_20,_21,_22){
-with(_20){
-var _23=objj_msgSend(appnameField,"objectValue");
-objj_msgSend(objj_msgSend(objj_msgSend(OpenPanel,"alloc"),"initWithName:andDelegate:",_23,_20),"orderFront:",nil);
+}),new objj_method(sel_getUid("load:"),function(_1b,_1c,_1d){
+with(_1b){
+var _1e=objj_msgSend(appnameField,"objectValue");
+objj_msgSend(objj_msgSend(objj_msgSend(OpenPanel,"alloc"),"initWithName:andDelegate:",_1e,_1b),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("login:"),function(_24,_25,_26){
-with(_24){
+}),new objj_method(sel_getUid("login:"),function(_1f,_20,_21){
+with(_1f){
 history.go(-1);
 }
-}),new objj_method(sel_getUid("new:"),function(_27,_28,_29){
-with(_27){
-objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_27),"orderFront:",nil);
+}),new objj_method(sel_getUid("new:"),function(_22,_23,_24){
+with(_22){
+objj_msgSend(objj_msgSend(objj_msgSend(NewPanel,"alloc"),"init:",_22),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("save:"),function(_2a,_2b,_2c){
-with(_2a){
+}),new objj_method(sel_getUid("save:"),function(_25,_26,_27){
+with(_25){
 if(validName&&nameOKServer==="true"){
-objj_msgSend(aConnection,"saveAgenda:rootPage:userid:delegate:",appId,rootPage,userid,_2a);
+objj_msgSend(aConnection,"saveAgenda:rootPage:userid:delegate:",appId,rootPage,userid,_25);
 }
 }
-}),new objj_method(sel_getUid("share:"),function(_2d,_2e,_2f){
-with(_2d){
-objj_msgSend(objj_msgSend(objj_msgSend(SharePanel,"alloc"),"init:andAppname:",_2d,rootPage.title),"orderFront:",nil);
+}),new objj_method(sel_getUid("share:"),function(_28,_29,_2a){
+with(_28){
+objj_msgSend(objj_msgSend(objj_msgSend(SharePanel,"alloc"),"init:andAppname:",_28,rootPage.title),"orderFront:",nil);
 }
-}),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_30,_31,_32,_33){
-with(_30){
-_30.nameOKServer="true";
-_30.namechanged=false;
-_30.appId=_32;
-if(_33){
-_30.rootPage=_33;
-objj_msgSend(appnameField,"setObjectValue:",_33.title);
-objj_msgSend(pageViewController,"setPage:",_33);
+}),new objj_method(sel_getUid("didReceiveAgenda:withRootPage:"),function(_2b,_2c,_2d,_2e){
+with(_2b){
+_2b.nameOKServer="true";
+_2b.namechanged=false;
+_2b.appId=_2d;
+if(_2e){
+_2b.rootPage=_2e;
+objj_msgSend(appnameField,"setObjectValue:",_2e.title);
+objj_msgSend(pageViewController,"setPage:",_2e);
 }
-objj_msgSend(_30,"refreshUIFromData");
+objj_msgSend(_2b,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("didReceiveCheckName:"),function(_34,_35,_36){
-with(_34){
-_34.nameOKServer=_36;
-objj_msgSend(_34,"refreshUIFromData");
+}),new objj_method(sel_getUid("didReceiveCheckName:"),function(_2f,_30,_31){
+with(_2f){
+_2f.nameOKServer=_31;
+objj_msgSend(_2f,"refreshUIFromData");
 }
-}),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_37,_38,_39,_3a){
+}),new objj_method(sel_getUid("webView:didFinishLoadForFrame:"),function(_32,_33,_34,_35){
+with(_32){
+var _36=pageViewController.page.navigationId;
+objj_msgSend(previewView,"changePage:to:reverse:","current",_36,NO);
+}
+}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_37,_38,msg){
 with(_37){
-CPLog("didFinishLoadForFrame");
-var _3b=pageViewController.page.navigationId;
-CPLog("didFinishLoadForFrame navId "+_3b);
-objj_msgSend(_37,"changePage:to:reverse:","current",_3b,NO);
-}
-}),new objj_method(sel_getUid("failureWhileReceivingAgenda:"),function(_3c,_3d,msg){
-with(_3c){
 alert(msg);
 }
-}),new objj_method(sel_getUid("panelDidClose:data:"),function(_3e,_3f,tag,_40){
-with(_3e){
+}),new objj_method(sel_getUid("panelDidClose:data:"),function(_39,_3a,tag,_3b){
+with(_39){
 if(tag==="login"){
-_3e.userid=_40;
-objj_msgSend(theWindow,"orderFront:",_3e);
+_39.userid=_3b;
+objj_msgSend(theWindow,"orderFront:",_39);
 }
 if(tag==="open"){
-CPLog("Loading Agenda for "+_3e.userid+" and name "+_40);
-objj_msgSend(aConnection,"loadAgendaFor:andName:withDelegate:",_3e.userid,_40,_3e);
+CPLog("Loading Agenda for "+_39.userid+" and name "+_3b);
+objj_msgSend(aConnection,"loadAgendaFor:andName:withDelegate:",_39.userid,_3b,_39);
 }
 if(tag==="empty"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3e,"resetData");
-objj_msgSend(_3e,"didReceiveAgenda:withRootPage:",undefined,undefined);
+objj_msgSend(_39,"resetData");
+objj_msgSend(_39,"didReceiveAgenda:withRootPage:",undefined,undefined);
 }
 if(tag==="threedaytwotracks"||tag==="onedayonetrack"){
 objj_msgSend(appnameField,"setObjectValue:","");
-objj_msgSend(_3e,"resetData");
-var obj=JSON.parse(objj_msgSend(NewTemplate,"jsonDataForTemplate:withStartingDate:",tag,_40));
-var _41=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
-objj_msgSend(_3e,"didReceiveAgenda:withRootPage:",undefined,_41);
+objj_msgSend(_39,"resetData");
+var obj=JSON.parse(objj_msgSend(NewTemplate,"jsonDataForTemplate:withStartingDate:",tag,_3b));
+var _3c=objj_msgSend(Page,"initFromJSONObject:andNavigationId:",obj.rootpage,"r");
+objj_msgSend(_39,"didReceiveAgenda:withRootPage:",undefined,_3c);
 }
 }
 })]);
@@ -995,10 +985,27 @@ objj_msgSend(itemtypeButton,"selectItemWithTitle:",_5a);
 }
 }
 })]);
-p;13;PreviewView.jt;184;@STATIC;1.0;I;21;Foundation/CPObject.jt;140;
+p;13;PreviewView.jt;923;@STATIC;1.0;I;21;Foundation/CPObject.jt;879;
 objj_executeFile("Foundation/CPObject.j",NO);
-var _1=objj_allocateClassPair(CPObject,"PreviewView"),_2=_1.isa;
+var _1=objj_allocateClassPair(CPWebView,"PreviewView"),_2=_1.isa;
 objj_registerClassPair(_1);
+class_addMethods(_1,[new objj_method(sel_getUid("initWithCoder:"),function(_3,_4,_5){
+with(_3){
+if(_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("PreviewView").super_class},"initWithCoder:",_5)){
+CPLog("successfull super init");
+objj_msgSend(_3,"setFrame:",CPRectMake(540,100,340,520));
+_3._DOMElement.style.webkitTransformOrigin="10 10";
+_3._DOMElement.style.webkitTransform="scale(0.75)";
+}
+return _3;
+}
+}),new objj_method(sel_getUid("changePage:to:reverse:"),function(_6,_7,_8,_9,_a){
+with(_6){
+var _b="if($.mobile.activePage.attr('id') != $('#"+_9+"').attr('id')) $.mobile.changePage($('#"+_9+"'), 'slide', "+_a+")";
+CPLog("cmd "+_b);
+objj_msgSend(objj_msgSend(_6,"windowScriptObject"),"evaluateWebScript:",_b);
+}
+})]);
 p;21;TextFieldColumnView.jt;1171;@STATIC;1.0;I;15;AppKit/CPView.jt;1132;
 objj_executeFile("AppKit/CPView.j",NO);
 var _1=objj_allocateClassPair(CPTextField,"TextFieldColumnView"),_2=_1.isa;
