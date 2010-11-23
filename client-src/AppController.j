@@ -28,7 +28,7 @@
     @outlet CPButton logoutButton;
     @outlet CPButton shareButton;
 
-    CPWebView previewView;
+    @outlet CPWebView previewView;
 
     Page rootPage;
     @outlet CPTextField appnameField;
