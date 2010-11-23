@@ -1,8 +1,8 @@
 
 @import <Foundation/CPObject.j>
-@import "ButtonColumnView.j"
-@import "ImageTextColumnView.j"
 @import "LPKit/LPSlideView.j"
+@import "TMTableView.j"
+
 
 @implementation PageViewController : CPViewController
 {
@@ -13,7 +13,7 @@
     @outlet CPButton editButton;
     @outlet CPPopUpButton itemtypeButton;
     id delegate;
-    CPTableView table;
+    TMTableView table;
     @outlet CPTextField titleField;
     @outlet LPSlideView slideView;
 
@@ -21,65 +21,11 @@
 }
 
 - (void) initTable {
-        table = [[CPTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
-
-      var column0 = [[CPTableColumn alloc] initWithIdentifier:"zero"];
-      var imageColumn = [[ImageTextColumnView alloc] 
-                      initWithFrame:CGRectMake(0.0, 0.0, 20.0, 30.0)];
-      [column0 setDataView:imageColumn];
-      [[column0 headerView] setStringValue:""];    
-      [column0 setWidth:75.0];
-      [column0 setEditable:NO];
-      [table addTableColumn:column0];
-
-      var column1 = [[CPTableColumn alloc] initWithIdentifier:"first"];
-      [[column1 headerView] setStringValue:"Title"];
-      var field = [CPTextField labelWithTitle:@""];
-      [field setFont:[CPFont systemFontOfSize:14.0]];
-      [field setVerticalAlignment:CPCenterTextAlignment];
-      [field setLineBreakMode:CPLineBreakByWordWrapping];
-      [column1 setDataView:field];
-
-      [column1 setWidth:170.0];
-      [column1 setEditable:YES];
-      [table addTableColumn:column1];
-
-      var column2 = [[CPTableColumn alloc] initWithIdentifier:"second"]; 
-      [[column2 headerView] setStringValue:@"Subtitle"];
-      [column2 setWidth:230.0];
-      [column2 setEditable:YES];
-      [column2 setDataView:field];
-
-      [table addTableColumn:column2]; 
-
-      var buttonColumn = [[ButtonColumnView alloc] 
-                      initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
-                      andTitle:"▶" andEditingTitle: "−"
-                      andDelegate:self];
-      var column3 = [[CPTableColumn alloc] initWithIdentifier:"button1"]; 
-      [column3 setDataView:buttonColumn];
-      [column3 setWidth:30.0];
-      [column3 setEditable:YES];
-      [table addTableColumn:column3];
-      
-      var buttonColumn2 = [[ButtonColumnView alloc] 
-                      initWithFrame:CGRectMake(0.0, 0.0, 10.0, 20.0)
-                      andTitle:"" andEditingTitle: "⏎"
-                      andDelegate:self];
-      var column4 = [[CPTableColumn alloc] initWithIdentifier:"button2"]; 
-      [column4 setDataView:buttonColumn2];
-      [column4 setWidth:30.0];
-      [column4 setEditable:YES];
-      [table addTableColumn:column4];
-
-      [table setUsesAlternatingRowBackgroundColors:YES];
-      [table setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
-
-      [table setRowHeight:50];
+      table = [[TMTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
       [table setDataSource:self];
       [table setDelegate:self];
-      [table setAllowsColumnSelection:NO];
 }
+
 - (void) awakeFromCib {    
     [self initTable];
     [scrollView setDocumentView:table]; 
@@ -92,7 +38,7 @@
     [titleField setFont:[CPFont systemFontOfSize:14.0]];
     [titleField setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
 
-
+    //See ButtonColumnView
     [[CPNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(rowClicked:)

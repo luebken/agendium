@@ -7,15 +7,13 @@
     CPButton button;
     CPString row;
     CPString column;
-    id delegate;
     CPString normalTitle;
     CPString editingTitle;
 }
 
 - (id)initWithFrame:(CGRect)rect 
             andTitle:(CPString) normalTitle2 
-            andEditingTitle: (CPString) editingTitle2
-            andDelegate: (id) delegate2  { 
+            andEditingTitle: (CPString) editingTitle2 { 
         self = [super initWithFrame:rect];
         
         
@@ -31,7 +29,6 @@
         [button setTarget:self];
         
         [self addSubview:button]; 
-        self.delegate = delegate2;
         
         return self; 
 }   
