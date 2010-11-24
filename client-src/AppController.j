@@ -270,31 +270,29 @@
 
 //LoginPanel and OpenPanel Delegate
 - (void) panelDidClose:(id)tag data:(id)data {
-    if(tag === "login") {        
-        self.userid = data;
-        [theWindow orderFront:self];
-    }  
-    if(tag === "open") {
-        CPLog("Loading Agenda for " + self.userid + " and name " + data);
-        [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
-    }
-    if(tag === "empty") {
-        [appnameField setObjectValue:""];
-        [self resetData];
-        [self didReceiveAgenda:undefined withRootPage:undefined];
-    }
-    if(tag === "threedaytwotracks" || tag === "onedayonetrack"){
-        [appnameField setObjectValue:""];
-        [self resetData];
-        var obj = JSON.parse([NewTemplate jsonDataForTemplate:tag withStartingDate:data]);
-        var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-        [self didReceiveAgenda:undefined withRootPage:rootPage];        
-    }
-    
+    switch(tag){
+        case "login":
+            self.userid = data;
+            [theWindow orderFront:self];
+            break;
+        case "open":
+            CPLog("Loading Agenda for " + self.userid + " and name " + data);
+            [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
+            break;
+        case "empty":
+            [appnameField setObjectValue:""];
+            [self resetData];
+            [self didReceiveAgenda:undefined withRootPage:undefined];
+            break;
+        case "threedaytwotracks":
+        case "onedayonetrack":
+            [appnameField setObjectValue:""];
+            [self resetData];
+            var obj = JSON.parse([NewTemplate jsonDataForTemplate:tag withStartingDate:data]);
+            var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
+            [self didReceiveAgenda:undefined withRootPage:rootPage];        
+            break;    
+    } 
 }
-
-
-
-
 
 @end
