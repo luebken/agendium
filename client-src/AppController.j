@@ -117,7 +117,8 @@
     
     [buildDateLabel setObjectValue:BUILDDATE];
     [self resetData];
-    [self didReceiveAgenda:undefined withRootPage:undefined];     
+    [self validateName];
+    [self refreshUIFromData];
 }
 
 
@@ -130,16 +131,21 @@
 //CPTextField Delegate
 - (void)controlTextDidChange:(id)sender {
     namechanged = true;
+    [rootPage setTitle:[appnameField objectValue]];
+    [self validateName];
+    [self refreshUIFromData];
+    
+}
+
+- (void)validateName {
     var appName = [appnameField objectValue];
     var length = [[appnameField objectValue] length];
     var containsWhiteSpace = /\s/.test(appName);
     validName = !(containsWhiteSpace | length < 5);    
-    [rootPage setTitle:[appnameField objectValue]];
-    [self refreshUIFromData];
-    
     if(validName) {
         [aConnection checkAppName:appName forId:appId delegate:self];
-    }
+    
+}
     
 /*
     [[CPNotificationCenter defaultCenter] 
@@ -218,7 +224,6 @@
     [[[OpenPanel alloc] initWithName:name andDelegate:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
-    //[[[LoginPanel alloc] init:self] orderFront:nil];
     history.go(-1);
 }
 - (@action) new:(id)sender {
@@ -237,14 +242,13 @@
 // AgendiumConnection Delegate
 //
 -(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
-    self.nameOKServer = "true";
-    self.namechanged = false;
     self.appId = appId2;
     if(newRootpage) {
         self.rootPage = newRootpage;
         [appnameField setObjectValue:newRootpage.title];        
         [pageViewController setPage:newRootpage];
     }
+    [self validateName];
     [self refreshUIFromData];
 }
 
@@ -257,25 +261,11 @@
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
     var navId = pageViewController.page.navigationId;
     [previewView changePageTo:navId animate:NO reverse:NO];
-    
-/*    
-    var page = [pageViewController page];
-    var cmd = 'jQT.goTo("#' + page.navigationId + '");';
-    console.log("didFinishLoadForFrame " + cmd);
-    [[previewView windowScriptObject] evaluateWebScript:cmd];
-    //FIXME Here some redrawing action?
-    //previewView._DOMElement.style.webkitTransformOrigin = "10 10";
-    //[[theWindow contentView] layoutIfNeeded];
-    //[[theWindow contentView] needsDisplay]; 
-    //[[theWindow contentView] display]  
-*/ 
 }
 
 
 -(void)failureWhileReceivingAgenda:(CPString)msg  {
     alert(msg);    
-//    [self resetData];
-//    [self refreshUIFromData]
 }
 
 //LoginPanel and OpenPanel Delegate
