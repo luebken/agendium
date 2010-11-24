@@ -8,7 +8,6 @@
 
 - (id)initWithCoder:(CPCoder)aCoder{
     if (self = [super initWithCoder:aCoder]) {
-        CPLog('successfull super init');
         [self setFrame:CPRectMake(540, 100, 340, 520)];
 
         //[[theWindow contentView] addSubview:previewView];
@@ -32,8 +31,9 @@
 }
 
 //PageViewController Delegate
-- (void) changePage:(CPString) oldPageid to:(CPString) pageid reverse:(Boolean) reverse {
-    var cmd = "if($.mobile.activePage.attr('id') != $('#"+pageid+"').attr('id')) $.mobile.changePage($('#"+pageid+"'), 'slide', "+reverse+")"
+- (void) changePageTo:(CPString) pageid animate:(Boolean) animate reverse:(Boolean) reverse {
+    var animation = animate ? 'slide' : 'none';
+    var cmd = "if($.mobile.activePage.attr('id') != $('#"+pageid+"').attr('id')) $.mobile.changePage($('#"+pageid+"'), '"+animation+"', "+reverse+")"
     CPLog("cmd " + cmd);
     [[self windowScriptObject] evaluateWebScript:cmd];
 }

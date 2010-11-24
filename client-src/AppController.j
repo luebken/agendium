@@ -256,7 +256,7 @@
 
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
     var navId = pageViewController.page.navigationId;
-    [previewView changePage:'current' to:navId reverse:NO];
+    [previewView changePageTo:navId animate:NO reverse:NO];
     
 /*    
     var page = [pageViewController page];

@@ -248,7 +248,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         [slideView addSubview:newScrollView];
         [slideView slideToView:newScrollView];
         [self myRefresh];
-        [delegate changePage:oldpageid to:page.navigationId reverse:NO];        
+        [delegate changePageTo:page.navigationId animate:YES reverse:NO];        
     } else {
         if(column === "button1"){
             [self deleteItemFromList:row];
@@ -272,7 +272,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [newScrollView setDocumentView:table]; 
     [slideView addSubview:newScrollView];
     [slideView slideToView:newScrollView direction:LPSlideViewNegativeDirection];
-    [delegate changePage:oldpageid to:page.navigationId reverse:YES];        
+    [delegate changePageTo:page.navigationId animate:YES reverse:YES];        
     [self myRefresh];
 }
 
