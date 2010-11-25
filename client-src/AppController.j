@@ -14,6 +14,7 @@
 @import "Panels/OpenPanel.j"
 @import "Panels/SharePanel.j"
 @import "Panels/NewPanel.j"
+@import "Panels/UserSettingsPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
 @import "Config.j"
@@ -224,8 +225,9 @@
     [[[OpenPanel alloc] initWithName:name andDelegate:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
-    history.go(-1);
+    [[[UserSettingsPanel alloc] init:self withUsername:"matthias@luebken.com"] orderFront:nil];
 }
+
 - (@action) new:(id)sender {
     [[[NewPanel alloc] init:self] orderFront:nil];
 }
@@ -291,7 +293,10 @@
             var obj = JSON.parse([NewTemplate jsonDataForTemplate:tag withStartingDate:data]);
             var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
             [self didReceiveAgenda:undefined withRootPage:rootPage];        
-            break;    
+            break;   
+        case "logout":
+            history.go(-1);
+            break;
     } 
 }
 

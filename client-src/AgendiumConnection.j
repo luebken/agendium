@@ -12,6 +12,8 @@
     id loginDelegate;
     CPURLConnection checkNameConnection;
     id checkNameDelegate;
+    CPURLConnection passwordConnection;
+    id passwordDelegate;
 }
 - (id)init
 {
@@ -34,6 +36,19 @@
     loginDelegate = delegate;
 }
 
+- (void) changePassword:(CPString)oldPassword toPassword:(CPString)newPassword forUser:(CPString)user delegate:(id)delegate {
+    CPLog('Requesting to change password for user ' + user);
+    var request = [CPURLRequest requestWithURL:BASEURL+"password/"];
+    [request setHTTPMethod:'POST'];
+    var jsonData = '{"oldpassword":"' + oldPassword + '","newpassword":"' + newPassword + '", "user":"'+ user + '"}';
+    CPLog('Posting ' + jsonData);
+    [request setHTTPBody:jsonData];
+    [request setValue:'application/json' forHTTPHeaderField:"Accept"];
+    [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
+    passwordConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    passwordDelegate = delegate;
+}
+
 - (void) saveAgenda:(id)appId rootPage:(Page) rootPage userid:(CPString)userid delegate:(id)delegate {
     var request = [CPURLRequest requestWithURL:BASEURL + "agenda"];
     [request setHTTPMethod:'POST'];
@@ -41,10 +56,6 @@
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
-    
-    //console.log("[request HTTPBody]: " + [request HTTPBody]);
-    //console.log("[request allHTTPHeaderFields]: " + [request allHTTPHeaderFields]);
-    //console.log("Saving JSON: " + jsonData)    
     saveConnection = [CPURLConnection connectionWithRequest:request delegate:self];
     saveDelegate = delegate;
 }
@@ -61,7 +72,6 @@
 //CPURLConnection delegate
 //
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data {
-    //console.log("didReceiveData: '" + data + "'");
     if(connection == saveConnection) {
         [self didReceiveSaveData:data delegate:saveDelegate];
     }
@@ -74,6 +84,10 @@
     if(connection == checkNameConnection) {
         [self didReceiveCheckNameData:data delegate:checkNameDelegate];
     }
+    if(connection == passwordConnection) {
+        [self didReceiveChangePassword:data delegate:passwordDelegate];
+    }
+    
 }
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error {
     CPLog("didFailWithError: " + error);
@@ -115,7 +129,7 @@
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 
     } else {
-        if(console) console.log('failureWhileReceivingAgenda');
+        CPLog('failureWhileReceivingAgenda');
         [delegate failureWhileReceivingAgenda:'Couldn\'t find the Agenda'];
     }
 }
@@ -130,6 +144,21 @@
 
 -(void)didReceiveCheckNameData:(CPString)data delegate:(id)delegate {
     [delegate didReceiveCheckName:data];
+}
+
+-(void)didReceiveChangePassword:(CPString)data delegate:(id)delegate {
+    if(data != null && data != '' && data != 'null') {
+        try {
+            if(JSON.parse(data).changed) {
+                [delegate didChangePassword];
+            } else {
+                [delegate didntChangePassword];                
+            }
+        } catch (e) {
+        } 
+    } 
+    CPLog('Error didReceiveChangePassword');
+    [delegate didntChangePassword];
 }
 
 @end
