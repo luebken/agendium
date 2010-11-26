@@ -251,6 +251,7 @@
         [appnameField setObjectValue:newRootpage.title];        
         [pageViewController setPage:newRootpage];
     }
+    namechanged = false;
     [self validateName];
     [self refreshUIFromData];
 }
