@@ -95,9 +95,9 @@
     }    
 }
 
-- (void) loginSuccess: (String) userid{
+- (void) loginSuccessFor: (CPString)email withId:(String) userid{
     if ([delegate respondsToSelector:@selector(panelDidClose:data:)]) {
-        [delegate panelDidClose:'login' data:userid];
+        [delegate panelDidClose:'login' data:{'userid':userid, 'useremail':email}];
         [self close];
     }    
 }

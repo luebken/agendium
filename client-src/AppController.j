@@ -41,6 +41,7 @@
     PageViewController pageViewController;
     CPString appId;
     CPString userid;
+    CPString useremail @accessors;
     CPString nameOKServer;
 
     AgendiumConnection aConnection;
@@ -225,7 +226,7 @@
     [[[OpenPanel alloc] initWithName:name andDelegate:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
-    [[[UserSettingsPanel alloc] init:self withUsername:"matthias@luebken.com"] orderFront:nil];
+    [[[UserSettingsPanel alloc] init:self withUsername:self.useremail] orderFront:nil];
 }
 
 - (@action) new:(id)sender {
@@ -274,7 +275,8 @@
 - (void) panelDidClose:(id)tag data:(id)data {
     switch(tag){
         case "login":
-            self.userid = data;
+            self.userid = data.userid;
+            self.useremail = data.useremail;
             [theWindow orderFront:self];
             break;
         case "open":

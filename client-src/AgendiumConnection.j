@@ -136,7 +136,7 @@
 -(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {    
     if(data && data != "undefined") {
         var obj = JSON.parse(data);
-        [delegate loginSuccess:obj._id];
+        [delegate loginSuccessFor:obj.email withId:obj._id];
     } else {
         [delegate loginFailed];        
     }
@@ -147,12 +147,16 @@
 }
 
 -(void)didReceiveChangePassword:(CPString)data delegate:(id)delegate {
+    CPLog('didReceiveChangePassword: ' + data)
     if(data != null && data != '' && data != 'null') {
         try {
-            if(JSON.parse(data).changed) {
+            var parsed = JSON.parse(data);
+            if(parsed.changed) {
                 [delegate didChangePassword];
+                return;
             } else {
-                [delegate didntChangePassword];                
+                [delegate didntChangePassword];
+                return;                
             }
         } catch (e) {
         } 

@@ -85,6 +85,7 @@ vows.describe('userprovider')
         }    
     }
 })
+
 .addBatch({
     'checkuser with correct password': {
         topic: function() { 
@@ -92,7 +93,7 @@ vows.describe('userprovider')
             userprovider.removeAll(function() {
                 userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
                     userprovider.checkUser('hurz3', 'secure', self.callback) 
-                    
+        
                 } ) 
             });
         },
@@ -104,6 +105,66 @@ vows.describe('userprovider')
         }    
     }
 })
+
+
+.addBatch({
+    'update password': {
+        topic: function() { 
+            var self = this;
+            userprovider.removeAll(function() {
+                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                    userprovider.updatePassword('hurz3', 'secure', 'reallysecure', function () {
+                        userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
+                    }) 
+                } ) 
+            });
+        },
+        'no error and user is fine': function (error, user) {
+            assert.isNull(error);
+            assert.isTrue(user != undefined);     
+            assert.equal('hurz3', user.email);  
+            assert.equal('reallysecure', user.password);
+        }    
+    }
+})
+
+.addBatch({
+    'didnt update password': {
+        topic: function() { 
+            var self = this;
+            userprovider.removeAll(function() {
+                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                    userprovider.updatePassword('hurz3', 'secure2', 'reallysecure', function () {
+                        userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
+                    })                
+                } ) 
+            });
+        },
+        'no error and user is fine': function (error, data) {
+            assert.isNull(error);
+            assert.isTrue(data == undefined);     
+        }    
+    }
+})
+
+.addBatch({
+    'didnt update password': {
+        topic: function() { 
+            var self = this;
+            userprovider.removeAll(function() {
+                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                    userprovider.updatePassword('hurz3', 'secure2', 'reallysecure', self.callback)
+                } ) 
+            });
+        },
+        'no error and user is fine': function (error, data) {
+            assert.isNull(error);
+            //TODO wie siehe ich dass das update nicht geklappt hat?
+            //assert.isTrue(data == undefined);     
+        }    
+    }
+})
+
 .addBatch({
     'database connection closed': {
         topic: function() { userprovider.close(); return null;},
