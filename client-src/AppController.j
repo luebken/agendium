@@ -118,6 +118,7 @@
     [appnameField setValue:[CPColor lightGrayColor] forThemeAttribute:"text-color" inState:CPTextFieldStatePlaceholder];
     
     [buildDateLabel setObjectValue:BUILDDATE];
+    
     [self resetData];
     [self validateName];
     [self refreshUIFromData];
@@ -202,7 +203,7 @@
     rootPage = [[Page alloc] init];
     rootPage.navigationId = "r";
     pageViewController.page = rootPage;
-    appId = null; 
+    appId = undefined; 
     validName = true;
     namechanged = false;
     nameOKServer = 'true';
