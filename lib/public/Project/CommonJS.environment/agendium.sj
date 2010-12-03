@@ -152,7 +152,7 @@ CPLog("Error didReceiveChangePassword");
 objj_msgSend(_4a,"didntChangePassword");
 }
 })]);
-p;15;AppController.jt;9457;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;26;Panels/UserSettingsPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.ji;13;PreviewView.jt;9165;
+p;15;AppController.jt;9481;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;26;Panels/UserSettingsPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.ji;13;PreviewView.jt;9189;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -275,7 +275,7 @@ with(_1d){
 rootPage=objj_msgSend(objj_msgSend(Page,"alloc"),"init");
 rootPage.navigationId="r";
 pageViewController.page=rootPage;
-appId=null;
+appId=undefined;
 validName=true;
 namechanged=false;
 nameOKServer="true";
@@ -321,6 +321,7 @@ _32.rootPage=_35;
 objj_msgSend(appnameField,"setObjectValue:",_35.title);
 objj_msgSend(pageViewController,"setPage:",_35);
 }
+namechanged=false;
 objj_msgSend(_32,"validateName");
 objj_msgSend(_32,"refreshUIFromData");
 }
@@ -376,7 +377,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101126-17:57:40";
+BUILDDATE="v20101203-12:33:06";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -607,7 +608,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;10242;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;10148;
+p;20;PageViewController.jt;10220;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;10126;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("LPKit/LPSlideView.j",YES);
 objj_executeFile("Table/TMTableView.j",YES);
@@ -766,10 +767,10 @@ var _36=objj_msgSend(objj_msgSend(itemtypeButton,"selectedItem"),"title");
 var _37;
 var _38=page.navigationId+"c"+_35;
 if(_36=="Navigationpage"){
-_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","The title of a subpage","The optional subtitle of a subpage","Navigation",_38);
+_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","Title of a navigation page","The optional subtitle","Navigation",_38);
 }else{
 if(_36=="Detailpage"){
-_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","The title of a subpage","The optional subtitle of a subpage","Detail",_38);
+_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","Title of a detail page","The optional subtitle","Detail",_38);
 }else{
 _37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","A group title","","Group",_38);
 }
