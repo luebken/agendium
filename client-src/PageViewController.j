@@ -182,13 +182,13 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
         var newpage;
         var navigationId = page.navigationId + "c" + index;
         if(itemtype == 'Navigationpage') {
-            newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
-                                      andSubtitle:"The optional subtitle of a subpage" 
+            newpage = [[Page alloc] initWithTitle:"Title of a navigation page" 
+                                      andSubtitle:"The optional subtitle" 
                                           andType: "Navigation"
                                   andNavigationId: navigationId ];
         } else if(itemtype == 'Detailpage') {
-            newpage = [[Page alloc] initWithTitle:"The title of a subpage" 
-                                      andSubtitle:"The optional subtitle of a subpage" 
+            newpage = [[Page alloc] initWithTitle:"Title of a detail page" 
+                                      andSubtitle:"The optional subtitle" 
                                           andType: "Detail"
                                   andNavigationId: navigationId];
         } else {
