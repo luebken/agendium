@@ -189,7 +189,7 @@
     if(appId){
         var applink = BASEURL + "m/" + rootPage.title;
         var previewlink = BASEURL + "prev/" + appId;
-        [previewView setMainFrameURL:previewlink];
+        [previewView setMainFrameURL:previewlink];        
         [previewButton setTitle:applink]; 
         [previewButton sizeToFit];        
     } else {
@@ -266,6 +266,7 @@
 - (void) webView:(CPWeView)webview didFinishLoadForFrame:(id) frame {
     var navId = pageViewController.page.navigationId;
     [previewView changePageTo:navId animate:NO reverse:NO];
+    [[previewView windowScriptObject] evaluateWebScript:'removeEventsForPreview();'];    
 }
 
 
