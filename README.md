@@ -36,11 +36,15 @@ Joyent
 ssh node@72.2.126.80
 http://wiki.joyent.com/display/node/Node.js+SmartMachine+FAQ#Node.jsSmartMachineFAQ-IneedtopasssomeAPIcredentialstomynode.jsprocess
 [node@touchium ~]$ svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://admin:sehrgeheim123:127.0.0.1:27017/agendium'
+ svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://127.0.0.1:27017/agendium'
 
 http://www.mongodb.org/display/DOCS/Security+and+Authentication
 db.addUser("admin", "sehrgeheim123")
 5e471e24f89ecfe2bdb1f2fce8d8c059
 db.auth("admin", "pEfAswen7TasafRu")
+
+bin/mongod --dbpath databases/ --bind_ip 127.0.0.1
+bin/mongod --dbpath /home/node/mongo/databases/ --bind_ip 127.0.0.1 --logpath /home/node/mongo.log --fork
 
 
 MAIN TODOs
