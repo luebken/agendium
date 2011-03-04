@@ -1,22 +1,13 @@
 Server
 ------
-* Install node.js
-* Run 'node server.js'
-* Give it a try http://localhost:8000/a/0
-
-Server-Tests
-------
-* Install Expresso
-* Run 'expresso tests/*'
-* Or with Vows: 'vows vowstest/*' 
-* Not decided yet
-
-
-
-Client
-------
+* Run 'startmongo.sh' & 'node server.js'
 * Open http://localhost:8000/
-* Enter 'test' as app name and hit load
+
+Tests
+------
+* Run 'startmongo.sh' & 'runvowstests.sh'
+* cd client-src & 'jake test'
+
 
 Client Development
 ------
@@ -33,39 +24,29 @@ Client Deployment
 
 Joyent
 -----
-ssh node@72.2.126.80
-http://wiki.joyent.com/display/node/Node.js+SmartMachine+FAQ#Node.jsSmartMachineFAQ-IneedtopasssomeAPIcredentialstomynode.jsprocess
-[node@touchium ~]$ svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://admin:sehrgeheim123:127.0.0.1:27017/agendium'
- svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://127.0.0.1:27017/agendium'
-
-http://www.mongodb.org/display/DOCS/Security+and+Authentication
-db.addUser("admin", "sehrgeheim123")
-5e471e24f89ecfe2bdb1f2fce8d8c059
-db.auth("admin", "pEfAswen7TasafRu")
-
-bin/mongod --dbpath databases/ --bind_ip 127.0.0.1
-bin/mongod --dbpath /home/node/mongo/databases/ --bind_ip 127.0.0.1 --logpath /home/node/mongo.log --fork
+* ssh node@72.2.126.80
+* http://wiki.joyent.com/display/node/Node.js+SmartMachine+FAQ#Node.jsSmartMachineFAQ-IneedtopasssomeAPIcredentialstomynode.jsprocess
+* svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://127.0.0.1:27017/agendium'
+* bin/mongod --dbpath /home/node/mongo/databases/ --bind_ip 127.0.0.1 --logpath /home/node/mongo.log --fork
 
 
-MAIN TODOs
-=====
-* Warum postet CAPP mit xml?
-haml zum laufen bringen oder auf jade umstellen
- - http://localhost:8000/preview
+Upgrade TODOs:
+===
+* jQmobile 1.0.0 umstellen
+* Exress 2.0
 
-* auf 0.4.1 testen
-* auf node deployen
-* cappuccino upgrade
-* node aufräumen 
-* cappuccino aufräumen 
+Dev TODOs:
+===
+* Warum postet CAPP mit xml bei save agenda?
+* Node aufräumen und besser testen
+* Cappuccino aufräumen und besser testen
 
 Features / Bugs
 =====
-Feature:
-- Spacer => Group umbennend
-- Typ ändern Detail => Content
-- Kopieren von Items
-
+* Scrollbar nur ganz aussen
+* Spacer => Group umbennend
+* Typ ändern Detail => Content
+* Kopieren von Items
 * New-Template
 * iphone preview
 * nach Safe nicht zurück springen
