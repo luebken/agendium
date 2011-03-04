@@ -59,22 +59,23 @@ vows.describe('userprovider')
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.save([{'email':'hurz', 'password':'secure'}], self.callback ) 
+                userprovider.save({'email':'hurz', 'password':'secure'}, self.callback ) 
             });
         },
-        'no error and inserted user is fine': function (error, inserted_users) {
-            assert.equal(inserted_users[0].email, 'hurz');
-            assert.equal(inserted_users[0].password, 'secure');
-            assert.isDefined(inserted_users[0]._id);            
+        'no error and inserted user is fine': function (error, inserted_user) {
+            assert.equal(inserted_user.email, 'hurz');
+            assert.equal(inserted_user.password, 'secure');
+            assert.isDefined(inserted_user._id);            
         }    
     }
 })
+
 .addBatch({
     'checkuser with wrong password': {
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.save([{'email':'hurz2', 'password':'secure'}], function (error, inserted_users) {
+                userprovider.save({'email':'hurz2', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.checkUser('hurz2', 'sdfsd', self.callback) 
                 } ) 
             });
@@ -91,7 +92,7 @@ vows.describe('userprovider')
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                userprovider.save({'email':'hurz3', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.checkUser('hurz3', 'secure', self.callback) 
         
                 } ) 
@@ -112,7 +113,7 @@ vows.describe('userprovider')
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                userprovider.save({'email':'hurz3', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.updatePassword('hurz3', 'secure', 'reallysecure', function () {
                         userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
                     }) 
@@ -133,7 +134,7 @@ vows.describe('userprovider')
         topic: function() { 
             var self = this;
             userprovider.removeAll(function() {
-                userprovider.save([{'email':'hurz3', 'password':'secure'}], function (error, inserted_users) {
+                userprovider.save({'email':'hurz3', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.updatePassword('hurz3', 'secure2', 'reallysecure', function () {
                         userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
                     })                
@@ -164,6 +165,7 @@ vows.describe('userprovider')
         }    
     }
 })
+
 
 .addBatch({
     'database connection closed': {
