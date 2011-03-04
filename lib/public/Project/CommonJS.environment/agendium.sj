@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;6115;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;6048;
+@STATIC;1.0;p;20;AgendiumConnection.jt;6236;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;6169;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -45,6 +45,8 @@ var _20="{\"_id\":\""+_1b+"\",\"userid\":\""+_1d+"\", \"rootpage\":"+objj_msgSen
 objj_msgSend(_1f,"setHTTPBody:",_20);
 objj_msgSend(_1f,"setValue:forHTTPHeaderField:","application/json","Accept");
 objj_msgSend(_1f,"setValue:forHTTPHeaderField:","application/json","Content-Type");
+CPLog("Saving Agenda : "+_20);
+CPLog("With contenttype:: "+objj_msgSend(_1f,"valueForHTTPHeaderField:","Content-Type"));
 saveConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_1f,_19);
 saveDelegate=_1e;
 }
@@ -378,7 +380,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20101203-21:30:19";
+BUILDDATE="v20110304-12:34:16";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -885,7 +887,7 @@ objj_msgSend(itemtypeButton,"selectItemWithTitle:",_51);
 }
 }
 })]);
-p;13;PreviewView.jt;1004;@STATIC;1.0;I;21;Foundation/CPObject.jt;960;
+p;13;PreviewView.jt;924;@STATIC;1.0;I;21;Foundation/CPObject.jt;880;
 objj_executeFile("Foundation/CPObject.j",NO);
 var _1=objj_allocateClassPair(CPWebView,"PreviewView"),_2=_1.isa;
 objj_registerClassPair(_1);
@@ -895,8 +897,6 @@ if(_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("PreviewView").su
 objj_msgSend(_3,"setFrame:",CPRectMake(540,100,340,520));
 _3._DOMElement.style.webkitTransformOrigin="10 10";
 _3._DOMElement.style.webkitTransform="scale(0.75)";
-_3._DOMElement.style.mozTransformOrigin="10 10";
-_3._DOMElement.style.mozTransform="scale(0.75)";
 }
 return _3;
 }
@@ -904,6 +904,7 @@ return _3;
 with(_6){
 var _b=_9?"slide":"none";
 var _c="if($.mobile.activePage.attr('id') != $('#"+_8+"').attr('id')) $.mobile.changePage($('#"+_8+"'), '"+_b+"', "+_a+")";
+CPLog("cmd "+_c);
 objj_msgSend(objj_msgSend(_6,"windowScriptObject"),"evaluateWebScript:",_c);
 }
 })]);
