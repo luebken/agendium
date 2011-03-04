@@ -16,6 +16,7 @@ vows.describe('userprovider')
         }
     }
 })
+
 .addBatch({
     'collection creation': {
         topic: function() { userprovider.getCollection(this.callback)},
@@ -40,6 +41,7 @@ vows.describe('userprovider')
         }
     }
 })
+
 .addBatch({
     'test initially checkuser false': {
         topic: function() { 
@@ -54,6 +56,8 @@ vows.describe('userprovider')
         }
     }
 })
+
+
 .addBatch({
     'initial save works': {
         topic: function() { 
@@ -64,11 +68,14 @@ vows.describe('userprovider')
         },
         'no error and inserted user is fine': function (error, inserted_user) {
             assert.equal(inserted_user.email, 'hurz');
-            assert.equal(inserted_user.password, 'secure');
+            //assert.isNull(inserted_user.password);
+            assert.equal('accdb4e36c16fdf25eba520f3efb15219f02dd4a',inserted_user.hashedpassword);
             assert.isDefined(inserted_user._id);            
         }    
     }
 })
+
+
 
 .addBatch({
     'checkuser with wrong password': {
@@ -115,6 +122,8 @@ vows.describe('userprovider')
             userprovider.removeAll(function() {
                 userprovider.save({'email':'hurz3', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.updatePassword('hurz3', 'secure', 'reallysecure', function () {
+                        console.log('----')
+                        
                         userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
                     }) 
                 } ) 
@@ -124,7 +133,7 @@ vows.describe('userprovider')
             assert.isNull(error);
             assert.isTrue(user != undefined);     
             assert.equal('hurz3', user.email);  
-            assert.equal('reallysecure', user.password);
+            assert.equal('6a517f4dc223b4be157f5c4a7d6c06d09a5778ed', user.hashedpassword);
         }    
     }
 })
