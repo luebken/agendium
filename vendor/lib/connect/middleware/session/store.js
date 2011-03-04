@@ -1,7 +1,8 @@
 
 /*!
- * Ext JS Connect
+ * Connect - session - Store
  * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
  * MIT Licensed
  */
 
@@ -9,37 +10,16 @@
  * Module dependencies.
  */
 
-var Session = require('./session'),
-    utils = require('./../../utils');
+var Session = require('./session')
+  , utils = require('../../utils');
 
 /**
- * Initialize abstract Store.
+ * Initialize abstract `Store`.
  *
  * @api private
  */
 
-var Store = module.exports = function Store(options) {
-    options = options || {};
-
-    // Default maxAge to 4 hours
-    this.maxAge = options.maxAge || 14400000;
-
-    // Cookie options
-    this.cookie = utils.merge({ path: '/', httpOnly: true }, options.cookie);
-};
-
-/**
- * Destroy session associated with the given `sid`
- * by passing `null` to `Store#get()`.
- *
- * @param {String} sid
- * @param {Function} fn
- * @api public
- */
-
-Store.prototype.destroy = function(sid, fn){
-    this.set(sid, null, fn);
-};
+var Store = module.exports = function Store(options){};
 
 /**
  * Re-generate the given requests's session.
@@ -50,9 +30,9 @@ Store.prototype.destroy = function(sid, fn){
  */
 
 Store.prototype.regenerate = function(req, fn){
-    var self = this;
-    this.destroy(req.sessionID, function(err, destroyed){
-        self.generate();
-        fn(err, destroyed);
-    });
+  var self = this;
+  this.destroy(req.sessionID, function(err){
+    self.generate();
+    fn(err);
+  });
 };

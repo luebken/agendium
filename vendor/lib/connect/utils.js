@@ -1,7 +1,8 @@
 
 /*!
- * Ext JS Connect
+ * Connect - utils
  * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
  * MIT Licensed
  */
 
@@ -9,14 +10,16 @@
  * Module dependencies.
  */
 
-var queryString = require('querystring'),
-    crypto = require('crypto'),
-    Path = require('path'),
-    fs = require('fs');
+var crypto = require('crypto')
+  , Path = require('path')
+  , fs = require('fs');
 
 /**
  * Return md5 hash of the given string and optional encoding,
  * defaulting to hex.
+ *
+ *     utils.md5('wahoo');
+ *     // => "e493298061761236c96b02ea6aa8a2ad"
  *
  * @param {String} str
  * @param {String} encoding
@@ -25,31 +28,20 @@ var queryString = require('querystring'),
  */
 
 exports.md5 = function(str, encoding){
-    return crypto.createHash('md5').update(str).digest(encoding || 'hex');
-};
-
-/**
- * Default mime type.
- */
-
-var defaultMime = exports.defaultMime = 'application/octet-stream';
-
-/**
- * Converts the given object to a Boolean.
- *
- * @param  {Mixed} obj
- * @return {Boolean}
- * @api public
- */
-
-exports.toBoolean = function(obj){
-    return typeof obj === 'string'
-        ? /^(y(es)?|true|1)$/.test(obj)
-        : !! obj;
+  return crypto
+    .createHash('md5')
+    .update(str)
+    .digest(encoding || 'hex');
 };
 
 /**
  * Merge object b with object a.
+ *
+ *     var a = { foo: 'bar' }
+ *       , b = { bar: 'baz' };
+ *     
+ *     utils.merge(a, b);
+ *     // => { foo: 'bar', bar: 'baz' }
  *
  * @param {Object} a
  * @param {Object} b
@@ -58,28 +50,35 @@ exports.toBoolean = function(obj){
  */
 
 exports.merge = function(a, b){
-    if (a && b) {
-        var keys = Object.keys(b);
-        for (var i = 0, len = keys.length; i < len; ++i) {
-            a[keys[i]] = b[keys[i]];
-        }
+  if (a && b) {
+    for (var key in b) {
+      a[key] = b[key];
     }
-    return a;
+  }
+  return a;
 };
 
 /**
- * Return a unique identifier.
+ * Return a unique identifier with the given `len`.
  *
+ *     utils.uid(10);
+ *     // => "FDaS435D2z"
+ *
+ * @param {Number} len
  * @return {String}
  * @api public
  */
 
-exports.uid = function() {
-    var uid = '';
-    for (var n = 4; n; --n) {
-        uid += (Math.abs((Math.random() * 0xFFFFFFF) | 0)).toString(16);
-    }
-    return uid;
+exports.uid = function(len) {
+  var buf = []
+    , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    , charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
 };
 
 /**
@@ -91,27 +90,32 @@ exports.uid = function() {
  */
 
 exports.parseCookie = function(str){
-    var obj = {},
-        pairs = str.split(/[;,] */);
-    for (var i = 0, len = pairs.length; i < len; ++i) {
-        var pair = pairs[i],
-            eqlIndex = pair.indexOf('='),
-            key = pair.substr(0, eqlIndex).trim().toLowerCase(),
-            val = pair.substr(++eqlIndex, pair.length).trim();
-        // Quoted values
-        if (val[0] === '"') {
-            val = val.slice(1, -1);
-        }
-        // Only assign once
-        if (obj[key] === undefined) {
-            obj[key] = queryString.unescape(val, true);
-        }
+  var obj = {}
+    , pairs = str.split(/[;,] */);
+  for (var i = 0, len = pairs.length; i < len; ++i) {
+    var pair = pairs[i]
+      , eqlIndex = pair.indexOf('=')
+      , key = pair.substr(0, eqlIndex).trim().toLowerCase()
+      , val = pair.substr(++eqlIndex, pair.length).trim();
+
+    // Quoted values
+    if (val[0] === '"') {
+      val = val.slice(1, -1);
     }
-    return obj;
+
+    // Only assign once
+    if (obj[key] === undefined) {
+      obj[key] = decodeURIComponent(val.replace(/\+/g, ' '));
+    }
+  }
+  return obj;
 };
 
 /**
  * Serialize the given object into a cookie string.
+ *
+ *      utils.serializeCookie('name', 'tj', { httpOnly: true })
+ *      // => "name=tj; httpOnly"
  *
  * @param {String} name
  * @param {String} val
@@ -121,308 +125,243 @@ exports.parseCookie = function(str){
  */
 
 exports.serializeCookie = function(name, val, obj){
-    var pairs = [name + '=' + queryString.escape(val)],
-        obj = obj || {},
-        keys = Object.keys(obj);
-    for (var i = 0, len = keys.length; i < len; ++i) {
-        var key = keys[i],
-            val = obj[key];
-        if (val instanceof Date) {
-            val = val.toUTCString();
-        } else if (typeof val === "boolean") {
-            if (val === true) {
-                pairs.push(key);
-            }
-            continue;
-        }
-        pairs.push(key + '=' + val);
-    }
-    return pairs.join('; ');
+  var pairs = [name + '=' + encodeURIComponent(val)]
+    , obj = obj || {};
+
+  if (obj.domain) pairs.push('domain=' + obj.domain);
+  if (obj.path) pairs.push('path=' + obj.path);
+  if (obj.expires) pairs.push('expires=' + obj.expires.toUTCString());
+  if (obj.httpOnly) pairs.push('httpOnly');
+  if (obj.secure) pairs.push('secure');
+
+  return pairs.join('; ');
 };
 
-exports.mime = {
+/**
+ * Pause `data` and `end` events on the given `obj`.
+ * Middleware performing async tasks _should_ utilize
+ * this utility (or similar), to re-emit data once
+ * the async operation has completed, otherwise these
+ * events may be lost.
+ *
+ *      var pause = utils.pause(req);
+ *      fs.readFile(path, function(){
+ *         next();
+ *         pause.resume();
+ *      });
+ *
+ * @param {Object} obj
+ * @return {Object}
+ * @api public
+ */
 
-      /**
-       * Return mime type for the given path,
-       * otherwise default to exports.defaultMime
-       * ("application/octet-stream").
-       *
-       * @param {String} path
-       * @return {String}
-       * @api public
-       */
+exports.pause = function(obj){
+  var onData
+    , onEnd
+    , events = [];
 
-      type: function getMime(path) {
-          var index = String(path).lastIndexOf(".");
-          if (index < 0) {
-              return defaultMime;
-          }
-          var type = exports.mime.types[path.substring(index).toLowerCase()] || defaultMime;
-          return (/(text|javascript)/).test(type)
-            ? type + "; charset=utf-8"
-            : type;
-      },
+  // buffer data
+  obj.on('data', onData = function(data, encoding){
+    events.push(['data', data, encoding]);
+  });
 
-      /**
-       * Mime types.
-       */
+  // buffer end
+  obj.on('end', onEnd = function(data, encoding){
+    events.push(['end', data, encoding]);
+  });
 
-      types: {
-          ".3gp"   : "video/3gpp",
-          ".a"     : "application/octet-stream",
-          ".ai"    : "application/postscript",
-          ".aif"   : "audio/x-aiff",
-          ".aiff"  : "audio/x-aiff",
-          ".asc"   : "application/pgp-signature",
-          ".asf"   : "video/x-ms-asf",
-          ".asm"   : "text/x-asm",
-          ".asx"   : "video/x-ms-asf",
-          ".atom"  : "application/atom+xml",
-          ".au"    : "audio/basic",
-          ".avi"   : "video/x-msvideo",
-          ".bat"   : "application/x-msdownload",
-          ".bin"   : "application/octet-stream",
-          ".bmp"   : "image/bmp",
-          ".bz2"   : "application/x-bzip2",
-          ".c"     : "text/x-c",
-          ".cab"   : "application/vnd.ms-cab-compressed",
-          ".cc"    : "text/x-c",
-          ".chm"   : "application/vnd.ms-htmlhelp",
-          ".class" : "application/octet-stream",
-          ".com"   : "application/x-msdownload",
-          ".conf"  : "text/plain",
-          ".cpp"   : "text/x-c",
-          ".crt"   : "application/x-x509-ca-cert",
-          ".css"   : "text/css",
-          ".csv"   : "text/csv",
-          ".cxx"   : "text/x-c",
-          ".deb"   : "application/x-debian-package",
-          ".der"   : "application/x-x509-ca-cert",
-          ".diff"  : "text/x-diff",
-          ".djv"   : "image/vnd.djvu",
-          ".djvu"  : "image/vnd.djvu",
-          ".dll"   : "application/x-msdownload",
-          ".dmg"   : "application/octet-stream",
-          ".doc"   : "application/msword",
-          ".dot"   : "application/msword",
-          ".dtd"   : "application/xml-dtd",
-          ".dvi"   : "application/x-dvi",
-          ".ear"   : "application/java-archive",
-          ".eml"   : "message/rfc822",
-          ".eps"   : "application/postscript",
-          ".exe"   : "application/x-msdownload",
-          ".f"     : "text/x-fortran",
-          ".f77"   : "text/x-fortran",
-          ".f90"   : "text/x-fortran",
-          ".flv"   : "video/x-flv",
-          ".for"   : "text/x-fortran",
-          ".gem"   : "application/octet-stream",
-          ".gemspec" : "text/x-script.ruby",
-          ".gif"   : "image/gif",
-          ".gz"    : "application/x-gzip",
-          ".h"     : "text/x-c",
-          ".hh"    : "text/x-c",
-          ".htm"   : "text/html",
-          ".html"  : "text/html",
-          ".ico"   : "image/vnd.microsoft.icon",
-          ".ics"   : "text/calendar",
-          ".ifb"   : "text/calendar",
-          ".iso"   : "application/octet-stream",
-          ".jar"   : "application/java-archive",
-          ".java"  : "text/x-java-source",
-          ".jnlp"  : "application/x-java-jnlp-file",
-          ".jpeg"  : "image/jpeg",
-          ".jpg"   : "image/jpeg",
-          ".js"    : "application/javascript",
-          ".json"  : "application/json",
-          ".log"   : "text/plain",
-          ".m3u"   : "audio/x-mpegurl",
-          ".m4v"   : "video/mp4",
-          ".man"   : "text/troff",
-          ".manifest": "text/cache-manifest",
-          ".mathml" : "application/mathml+xml",
-          ".mbox"  : "application/mbox",
-          ".mdoc"  : "text/troff",
-          ".me"    : "text/troff",
-          ".mid"   : "audio/midi",
-          ".midi"  : "audio/midi",
-          ".mime"  : "message/rfc822",
-          ".mml"   : "application/mathml+xml",
-          ".mng"   : "video/x-mng",
-          ".mov"   : "video/quicktime",
-          ".mp3"   : "audio/mpeg",
-          ".mp4"   : "video/mp4",
-          ".mp4v"  : "video/mp4",
-          ".mpeg"  : "video/mpeg",
-          ".mpg"   : "video/mpeg",
-          ".ms"    : "text/troff",
-          ".msi"   : "application/x-msdownload",
-          ".odp"   : "application/vnd.oasis.opendocument.presentation",
-          ".ods"   : "application/vnd.oasis.opendocument.spreadsheet",
-          ".odt"   : "application/vnd.oasis.opendocument.text",
-          ".ogg"   : "application/ogg",
-          ".p"     : "text/x-pascal",
-          ".pas"   : "text/x-pascal",
-          ".pbm"   : "image/x-portable-bitmap",
-          ".pdf"   : "application/pdf",
-          ".pem"   : "application/x-x509-ca-cert",
-          ".pgm"   : "image/x-portable-graymap",
-          ".pgp"   : "application/pgp-encrypted",
-          ".pkg"   : "application/octet-stream",
-          ".pl"    : "text/x-script.perl",
-          ".pm"    : "text/x-script.perl-module",
-          ".png"   : "image/png",
-          ".pnm"   : "image/x-portable-anymap",
-          ".ppm"   : "image/x-portable-pixmap",
-          ".pps"   : "application/vnd.ms-powerpoint",
-          ".ppt"   : "application/vnd.ms-powerpoint",
-          ".ps"    : "application/postscript",
-          ".psd"   : "image/vnd.adobe.photoshop",
-          ".py"    : "text/x-script.python",
-          ".qt"    : "video/quicktime",
-          ".ra"    : "audio/x-pn-realaudio",
-          ".rake"  : "text/x-script.ruby",
-          ".ram"   : "audio/x-pn-realaudio",
-          ".rar"   : "application/x-rar-compressed",
-          ".rb"    : "text/x-script.ruby",
-          ".rdf"   : "application/rdf+xml",
-          ".roff"  : "text/troff",
-          ".rpm"   : "application/x-redhat-package-manager",
-          ".rss"   : "application/rss+xml",
-          ".rtf"   : "application/rtf",
-          ".ru"    : "text/x-script.ruby",
-          ".s"     : "text/x-asm",
-          ".sgm"   : "text/sgml",
-          ".sgml"  : "text/sgml",
-          ".sh"    : "application/x-sh",
-          ".sig"   : "application/pgp-signature",
-          ".snd"   : "audio/basic",
-          ".so"    : "application/octet-stream",
-          ".svg"   : "image/svg+xml",
-          ".svgz"  : "image/svg+xml",
-          ".swf"   : "application/x-shockwave-flash",
-          ".t"     : "text/troff",
-          ".tar"   : "application/x-tar",
-          ".tbz"   : "application/x-bzip-compressed-tar",
-          ".tci"   : "application/x-topcloud",
-          ".tcl"   : "application/x-tcl",
-          ".tex"   : "application/x-tex",
-          ".texi"  : "application/x-texinfo",
-          ".texinfo" : "application/x-texinfo",
-          ".text"  : "text/plain",
-          ".tif"   : "image/tiff",
-          ".tiff"  : "image/tiff",
-          ".torrent" : "application/x-bittorrent",
-          ".tr"    : "text/troff",
-          ".ttf"   : "application/x-font-ttf",
-          ".txt"   : "text/plain",
-          ".vcf"   : "text/x-vcard",
-          ".vcs"   : "text/x-vcalendar",
-          ".vrml"  : "model/vrml",
-          ".war"   : "application/java-archive",
-          ".wav"   : "audio/x-wav",
-          ".wma"   : "audio/x-ms-wma",
-          ".wmv"   : "video/x-ms-wmv",
-          ".wmx"   : "video/x-ms-wmx",
-          ".wrl"   : "model/vrml",
-          ".wsdl"  : "application/wsdl+xml",
-          ".xbm"   : "image/x-xbitmap",
-          ".xhtml"   : "application/xhtml+xml",
-          ".xls"   : "application/vnd.ms-excel",
-          ".xml"   : "application/xml",
-          ".xpm"   : "image/x-xpixmap",
-          ".xsl"   : "application/xml",
-          ".xslt"  : "application/xslt+xml",
-          ".yaml"  : "text/yaml",
-          ".yml"   : "text/yaml",
-          ".zip"   : "application/zip"
+  return {
+    end: function(){
+      obj.removeListener('data', onData);
+      obj.removeListener('end', onEnd);
+    },
+    resume: function(){
+      this.end();
+      for (var i = 0, len = events.length; i < len; ++i) {
+        obj.emit.apply(obj, events[i]);
       }
-};
-
-// Works like find on unix.  Does a recursive readdir and filters by pattern.
-exports.find = function find(root, pattern, callback) {
-
-    function rfind(root, callback) {
-        fs.readdir(root, function (err, files) {
-            if (err) {
-                callback(err);
-                return;
-            }
-            var results = [],
-                counter = 0;
-            files.forEach(function (file) {
-                counter++;
-                function checkCounter() {
-                    counter--;
-                    if (counter === 0) {
-                        callback(null, results);
-                    }
-                }
-                var file = root + "/" + file;
-                fs.stat(file, function (err, stat) {
-                    if (err) {
-                        callback(err);
-                        return;
-                    }
-                    if (stat.isDirectory()) {
-                        rfind(file, function (err, files) {
-                            if (err) {
-                                callback(err);
-                                return;
-                            }
-                            results.push.apply(results, files);
-                            checkCounter();
-                        });
-                        return;
-                    }
-                    if (pattern.test(file)) {
-                        stat.path = file;
-                        results.push(stat);
-                    }
-                    checkCounter();
-                });
-            });
-        });
     }
-    rfind(root, function (err, files) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        callback(null, files.map(function (file) {
-            file.path = file.path.substr(root.length);
-            return file;
-        }));
-    });
+  };
 };
 
-// Works like find on unix.  Does a recursive readdir and filters by pattern.
-// Sync version.  Puts directorys last.
-exports.findSync = function findSync(root, pattern) {
-    function rfind(root) {
-        var files = [];
-        var dirs = [];
-        fs.readdirSync(root).forEach(function (file) {
-            var file = Path.join(root, file);
-            var stat = fs.statSync(file);
-            if (stat.isDirectory()) {
-                dirs.push(rfind(file));
-                return;
-            }
-            if (pattern.test(file)) {
-                stat.path = file;
-                files.push(stat);
-            }
-        });
-        dirs.forEach(function (dir) {
-            files.push.apply(files, dir);
-        })
-        return files;
+/**
+ * Check `req` and `res` to see if it has been modified.
+ *
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ * @return {Boolean}
+ * @api public
+ */
+
+exports.modified = function(req, res, headers) {
+  var headers = headers || res._headers || {}
+    , modifiedSince = req.headers['if-modified-since']
+    , lastModified = headers['last-modified']
+    , noneMatch = req.headers['if-none-match']
+    , etag = headers['etag'];
+
+  if (noneMatch) noneMatch = noneMatch.split(/ *, */);
+
+  // check If-None-Match
+  if (noneMatch && etag && ~noneMatch.indexOf(etag)) {
+    return false;
+  }
+
+  // check If-Modified-Since
+  if (modifiedSince && lastModified) {
+    modifiedSince = new Date(modifiedSince);
+    lastModified = new Date(lastModified);
+    // Ignore invalid dates
+    if (!isNaN(modifiedSince.getTime())) {
+      if (lastModified <= modifiedSince) return false;
     }
-    return rfind(root).map(function (file) {
-        file.path = file.path.substr(root.length);
-        return file;
-    });
+  }
+  
+  return true;
 };
 
+/**
+ * Strip `Content-*` headers from `res`.
+ *
+ * @param {ServerResponse} res
+ * @api public
+ */
 
+exports.removeContentHeaders = function(res){
+  Object.keys(res._headers).forEach(function(field){
+    if (0 == field.indexOf('content')) {
+      res.removeHeader(field);
+    }
+  });
+};
+
+/**
+ * Check if `req` is a conditional GET request.
+ *
+ * @param {IncomingMessage} req
+ * @return {Boolean}
+ * @api public
+ */
+
+exports.conditionalGET = function(req) {
+  return req.headers['if-modified-since']
+    || req.headers['if-none-match'];
+};
+
+/**
+ * Respond with 412 "Unauthorized".
+ *
+ * @param {ServerResponse} res
+ * @param {String} realm
+ * @api public
+ */
+
+exports.unauthorized = function(res, realm) {
+  res.statusCode = 401;
+  res.setHeader('WWW-Authenticate', 'Basic realm="' + realm + '"');
+  res.end('Unauthorized');
+};
+
+/**
+ * Respond with 400 "Bad Request".
+ *
+ * @param {ServerResponse} res
+ * @api public
+ */
+
+exports.badRequest = function(res) {
+  res.statusCode = 400;
+  res.end('Bad Request');
+};
+
+/**
+ * Respond with 304 "Not Modified".
+ *
+ * @param {ServerResponse} res
+ * @param {Object} headers
+ * @api public
+ */
+
+exports.notModified = function(res) {
+  exports.removeContentHeaders(res);
+  res.statusCode = 304;
+  res.end();
+};
+
+/**
+ * Return an ETag in the form of `"<size>-<mtime>"`
+ * from the given `stat`.
+ *
+ * @param {Object} stat
+ * @return {String}
+ * @api public
+ */
+
+exports.etag = function(stat) {
+  return '"' + stat.size + '-' + Number(stat.mtime) + '"';
+};
+
+/**
+ * Parse "Range" header `str` relative to the given file `size`.
+ *
+ * @param {Number} size
+ * @param {String} str
+ * @return {Array}
+ * @api public
+ */
+
+exports.parseRange = function(size, str){
+  var valid = true;
+  var arr = str.substr(6).split(',').map(function(range){
+    var range = range.split('-')
+      , start = parseInt(range[0], 10)
+      , end = parseInt(range[1], 10);
+
+    // -500
+    if (isNaN(start)) {
+      start = size - end;
+      end = size - 1;
+    // 500-
+    } else if (isNaN(end)) {
+      end = size - 1;
+    }
+
+    // Invalid
+    if (isNaN(start) || isNaN(end) || start > end) valid = false;
+
+    return { start: start, end: end };
+  });
+  return valid ? arr : undefined;
+};
+
+/**
+ * Convert array-like object to an `Array`.
+ *
+ * node-bench measured "16.5 times faster than Array.prototype.slice.call()"
+ *
+ * @param {Object} obj
+ * @return {Array}
+ * @api public
+ */
+
+var toArray = exports.toArray = function(obj){
+  var len = obj.length
+    , arr = new Array(len);
+  for (var i = 0; i < len; ++i) {
+    arr[i] = obj[i];
+  }
+  return arr;
+};
+
+/**
+ * Retrun a random int, used by `utils.uid()`
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @return {Number}
+ * @api private
+ */
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

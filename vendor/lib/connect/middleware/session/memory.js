@@ -1,7 +1,8 @@
 
 /*!
- * Ext JS Connect
+ * Connect - session - MemoryStore
  * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
  * MIT Licensed
  */
 
@@ -9,54 +10,25 @@
  * Module dependencies.
  */
 
-var sys = require('sys'),
-    Store = require('./store'),
-    utils = require('./../../utils'),
-    Session = require('./session');
+var Store = require('./store')
+  , utils = require('../../utils')
+  , Session = require('./session');
 
 /**
- * Initialize MemoryStore with the given options.
+ * Initialize a new `MemoryStore`.
  *
- * @param {Object} options
  * @api public
  */
 
-var MemoryStore = module.exports = function MemoryStore(options) {
-    options = options || {};
-    Store.call(this, options);
-    this.sessions = {};
-
-    // Default reapInterval to 10 minutes
-    this.reapInterval = options.reapInterval || 600000;
-
-    // Reap stale sessions
-    if (this.reapInterval !== -1) {
-        setInterval(function(self){
-            self.reap(self.maxAge);
-        }, this.reapInterval, this);
-    }
+var MemoryStore = module.exports = function MemoryStore() {
+  this.sessions = {};
 };
-
-sys.inherits(MemoryStore, Store);
 
 /**
- * Reap sessions older than the give milliseconds.
- *
- * @param {Number} ms
- * @api private
+ * Inherit from `Store.prototype`.
  */
 
-MemoryStore.prototype.reap = function(ms){
-    var threshold = +new Date - ms,
-        keys = Object.keys(this.sessions);
-    for (var i = 0, len = keys.length; i < len; ++i) {
-        var key = keys[i],
-            sess = this.sessions[key];
-        if (sess.lastAccess < threshold) {
-            delete this.sessions[key];
-        }
-    }
-};
+MemoryStore.prototype.__proto__ = Store.prototype;
 
 /**
  * Attempt to fetch session by the given `sid`.
@@ -67,11 +39,24 @@ MemoryStore.prototype.reap = function(ms){
  */
 
 MemoryStore.prototype.get = function(sid, fn){
-    if (sid in this.sessions) {
-        fn(null, this.sessions[sid]);
+  var self = this;
+  process.nextTick(function(){
+    var expires
+      , sess = self.sessions[sid];
+    if (sess) {
+      sess = JSON.parse(sess);
+      expires = 'string' == typeof sess.cookie.expires
+        ? new Date(sess.cookie.expires)
+        : sess.cookie.expires;
+      if (!expires || new Date < expires) {
+        fn(null, sess);
+      } else {
+        self.destroy(sid, fn);
+      }
     } else {
-        fn();
+      fn();
     }
+  });
 };
 
 /**
@@ -84,8 +69,11 @@ MemoryStore.prototype.get = function(sid, fn){
  */
 
 MemoryStore.prototype.set = function(sid, sess, fn){
-    this.sessions[sid] = sess;
+  var self = this;
+  process.nextTick(function(){
+    self.sessions[sid] = JSON.stringify(sess);
     fn && fn();
+  });
 };
 
 /**
@@ -96,10 +84,12 @@ MemoryStore.prototype.set = function(sid, sess, fn){
  */
 
 MemoryStore.prototype.destroy = function(sid, fn){
-    delete this.sessions[sid];
+  var self = this;
+  process.nextTick(function(){
+    delete self.sessions[sid];
     fn && fn();
+  });
 };
-
 
 /**
  * Invoke the given callback `fn` with all active sessions.
@@ -109,12 +99,12 @@ MemoryStore.prototype.destroy = function(sid, fn){
  */
 
 MemoryStore.prototype.all = function(fn){
-    var arr = [],
-        keys = Object.keys(this.sessions);
-    for (var i = 0, len = keys.length; i < len; ++i) {
-        arr.push(this.sessions[keys[i]]);
-    }
-    fn(null, arr);
+  var arr = []
+    , keys = Object.keys(this.sessions);
+  for (var i = 0, len = keys.length; i < len; ++i) {
+    arr.push(this.sessions[keys[i]]);
+  }
+  fn(null, arr);
 };
 
 /**
@@ -125,8 +115,8 @@ MemoryStore.prototype.all = function(fn){
  */
 
 MemoryStore.prototype.clear = function(fn){
-    this.sessions = {};
-    fn && fn();
+  this.sessions = {};
+  fn && fn();
 };
 
 /**
@@ -137,5 +127,5 @@ MemoryStore.prototype.clear = function(fn){
  */
 
 MemoryStore.prototype.length = function(fn){
-    fn(null, Object.keys(this.sessions).length);
+  fn(null, Object.keys(this.sessions).length);
 };

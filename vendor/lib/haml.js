@@ -2,10 +2,16 @@
 // Haml - Copyright TJ Holowaychuk <tj@vision-media.ca> (MIT Licensed)
 
 /**
+ * Module dependencies.
+ */
+
+var sys = require('sys')
+
+/**
  * Version.
  */
 
-exports.version = '0.4.0'
+exports.version = '0.4.5'
 
 /**
  * Haml template cache.
@@ -118,7 +124,7 @@ exports.templates = {
         var __val__ = __vals__[i];
         buf.push(__block__);
       }
-    } else {
+    } else if (__vals__) {
       var keys = Object.keys(__vals__);
       for (var i = 0, len = keys.length; i < len; ++i) {
         var __key__ = keys[i];
@@ -131,6 +137,17 @@ exports.templates = {
 }
 
 /**
+ * HamlError.
+ */
+
+var HamlError = exports.HamlError = function(msg) {
+    this.name = 'HamlError'
+    this.message = msg
+    Error.captureStackTrace(this, exports.render)
+}
+sys.inherits(HamlError, Error)
+
+/**
  * Lexing rules.
  */
 
@@ -140,7 +157,6 @@ var rules = {
   comment: /^\n? *\/ */,
   silentComment: /^\n? *-#([^\n]*)/,
   doctype: /^!!! *([^\n]*)/,
-  newline: /^\n/,
   escape: /^\\(.)/,
   filter: /^:(\w+) */,
   each: /^\- *each *(\w+)(?: *, *(\w+))? * in ([^\n]+)/,
@@ -182,8 +198,8 @@ function tokenize(str) {
       tokens = [],
       line = 1,
       lastIndents = 0,
-      str = str.trim()
-  function error(msg){ throw new SyntaxError('(Haml):' + line + ' ' + msg) }
+      str = String(str).trim().replace(/\r\n|\r/g, '\n')
+  function error(msg){ throw new HamlError('(Haml):' + line + ' ' + msg) }
   while (str.length) {
     for (var type in rules)
       if (captures = rules[type].exec(str)) {
@@ -287,7 +303,7 @@ Parser.prototype = {
       case 'outdent':
         return this.advance
       default:
-        throw new SyntaxError('expected outdent, got ' + this.peek.type)
+        throw new HamlError('expected outdent, got ' + this.peek.type)
     }
   },
   
@@ -325,7 +341,7 @@ Parser.prototype = {
     while (this.peek.type !== 'eof' && indents)
       switch((token = this.advance).type) {
         case 'newline':
-          buf.push('"\\n"')
+          buf.push('"\\n' + Array(indents).join('  ') + '"')
           break
         case 'indent':
           ++indents
@@ -400,7 +416,7 @@ Parser.prototype = {
       case 'indent':
         buf.push(this.block)
     }
-    if (!selfClosing) buf.push('"</' + tag + '>\\n"')
+    if (!selfClosing) buf.push('"</' + tag + '>"')
     return buf.join(' + ')
   },
   
@@ -429,7 +445,7 @@ Parser.prototype = {
     if (doctype in exports.doctypes)
       return '"' + exports.doctypes[doctype].replace(/"/g, '\\"') + '"'
     else
-      throw new SyntaxError("doctype `" + doctype + "' does not exist")
+      throw new HamlError("doctype `" + doctype + "' does not exist")
   },
   
   /**
@@ -475,9 +491,9 @@ Parser.prototype = {
   get filter() {
     var filter = this.advance.val
     if (!(filter in exports.filters))
-      throw new SyntaxError("filter `" + filter + "' does not exist")
+      throw new HamlError("filter `" + filter + "' does not exist")
     if (this.peek.type !== 'indent')
-      throw new SyntaxError("filter `" + filter + "' expects a text block")
+      throw new HamlError("filter `" + filter + "' expects a text block")
     return 'exports.filters.' + filter + '(' + this.textBlock + ')'
   },
   
@@ -488,7 +504,7 @@ Parser.prototype = {
   get iterate() {
     var each = this.advance
     if (this.peek.type !== 'indent')
-      throw new SyntaxError("'- each' expects a block")
+      throw new HamlError("'- each' expects a block, but got " + this.peek.type)
     return template('iterate', {
       __key__: each.val[1],
       __vals__: each.val[2],
@@ -547,10 +563,12 @@ Parser.prototype = {
       case 'outputCode':
         return this.outputCode
       case 'newline':
+      case 'indent':
+      case 'outdent':
         this.advance
         return this.expr
       default:
-        throw new SyntaxError('unexpected ' + this.peek.type)
+        throw new HamlError('unexpected ' + this.peek.type)
     }
   },
   
@@ -618,6 +636,7 @@ function attrs(attrs) {
  * @api public
  */
 
+
 exports.render = function(str, options) {
   var parser,
       options = options || {}
@@ -636,9 +655,9 @@ exports.render = function(str, options) {
           ? exports.cache[options.filename] = fn
           : fn).call(options.context, options.locals, attrs, escape, exports)
     } catch (err) {
-      if (parser && err instanceof SyntaxError)
-        err.message = '(Haml):' + parser.current.line + ' ' + err.message
-      else if (!(err instanceof SyntaxError))
+      if (parser && err instanceof HamlError)
+        err.message = '(Haml):' + parser.peek.line + ' ' + err.message
+      else if (!(err instanceof HamlError))
         err.message = '(Haml): ' + err.message
       if (options.filename)
         err.message = err.message.replace('Haml', options.filename) 
@@ -646,3 +665,5 @@ exports.render = function(str, options) {
     }
   }).call(options.context)
 }
+
+exports.compile = exports.render;

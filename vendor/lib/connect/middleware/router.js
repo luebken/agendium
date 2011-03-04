@@ -1,7 +1,8 @@
 
 /*!
- * Ext JS Connect
+ * Connect - router
  * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
  * MIT Licensed
  */
 
@@ -12,14 +13,49 @@
 var parse = require('url').parse;
 
 /**
- * Provides Sinatra and Express like routing capabilities.
+ * Expose router.
+ */
+
+exports = module.exports = router;
+
+/**
+ * Supported HTTP / WebDAV methods.
+ */
+
+var _methods = exports.methods = [
+    'get'
+  , 'head'
+  , 'post'
+  , 'put'
+  , 'delete'
+  , 'connect'
+  , 'options'
+  , 'trace'
+  , 'copy'
+  , 'lock'
+  , 'mkcol'
+  , 'move'
+  , 'propfind'
+  , 'proppatch'
+  , 'unlock'
+  , 'report'
+  , 'mkactivity'
+  , 'checkout'
+  , 'merge'
+];
+
+/**
+ * Provides Sinatra and Express-like routing capabilities.
  *
  * Examples:
  *
  *     connect.router(function(app){
- *         app.get('/user/:id', function(req, res, params){
- *             // populates params.id
- *         });
+ *       app.get('/user/:id', function(req, res, next){
+ *         // populates req.params.id
+ *       });
+ *       app.put('/user/:id', function(req, res, next){
+ *         // populates req.params.id
+ *       });
  *     })
  *
  * @param {Function} fn
@@ -27,58 +63,150 @@ var parse = require('url').parse;
  * @api public
  */
 
-module.exports = function router(fn){
-    var routes;
+function router(fn){
+  var self = this
+    , methods = {}
+    , routes = {}
+    , params = {};
 
-    if (fn) {
-        routes = {};
-        fn.call(this, {
-            post: method.call(this, 'post'),
-            get: method.call(this, 'get'),
-            put: method.call(this, 'put'),
-            del: method.call(this, 'del')
-        });
-    } else {
-        throw new Error('router provider requires a callback function');
-    }
+  if (!fn) throw new Error('router provider requires a callback function');
 
-    function method(name) {
-        var self = this,
-            localRoutes = routes[name] = routes[name] || [];
-        return function(path, fn){
-            var keys = [];
-            path = path instanceof RegExp
-                ? path
-                : normalizePath(path, keys);
-            localRoutes.push(fn, path, keys);
-            return self;
-        };
-    }
+  // Generate method functions
+  _methods.forEach(function(method){
+    methods[method] = generateMethodFunction(method.toUpperCase());
+  });
 
-    return function router(req, res, next){
-        var route,
-            self = this;
-        (function pass(i){
-            if (route = match(req, routes, i)) {
-                req.params = route._params;
-                try { 
-                    route.call(self, req, res, function(err){
-                        if (err === true) {
-                            next();
-                        } else if (err) {
-                            next(err);
-                        } else {
-                            pass(++route._index);
-                        }
-                    });
-                } catch (err) {
-                    next(err);
-                }
-            } else {
-                next();
-            }
-        })();
+  // Alias del -> delete
+  methods.del = methods.delete;
+
+  // Apply callback to all methods
+  methods.all = function(path, fn){
+    _methods.forEach(function(name){
+      methods[name](path, fn);
+    });
+    return self;
+  };
+
+  // Register param callback
+  methods.param = function(name, fn){
+    params[name] = fn;
+  };
+      
+  fn.call(this, methods);
+
+  function generateMethodFunction(name) {
+    var localRoutes = routes[name] = routes[name] || [];
+    return function(path, fn){
+      var keys = [];
+      if (!path) throw new Error(name + ' route requires a path');
+      if (!fn) throw new Error(name + ' route ' + path + ' requires a callback');
+      path = path instanceof RegExp
+        ? path
+        : normalizePath(path, keys);
+      localRoutes.push({
+          fn: fn
+        , path: path
+        , keys: keys
+      });
+      return self;
     };
+  }
+
+  return function router(req, res, next){
+    var route
+      , self = this;
+    (function pass(i){
+      if (route = match(req, routes, i)) {
+        var i = 0
+          , keys = route._keys;
+
+        req.params = route._params;
+        
+        // Param preconditions
+        (function param(err) {
+          try {
+            var key = keys[i++]
+              , val = req.params[key]
+              , fn = params[key];
+
+            // Error
+            if (err) {
+              next(err);
+            // Param has callback
+            } else if (fn) {
+              // Return style
+              if (1 == fn.length) {
+                req.params[key] = fn(val);
+                param();
+              // Middleware style
+              } else {
+                fn(req, res, param, val);
+              }
+            // Finished processing params
+            } else if (!key) {
+              route.call(self, req, res, function(err){
+                if (err === true) {
+                  next();
+                } else if (err) {
+                  next(err);
+                } else {
+                  pass(req._route_index+1);
+                }
+              });
+            // More params
+            } else {
+              param();
+            }
+          } catch (err) {
+            next(err);
+          }
+        })();
+      } else if ('OPTIONS' == req.method) {
+        options(req, res, routes);
+      } else {
+        next();
+      }
+    })();
+  };
+}
+
+/**
+ * Respond to OPTIONS.
+ *
+ * @param {ServerRequest} req
+ * @param {ServerResponse} req
+ * @param {Array} routes
+ * @api private
+ */
+
+function options(req, res, routes) {
+  var pathname = parse(req.url).pathname
+    , body = optionsFor(pathname, routes).join(',');
+  res.writeHead(200, {
+      'Content-Length': body.length
+    , 'Allow': body
+  });
+  res.end(body);
+}
+
+/**
+ * Return OPTIONS array for the given `path`, matching `routes`.
+ *
+ * @param {String} path
+ * @param {Array} routes
+ * @return {Array}
+ * @api private
+ */
+
+function optionsFor(path, routes) {
+  return _methods.filter(function(method){
+    var arr = routes[method.toUpperCase()];
+    for (var i = 0, len = arr.length; i < len; ++i) {
+      if (arr[i].path.test(path)) return true;
+    }
+  }).map(function(method){
+    return method.toUpperCase();
+  });
 }
 
 /**
@@ -97,22 +225,22 @@ module.exports = function router(fn){
  */
 
 function normalizePath(path, keys) {
-    path = path
-        .concat('/?')
-        .replace(/\/\(/g, '(?:/')
-        .replace(/(\/)?(\.)?:(\w+)(\?)?/g, function(_, slash, format, key, optional){
-            keys.push(key);
-            slash = slash || '';
-            return ''
-                + (optional ? '' : slash)
-                + '(?:'
-                + (optional ? slash : '')
-                + (format || '') + '([^/]+))'
-                + (optional || '');
-        })
-        .replace(/([\/.-])/g, '\\$1')
-        .replace(/\*/g, '(.+)');
-    return new RegExp('^' + path + '$', 'i');
+  path = path
+    .concat('/?')
+    .replace(/\/\(/g, '(?:/')
+    .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional){
+      keys.push(key);
+      slash = slash || '';
+      return ''
+        + (optional ? '' : slash)
+        + '(?:'
+        + (optional ? slash : '')
+        + (format || '') + (capture || '([^/]+?)') + ')'
+        + (optional || '');
+    })
+    .replace(/([\/.])/g, '\\$1')
+    .replace(/\*/g, '(.+)');
+  return new RegExp('^' + path + '$', 'i');
 }
 
 /**
@@ -127,32 +255,34 @@ function normalizePath(path, keys) {
  */
 
 function match(req, routes, i) {
-    var captures,
-        method = req.method.toLowerCase(),
-        i = i || 0;
-    if (method === 'delete') {
-        method = 'del';
-    }
-    if (routes = routes[method]) {
-        var url = parse(req.url),
-            pathname = url.pathname;
-        for (var len = routes.length; i < len; ++i) {
-            var fn = routes[i++],
-                path = routes[i++],
-                keys = routes[i];
-            if (captures = path.exec(pathname)) {
-                fn._params = [];
-                for (var j = 1, len = captures.length; j < len; ++j) {
-                    var key = keys[j-1];
-                    if (key) {
-                        fn._params[key] = captures[j];
-                    } else {
-                        fn._params.push(captures[j]);
-                    }
-                }
-                fn._index = i;
-                return fn;
-            }
+  var captures
+    , method = req.method
+    , i = i || 0;
+  if ('HEAD' == method) method = 'GET';
+  if (routes = routes[method]) {
+    var url = parse(req.url)
+      , pathname = url.pathname;
+    for (var len = routes.length; i < len; ++i) {
+      var route = routes[i]
+        , fn = route.fn
+        , path = route.path
+        , keys = fn._keys = route.keys;
+      if (captures = path.exec(pathname)) {
+        fn._params = [];
+        for (var j = 1, len = captures.length; j < len; ++j) {
+          var key = keys[j-1],
+            val = typeof captures[j] === 'string'
+              ? decodeURIComponent(captures[j])
+              : captures[j];
+          if (key) {
+            fn._params[key] = val;
+          } else {
+            fn._params.push(val);
+          }
         }
+        req._route_index = i;
+        return fn;
+      }
     }
+  }
 }

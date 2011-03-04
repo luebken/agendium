@@ -9,18 +9,23 @@
  * Module dependencies.
  */
 
-var fs = require('fs'),
-    http = require('http'),
-    path = require('path'),
-    utils = require('connect/utils'),
-    mime = require('connect/utils').mime,
-    Buffer = require('buffer').Buffer;
+var fs = require('fs')
+  , http = require('http')
+  , path = require('path')
+  , connect = require('connect')
+  , utils = connect.utils
+  , parseRange = require('./utils').parseRange
+  , res = http.ServerResponse.prototype
+  , send = connect.static.send
+  , join = require('path').join
+  , mime = require('mime');
 
 /**
  * Send a response with the given `body` and optional `headers` and `status` code.
  *
  * Examples:
  *
+ *     res.send();
  *     res.send(new Buffer('wahoo'));
  *     res.send({ some: 'json' });
  *     res.send('<p>some html</p>');
@@ -35,83 +40,109 @@ var fs = require('fs'),
  * @api public
  */
 
-http.ServerResponse.prototype.send = function(body, headers, status){
-    // Allow status as second arg
-    if (typeof headers === 'number') {
-        status = headers,
-        headers = null;
+res.send = function(body, headers, status){
+  // allow status as second arg
+  if ('number' == typeof headers) {
+    status = headers,
+    headers = null;
+  }
+
+  // default status
+  status = status || this.statusCode;
+
+  // allow 0 args as 204
+  if (!arguments.length) body = status = 204;
+
+  // determine content type
+  switch (typeof body) {
+    case 'number':
+      if (!this.header('Content-Type')) {
+        this.contentType('.txt');
+      }
+      body = http.STATUS_CODES[status = body];
+      break;
+    case 'string':
+      if (!this.header('Content-Type')) {
+        this.contentType('.html');
+      }
+      break;
+    case 'object':
+      if (body instanceof Buffer) {
+        if (!this.header('Content-Type')) {
+          this.contentType('.bin');
+        }
+      } else {
+        if (!this.header('Content-Type')) {
+          this.contentType('.json');
+        }
+        body = JSON.stringify(body);
+        if (this.req.query.callback && this.app.set('jsonp callback')) {
+          this.header('Content-Type', 'text/javascript');
+          body = this.req.query.callback.replace(/[^\w$.]/g, '') + '(' + body + ');';
+        }
+      }
+      break;
+  }
+
+  // populate Content-Length
+  if (!this.header('Content-Length')) {
+    this.header('Content-Length', body instanceof Buffer
+      ? body.length
+      : Buffer.byteLength(body));
+  }
+
+  // merge headers passed
+  if (headers) {
+    var fields = Object.keys(headers);
+    for (var i = 0, len = fields.length; i < len; ++i) {
+      var field = fields[i];
+      this.header(field, headers[field]);
     }
+  }
 
-    // Defaults
-    status = status || 200;
-    headers = headers || {};
+  // strip irrelevant headers
+  if (204 === status) {
+    this.removeHeader('Content-Type');
+    this.removeHeader('Content-Length');
+  }
 
-    // Determine content type
-    switch (typeof body) {
-        case 'number':
-            if (!this.headers['Content-Type']) {
-                this.contentType('.txt');
-            }
-            body = http.STATUS_CODES[status = body];
-            break;
-        case 'string':
-            if (!this.headers['Content-Type']) {
-                this.contentType('.html');
-            }
-            break;
-        case 'object':
-            if (body instanceof Buffer) {
-                if (!this.headers['Content-Type']) {
-                    this.contentType('.bin');
-                }
-            } else {
-                if (!this.headers['Content-Type']) {
-                    this.contentType('.json');
-                }
-                body = JSON.stringify(body);
-            }
-            break;
-    }
-
-    // Populate Content-Length
-    if (!this.headers['Content-Length']) {
-        this.header('Content-Length', body instanceof Buffer
-            ? body.length
-            : Buffer.byteLength(body));
-    }
-
-    // Merge headers passed
-    utils.merge(this.headers, headers);
-
-    // Respond
-    this.writeHead(status, this.headers);
-    this.end(body);
+  // respond
+  this.statusCode = status;
+  this.end('HEAD' == this.req.method ? undefined : body);
 };
 
 /**
- * Transfer the given `file`. Automatically sets the _Content-Type_
- * response header, and responds with 404 / 500 appropriately.
+ * Transfer the file at the given `path`. Automatically sets 
+ * the _Content-Type_ response header field. `next()` is called
+ * when `path` is a directory, or when an error occurs.
  *
- * @param {String} file
+ * Options:
+ *
+ *   - `maxAge` defaulting to 0
+ *   - `root`   root directory for relative filenames
+ *
+ * @param {String} path
+ * @param {Object|Function} options or fn
+ * @param {Function} fn
  * @api public
  */
 
-http.ServerResponse.prototype.sendfile = function(file){
-    var self = this;
-    fs.readFile(file, function(err, buf){
-        if (err) {
-            self.send(err.errno === process.ENOENT
-                ? 404
-                : 500);
-        } else {
-            self.contentType(file);
-            self.send(buf);
-        }
-    });
+res.sendfile = function(path, options, fn){
+  options = options || {};
+
+  // support function as second arg
+  if ('function' == typeof options) {
+    fn = options;
+    options = {};
+  }
+
+  options.path = path;
+  options.callback = fn;
+  send(this.req, this, this.req.next, options);
 };
 
 /**
- * Set _Content-Type_ response header passed through `mime.type()`.
+ * Set _Content-Type_ response header passed through `mime.lookup()`.
  *
  * Examples:
  *
@@ -119,13 +150,18 @@ http.ServerResponse.prototype.sendfile = function(file){
  *     res.contentType(filename);
  *     // res.headers['Content-Type'] is now "image/png"
  *
+ *     res.contentType('.html');
+ *     res.contentType('html');
+ *     res.contentType('json');
+ *     res.contentType('png');
+ *
  * @param {String} type
  * @return {String} the resolved mime type
  * @api public
  */
 
-http.ServerResponse.prototype.contentType = function(type){
-    return this.header('Content-Type', mime.type(type));
+res.contentType = function(type){
+  return this.header('Content-Type', mime.lookup(type));
 };
 
 /**
@@ -136,24 +172,43 @@ http.ServerResponse.prototype.contentType = function(type){
  * @api public
  */
 
-http.ServerResponse.prototype.attachment = function(filename){
-    this.header('Content-Disposition', filename
-        ? 'attachment; filename="' + path.basename(filename) + '"'
-        : 'attachment');
-    return this;
+res.attachment = function(filename){
+  this.header('Content-Disposition', filename
+    ? 'attachment; filename="' + path.basename(filename) + '"'
+    : 'attachment');
+  return this;
 };
 
 /**
- * Transfer the given `file` with optional `filename` as an attachment.
+ * Transfer the file at the given `path`, with optional 
+ * `filename` as an attachment and optional callback `fn(err)`.
  *
- * @param {String} file
- * @param {String} filename
+ * @param {String} path
+ * @param {String|Function} filename or fn
+ * @param {Function} fn
  * @return {Type}
  * @api public
  */
 
-http.ServerResponse.prototype.download = function(file, filename){
-    this.attachment(filename || file).sendfile(file);
+res.download = function(path, filename, fn){
+  var self = this;
+
+  // support callback as second arg
+  if ('function' == typeof filename) {
+    fn = filename;
+    filename = null;
+  }
+
+  // transfer the file
+  this.attachment(filename || path).sendfile(path, function(err){
+    if (err) self.removeHeader('Content-Disposition');
+    if (fn) return fn(err);
+    if (err) {
+      self.req.next('ENOENT' == err.code
+        ? null
+        : err);
+    }
+  });
 };
 
 /**
@@ -165,10 +220,43 @@ http.ServerResponse.prototype.download = function(file, filename){
  * @api public
  */
 
-http.ServerResponse.prototype.header = function(name, val){
-    return val === undefined
-        ? this.headers[name]
-        : this.headers[name] = val;
+res.header = function(name, val){
+  if (val === undefined) {
+    return this.getHeader(name);
+  } else {
+    this.setHeader(name, val);
+    return val;
+  }
+};
+
+/**
+ * Clear cookie `name`.
+ *
+ * @param {String} name
+ * @api public
+ */
+
+res.clearCookie = function(name){
+  this.cookie(name, '', { expires: new Date(1) });
+};
+
+/**
+ * Set cookie `name` to `val`.
+ *
+ * Examples:
+ *
+ *    // "Remember Me" for 15 minutes
+ *    res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+ *
+ * @param {String} name
+ * @param {String} val
+ * @param {Options} options
+ * @api public
+ */
+
+res.cookie = function(name, val, options){
+  var cookie = utils.serializeCookie(name, val, options);
+  this.header('Set-Cookie', cookie);
 };
 
 /**
@@ -195,8 +283,8 @@ http.ServerResponse.prototype.header = function(name, val){
  *
  *  We may also map dynamic redirects:
  *
- *      app.redirect('comments', function(req, res, params){
- *          return '/post/' + params.id + '/comments';
+ *      app.redirect('comments', function(req, res){
+ *          return '/post/' + req.params.id + '/comments';
  *      });
  *
  *  So now we may do the following, and the redirect will dynamically adjust to
@@ -204,32 +292,74 @@ http.ServerResponse.prototype.header = function(name, val){
  *  redirect _Location_ would be _/post/12/comments_.
  *
  *      app.get('/post/:id', function(req, res){
- *          res.redirect('comments');
+ *        res.redirect('comments');
  *      });
+ *
+ *  Unless an absolute `url` is given, the app's mount-point
+ *  will be respected. For example if we redirect to `/posts`,
+ *  and our app is mounted at `/blog` we will redirect to `/blog/posts`.
  *
  * @param {String} url
  * @param {Number} code
  * @api public
  */
 
-http.ServerResponse.prototype.redirect = function(url, status){
-    var basePath = this.app.set('home') || '/';
+res.redirect = function(url, status){
+  var app = this.app
+    , base = app.set('home') || '/'
+    , status = status || 302
+    , body;
 
-    // Setup redirect map
-    var map = {
-        back: this.req.headers.referrer || this.req.headers.referer || basePath,
-        home: basePath
-    };
+  // Setup redirect map
+  var map = {
+      back: this.req.header('Referrer', base)
+    , home: base
+  };
 
-    // Support custom redirect map
-    map.__proto__ = this.app.redirects;
+  // Support custom redirect map
+  map.__proto__ = this.app.redirects;
 
-    // Attempt mapped redirect
-    var mapped = typeof map[url] === 'function'
-        ? map[url](this.req, this, this.req.params.path)
-        : map[url];
+  // Attempt mapped redirect
+  var mapped = 'function' == typeof map[url]
+    ? map[url](this.req, this)
+    : map[url];
 
-    // Perform redirect
-    this.writeHead(status || 302, { 'Location': mapped || url });
-    this.end();
+  // Perform redirect
+  url = mapped || url;
+
+  // Respect mount-point
+  if (app.route && !~url.indexOf('://')) {
+    url = join(app.route, url);
+  } 
+
+  // Support text/{plain,html} by default
+  if (this.req.accepts('html')) {
+    body = '<p>' + http.STATUS_CODES[status] + '. Redirecting to <a href="' + url + '">' + url + '</a></p>';
+    this.header('Content-Type', 'text/html');
+  } else {
+    body = http.STATUS_CODES[status] + '. Redirecting to ' + url;
+    this.header('Content-Type', 'text/plain');
+  }
+
+  // Respond
+  this.statusCode = status;
+  this.header('Location', url);
+  this.end(body);
+};
+
+/**
+ * Assign the view local variable `name` to `val` or return the
+ * local previously assigned to `name`.
+ *
+ * @param {String} name
+ * @param {Mixed} val
+ * @return {Mixed} val
+ * @api public
+ */
+
+res.local = function(name, val){
+  this.locals = this.locals || {};
+  return undefined === val
+    ? this.locals[name]
+    : this.locals[name] = val;
 };

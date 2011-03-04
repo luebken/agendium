@@ -1,28 +1,34 @@
 
 /*!
- * Ext JS Connect
- * Copyright(c) 2010 Sencha Inc.
+ * Connect - responseTime
+ * Copyright(c) 2011 TJ Holowaychuk
  * MIT Licensed
  */
 
 /**
- * Responds with the _X-Response-Time_ header in milliseconds.
+ * Adds the `X-Response-Time` header displaying the response
+ * duration in milliseconds.
  *
  * @return {Function}
  * @api public
  */
 
 module.exports = function responseTime(){
-    return function responseTime(req, res, next){
-        var start = new Date,
-            writeHead = res.writeHead;
+  return function(req, res, next){
+    var writeHead = res.writeHead
+      , start = new Date;
 
-        res.writeHead = function(code, headers){
-            res.writeHead = writeHead;
-            headers['X-Response-Time'] = (new Date - start) + "ms";
-            res.writeHead(code, headers);
-        };
+    if (res._responseTime) return next();
+    res._responseTime = true;
 
-        next();
+    // proxy writeHead to calculate duration
+    res.writeHead = function(status, headers){
+      var duration = new Date - start;
+      res.setHeader('X-Response-Time', duration + 'ms');
+      res.writeHead = writeHead;
+      res.writeHead(status, headers);
     };
+
+    next();
+  };
 };
