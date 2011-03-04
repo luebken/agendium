@@ -56,7 +56,7 @@ function mime(req) {
 
 exports = module.exports = function bodyParser(){
   return function bodyParser(req, res, next) {
-    var parser = exports.parse[mime(req)];
+    var parser = exports.parse[mime(req)];        
     if (parser && !req.body) {
       var data = '';
       req.setEncoding('utf8');
@@ -88,4 +88,5 @@ exports = module.exports = function bodyParser(){
 exports.parse = {
     'application/x-www-form-urlencoded': qs.parse
   , 'application/json': JSON.parse
+  , 'application/xml': JSON.parse //WORKAROUND BY MDL
 };
