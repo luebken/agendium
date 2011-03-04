@@ -29,9 +29,29 @@ Client Deployment
 * Copy Release\Desktop Browser\Project to lib\public\Project
 * cp -r Build/Release/agendium/* ../lib/public/Project/
 
+Joyent
+-----
+ssh node@72.2.126.80
+http://wiki.joyent.com/display/node/Node.js+SmartMachine+FAQ#Node.jsSmartMachineFAQ-IneedtopasssomeAPIcredentialstomynode.jsprocess
+[node@touchium ~]$ svccfg -s node-service setenv 'MONGOHQ_URL' 'mongodb://admin:sehrgeheim123:localhost:27017/agendium'
+
+http://www.mongodb.org/display/DOCS/Security+and+Authentication
+db.addUser("admin", "sehrgeheim123")
+5e471e24f89ecfe2bdb1f2fce8d8c059
+db.auth("admin", "pEfAswen7TasafRu")
+
+
 MAIN TODOs
 =====
-* mongo.db 
+* Warum postet CAPP mit xml?
+haml zum laufen bringen oder auf jade umstellen
+ - http://localhost:8000/preview
+
+* auf 0.4.1 testen
+* auf node deployen
+* cappuccino upgrade
+* node aufräumen 
+* cappuccino aufräumen 
 
 Features / Bugs
 =====
