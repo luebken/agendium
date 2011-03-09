@@ -1,10 +1,11 @@
 require.paths.unshift('vendor/testlib');
+require.paths.unshift('vendor/lib');
 
 var vows = require('vows'),
     assert = require('assert'),
     http = require('http');
     
-var UserProvider = require('../lib/userprovider').UserProvider;
+var UserProvider = require('controller/user/userprovider').UserProvider;
 var userprovider = new UserProvider();
 
 vows.describe('userprovider')

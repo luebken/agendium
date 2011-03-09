@@ -1,10 +1,11 @@
 require.paths.unshift('vendor/testlib');
+require.paths.unshift('vendor/lib');
 
 var vows = require('vows'),
     assert = require('assert'),
     http = require('http');
     
-var PageProvider = require('../lib/pageprovider').PageProvider;
+var PageProvider = require('controller/agenda/pageprovider').PageProvider;
 var pageProvider = new PageProvider();
 
 vows.describe('pageprovider')
