@@ -1,11 +1,12 @@
 require.paths.unshift('vendor/testlib');
+require.paths.unshift('lib');
 
 var vows = require('vows'),
     assert = require('assert');   
 
 var http = require('http'),
-   app = require('../lib/app').app,
-   pageprovider = require('../lib/app').pageProvider;
+    app = require('app').app,
+    agendaProvider = require('app').agendaProvider;
      
 var client;
 var app;
@@ -93,7 +94,7 @@ FUCK
 .addBatch({
     'app is closed': {
         topic: function() {
-            pageprovider.close();
+            agendaProvider.close();
             app.close();
             app = null;
             return null;

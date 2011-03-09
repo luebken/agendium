@@ -1,5 +1,7 @@
 require.paths.unshift('vendor/testlib');
 require.paths.unshift('vendor/lib');
+require.paths.unshift('lib');
+
 
 var vows = require('vows'),
     assert = require('assert'),
