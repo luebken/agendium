@@ -125,8 +125,6 @@ vows.describe('userprovider')
             userprovider.removeAll(function() {
                 userprovider.save({'email':'hurz3', 'password':'secure'}, function (error, inserted_users) {
                     userprovider.updatePassword('hurz3', 'secure', 'reallysecure', function () {
-                        console.log('----')
-                        
                         userprovider.checkUser('hurz3', 'reallysecure', self.callback) 
                     }) 
                 } ) 

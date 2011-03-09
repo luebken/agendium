@@ -28,6 +28,28 @@ vows.describe('agendaprovider')
     }
 })
 .addBatch({
+    setup: function() {
+        safed_db = agendaProvider.db;
+        agendaProvider.db = {
+            collection: function(name, callback) {
+                callback(new Error(), null);
+            }
+        }
+    },
+    'database error': {
+        topic: function() { 
+            agendaProvider.getCollection(this.callback);
+        },
+        'if database returns an error it is populated': function (error, agenda_collection) {
+            assert.isNotNull(error);
+            assert.isUndefined(agenda_collection);
+        }
+    },
+    teardown: function() {
+        agendaProvider.db = safed_db;        
+    },
+})
+.addBatch({
     'collection creation': {
         topic: function() { agendaProvider.getCollection(this.callback)},
         'collection returned and has the right name': function (error, agenda_collection) {
@@ -45,6 +67,7 @@ vows.describe('agendaprovider')
             });
         },
         'collection has no entries': function (error, n) {
+            assert.isNull(error);
             assert.equal(0, n);
         }
     }
@@ -93,6 +116,7 @@ vows.describe('agendaprovider')
         }    
     }
 })
+
 .addBatch({
     'save doesnt work because of missing userid': {
         topic: function() { 
@@ -101,13 +125,14 @@ vows.describe('agendaprovider')
                 agendaProvider.save({'name':'hurz828', '_id':'undefined'}, self.callback ) 
             });
         },
-        'error and no inserted agendax': function (error, inserted_agenda) {
-            //assert.isNotNull(error);
-            //assert.isNotNull(error);
-            //assert.notStrictEqual(undefined, inserted_agenda);
+        'error and no inserted agenda': function (error, inserted_agenda) {
+            assert.isNotNull(error);
+            assert.equal(error.message, "Can't save without userid.");
+            assert.strictEqual(undefined, inserted_agenda);
         }    
     }
 })
+
 .addBatch({ 
     'update works': {
         topic: function() { 
@@ -229,5 +254,4 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .export(module)
