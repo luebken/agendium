@@ -5,7 +5,7 @@ require.paths.unshift('lib');
 var vows = require('vows'),
     assert = require('assert'),
     http = require('http');
-    
+
 var AgendaProvider = require('controller/agenda/agendaprovider').AgendaProvider;
 var agendaProvider = new AgendaProvider();
 
@@ -77,7 +77,6 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .addBatch({
     'initial save works': {
         topic: function() { 
@@ -94,7 +93,6 @@ vows.describe('agendaprovider')
         }    
     }
 })
-
 .addBatch({
     'save doesnt work because of missing userid': {
         topic: function() { 
@@ -110,14 +108,13 @@ vows.describe('agendaprovider')
         }    
     }
 })
-
 .addBatch({ 
     'update works': {
         topic: function() { 
             var self = this;
             agendaProvider.removeAll(function() {
                 agendaProvider.save({'name':'hurz', '_id':'undefined', 'userid':'123'}, function(error, inserted_agenda) {
-                     agendaProvider.save({'name':'schnurz', '_id':inserted_agenda._id.toHexString(), 'userid':'123'}, self.callback );
+                    agendaProvider.save({'name':'schnurz', '_id':inserted_agenda._id.toHexString(), 'userid':'123'}, self.callback );
                 }); 
             });
         },
@@ -126,7 +123,7 @@ vows.describe('agendaprovider')
             assert.equal(inserted_agenda.name, 'schnurz');
             assert.equal(inserted_agenda.userid, '123');
             assert.isDefined(inserted_agenda._id);
-            
+
         }
     }
 })
@@ -146,7 +143,6 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .addBatch({
     'test find by name after save': {
         topic: function() { 
@@ -164,7 +160,6 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .addBatch({
     'test find by name with capitals': {
         topic: function() { 
@@ -194,7 +189,6 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .addBatch({
     'name is ok because its found and its id is equal': {
         topic: function() { 
@@ -227,7 +221,6 @@ vows.describe('agendaprovider')
         }
     }
 })
-
 .addBatch({
     'database connection closed': {
         topic: function() { agendaProvider.close(); return null;},
