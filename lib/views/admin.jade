@@ -1,0 +1,16 @@
+!!! 5
+html
+  head
+    title Create user
+  body
+    h2 Current users
+    ul
+      - each user in users
+        li= user.email
+    h2 Create a new user
+    form(action='/admin/create_secret_user', method='post')
+      'Email'
+      input(type="text", name='email')
+      'Password'
+      input(type="text", name='password')
+      input(type='submit')
