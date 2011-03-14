@@ -22,32 +22,29 @@
 
 @implementation AppController : CPObject
 {
-    @outlet CPWindow theWindow; //this "outlet" is connected automatically by the Cib
+    @outlet CPWindow theWindow;
     @outlet CPBox box;
     @outlet CPButton saveButton;
     @outlet CPButton loadButton;
     @outlet CPButton previewButton;
     @outlet CPButton logoutButton;
     @outlet CPButton shareButton;
-
     @outlet PreviewView previewView;
-
-    Page rootPage;
     @outlet CPTextField appnameField;
     @outlet CPTextField appnameProblemLabel;
     @outlet CPTextField buildDateLabel;
-
     @outlet CPView pageView;
+
+    Page rootPage;
     PageViewController pageViewController;
+    AgendiumConnection aConnection;
+    
     CPString appId;
     CPString userid;
     CPString useremail @accessors;
-    CPString nameOKServer;
-
-    AgendiumConnection aConnection;
-    
     BOOL validName;
     BOOL namechanged;
+    BOOL nameOKServer;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -59,11 +56,6 @@
 
 - (void)awakeFromCib
 {
-    //[titleLabel setFont:[CPFont systemFontOfSize:18.0]];
-    //titleLabel._DOMElement.setAttribute("styles", "text-shadow:0px 1px 0px white");
-    //[titleLabel setTextShadowColor:[CPColor colorWithHexString:"aaaaaa"]];
-    //[titleLabel setTextShadowOffset:CGSizeMake(1,1)];
-
     [box setBorderType:CPLineBorder]; 
     [box setBorderWidth:1]; 
     [box setBorderColor:[CPColor grayColor]];  
@@ -73,8 +65,6 @@
     [pageViewController setPage:rootPage];
     [[pageViewController view] setFrame:CPRectMake(1, 1, 550, 501)]
     [pageView addSubview:[pageViewController view]];
-
-    //[scrollView setDocumentView:[pageViewController view]];
 
     [[CPNotificationCenter defaultCenter]
         addObserver:self
@@ -137,40 +127,25 @@
     [rootPage setTitle:[appnameField objectValue]];
     [self validateName];
     [self refreshUIFromData];
-    
 }
 
 - (void)validateName {
     var appName = [appnameField objectValue];
     var length = [[appnameField objectValue] length];
     var containsWhiteSpace = /\s/.test(appName);
-    validName = !(containsWhiteSpace | length < 5);    
-    if(validName) {
+    self.validName = !(containsWhiteSpace | length < 5);    
+    if(self.validName) {
         [aConnection checkAppName:appName forId:appId delegate:self];
-    
+    }
 }
-    
-/*
-    [[CPNotificationCenter defaultCenter] 
-        postNotificationName:@"PageChangedNotification" 
-        object:page]; 
-*/
-}
-
-/* TODO: Wie ist das Handling mit Load/Save?
-- (void)controlTextDidEndEditing:(id)sender {
-    [self load:sender];
-}
-*/
-
 
 //
 // private
 //
 - (void) refreshUIFromData {
-    [saveButton setEnabled:validName && nameOKServer === 'true'];
-    [shareButton setEnabled:validName && nameOKServer === 'true'];
-    if(!validName) {
+    [saveButton setEnabled:validName && nameOKServer];
+    [shareButton setEnabled:validName && nameOKServer];
+    if(!self.validName) {
         var containsWhiteSpace = /\s/.test(rootPage.title);
         if(containsWhiteSpace) {
             [appnameProblemLabel setObjectValue:"< Please remove whitespaces."];
@@ -179,7 +154,7 @@
         } else {
             [appnameProblemLabel setObjectValue:""];            
         }
-    } else if(nameOKServer === 'false'){
+    } else if(!nameOKServer){
         [appnameProblemLabel setObjectValue:"< Name is already taken."];
     } else {
         [appnameProblemLabel setObjectValue:""];
@@ -200,13 +175,13 @@
 }
 
 - (void)resetData {
-    rootPage = [[Page alloc] init];
-    rootPage.navigationId = "r";
-    pageViewController.page = rootPage;
-    appId = undefined; 
-    validName = true;
-    namechanged = false;
-    nameOKServer = 'true';
+    self.rootPage = [[Page alloc] init];
+    self.rootPage.navigationId = "r";
+    self.pageViewController.page = rootPage;
+    self.appId = undefined; 
+    self.validName = true;
+    self.namechanged = false;
+    self.nameOKServer = true;
     [self controlTextDidChange:null];
 }
 
@@ -234,7 +209,7 @@
     [[[NewPanel alloc] init:self] orderFront:nil];
 }
 - (@action) save:(id)sender {
-    if(validName && nameOKServer === 'true'){
+    if(validName && nameOKServer){
         [aConnection saveAgenda:appId rootPage:rootPage userid:userid delegate:self];
     }
 }
@@ -257,7 +232,7 @@
     [self refreshUIFromData];
 }
 
-- (void)didReceiveCheckName:(id)nameOK {
+- (void)didReceiveCheckName:(BOOL)nameOK {
     self.nameOKServer = nameOK;
     [self refreshUIFromData];
 }

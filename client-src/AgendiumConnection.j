@@ -143,7 +143,7 @@
 }
 
 -(void)didReceiveCheckNameData:(CPString)data delegate:(id)delegate {
-    [delegate didReceiveCheckName:data];
+    [delegate didReceiveCheckName:(data === 'true')];
 }
 
 -(void)didReceiveChangePassword:(CPString)data delegate:(id)delegate {
