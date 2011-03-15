@@ -7,21 +7,21 @@
 @implementation PageViewController : CPViewController
 {
     @outlet CPScrollView scrollView;
-    Page page @accessors;
     @outlet CPButton addButton;
     @outlet CPButton backButton;
     @outlet CPButton editButton;
     @outlet CPPopUpButton itemtypeButton;
-    id delegate;
-    TMTableView table;
     @outlet CPTextField titleField;
     @outlet LPSlideView slideView;
 
+    id delegate;
+    TMTableView table;
+    Page page @accessors;
     boolean editing @accessors;
 }
 
 - (void) initTable {
-      table = [[TMTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
+      self.table = [[TMTableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 650.0)];
       [table setDataSource:self];
       [table setDelegate:self];
 }
@@ -33,7 +33,7 @@
     [backButton setEnabled:NO];
     [itemtypeButton removeAllItems];
 
-    editing = NO;
+    self.editing = NO;
 
     [titleField setFont:[CPFont systemFontOfSize:14.0]];
     [titleField setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
@@ -46,8 +46,8 @@
              object:nil];
 }
 
-- (void) setDelegate:(id)delegate2 {
-    delegate = delegate2;
+- (void) setDelegate:(id)newDelegate {
+    self.delegate = newDelegate;
 }
 
 //CPTableViewDelegate
