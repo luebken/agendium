@@ -16,6 +16,9 @@
 
         self._DOMElement.style.webkitTransformOrigin = "10 10";
         self._DOMElement.style.webkitTransform = "scale(0.75)";
+        self._iframe.style.width = "455px";
+        self._iframe.style.height = "680px";
+        
         //previewView._DOMElement.style.overflow = "hidden";
 
         //previewView._DOMElement.style.width = "340px";
