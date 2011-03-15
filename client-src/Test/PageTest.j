@@ -31,6 +31,18 @@
     [self assert:page.navigationId equals:"anavid"];
 }
 
+- (void) testIsEqual 
+{
+  [self assert:page equals:page];
+  var o = [[CPObject alloc] init];
+  [self assertFalse:[page isEqual:o]];
+  [self assertFalse:[page isEqual:child1]];  
+  var copy = [page deepCopy];
+  [self assert:page equals:copy];
+  copy.subtitle = 'asdas';
+  [self assertFalse:[page isEqual:copy]];  
+}
+
 - (void) testDeepCopy 
 {
     [page addChild:child1 atIndex:0];
@@ -48,6 +60,29 @@
     [self assert:copy.children[0].attributes[0].key equals:"A key"];
     [self assert:copy.children[0].attributes[0].value equals:"A value"];
     
+}
+
+- (void) testRootPage {
+    [self assertTrue:[page isRootPage]];
+    [page addChild:child1 atIndex:0];
+    [self assertTrue:[page isRootPage]];
+    [self assertFalse:[child1 isRootPage]];
+}
+
+- (void) testChildren {
+    [self assert:page.children.length equals:0];
+    [page addChild:child1 atIndex:0];
+    [self assert:page.children.length equals:1];
+    [page addChild:child1 atIndex:1];
+    [self assert:page.children.length equals:2];
+    [page removeChild:1];
+    [self assert:page.children.length equals:1];
+    [page removeChild:0];
+    [self assert:page.children.length equals:0];
+    
+    [page addChild:child1 atIndex:0];  
+    [page duplicateChild:0];
+    [self assert:page.children.length equals:2];
 }
 
 @end

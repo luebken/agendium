@@ -31,48 +31,47 @@
     }
     return page;
 }
-
-//TODO remove
-- (id) init {
-    self = [super init];
-    children = [[CPArray alloc] init];
-    attributes = [[CPArray alloc] init];
-    type = "Navigation";
-    navigationId = "";
-    return self;
-}
            
 - (id) initWithTitle:(CPString) newtitle 
          andSubtitle:(CPString) newsubtitle
              andType:(CPString) newtype
      andNavigationId:(CPString) newNavigationId {
-    self = [self init];
-    title = newtitle;
-    subtitle = newsubtitle;
-    type = newtype;
-    navigationId = newNavigationId
+    self = [super init];
+    self.title = newtitle;
+    self.subtitle = newsubtitle;
+    self.type = newtype;
+    self.navigationId = newNavigationId;
+    self.children = [[CPArray alloc] init];
+    self.attributes = [[CPArray alloc] init];
     return self;
 }
            
+- (BOOL) isRootPage {
+    return ancestor == null;
+}
+
 - (id) addChild:(Page) child atIndex:(int)index {
     [child setAncestor:self];
     if(index < 0) index = children.length;
     [children insertObject:child atIndex:index];
 }
 
-- (Bool) isRootPage {
-    return self.ancestor == null;
+- (id) duplicateChild: (int) index {
+    var child = [children objectAtIndex:index];
+    var clone = [child deepCopy];
+    [self addChild:clone atIndex:index+1];
 }
+
 - (id) removeChild: (int) index {
     [children removeObjectAtIndex:index];
 }
 
 - (id) deepCopy {
-    var copy = [[Page alloc] init];
-    copy.title = self.title;
-    copy.subtitle = self.subtitle;
-    copy.type = self.type;
-    copy.navigationId = self.navigationId;
+    var copy = [[Page alloc] 
+                initWithTitle:self.title
+                andSubtitle:self.subtitle
+                andType:self.type
+                andNavigationId:self.navigationId];
     for (var i=0; i < children.length; i++) {
         var child = [children[i] deepCopy];
         [copy addChild:child atIndex:i];
@@ -121,6 +120,15 @@
 
 -(CPString) description {
     return title;
+}
+
+- (BOOL)isEqual:(id)anObject {
+  if(![anObject isKindOfClass:[Page class]]) return NO;
+  if(anObject.title != self.title) return NO;
+  if(anObject.subtitle != self.subtitle) return NO;
+  if(anObject.type != self.type) return NO;
+  return YES;
+  
 }
 
 - (boolean) isNavigationType {
