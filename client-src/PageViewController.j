@@ -104,37 +104,33 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     if([page isNavigationType]) {
         var pageAtRow = [[page children] objectAtIndex:row];
         var visible = YES; 
-        if([[tableColumn identifier] isEqual:"zero"]) {
-            return pageAtRow.type;
-        } else if([[tableColumn identifier] isEqual:"first"]) {
-            //return {title: [pageAtRow title], row:row, visible:visible, type:pageAtRow.type, editing:editing};
-            return [pageAtRow title];
-        } else if([[tableColumn identifier] isEqual:"second"]) {
-            visible = pageAtRow.type !== 'Group';
-            //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
-            return [pageAtRow subtitle];
-        } else if([[tableColumn identifier] isEqual:"button2"]) {
-            visible = pageAtRow.type !== 'Group' && editing;
-            //return {title: [pageAtRow subtitle], row:row, visible:visible, type:pageAtRow.type, editing:editing};
-            return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
-        } else {
-            visible = pageAtRow.type !== 'Group';
-            return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
+        switch([tableColumn identifier]){
+            case "zero": 
+              return pageAtRow.type;
+            case "first":
+              return pageAtRow.title;
+            case "second":
+              return pageAtRow.subtitle;
+            case "button2":
+              visible = pageAtRow.type !== 'Group' && editing;
+              return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
+            default :
+              visible = pageAtRow.type !== 'Group';
+              return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};   
         }
     } else {
         var attribute = [[page attributes] objectAtIndex:row];
         var key = attribute.key;
         var value = attribute.value;
-        if([[tableColumn identifier] isEqual:"zero"]) {
-            return "Text";
-        } else if([[tableColumn identifier] isEqual:"first"]) {
-            //return {title: key, row:row, visible:YES, editing:editing};
-            return key;
-        } else if([[tableColumn identifier] isEqual:"second"]) {
-            //return {title: value, row:row, visible:YES, editing:editing};
-            return value;
-        } else {
-            return {visible:NO, row:row, editing:editing, column:[tableColumn identifier]};
+        switch([tableColumn identifier]){
+            case "zero": 
+              return "Text";
+            case "first":
+              return key;
+            case "second":
+              return value;
+            default :
+              return {visible:NO, row:row, editing:editing, column:[tableColumn identifier]};
         }
     }
 }
