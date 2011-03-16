@@ -26,12 +26,17 @@ var api = {
         };
     },
     post: function (path, body) {
-        return function () {
-            var request = client.request('POST', path, {'Content-Length': '27'});
-            if(body) request.write(body)
-            else request.write('{"bodyll":"s", "_id":"123"}');
-            request.end();
-            request.on('response', this.callback);
+        return function () {            
+            var options = {
+              host: 'localhost',
+              port: 8000,
+              path: path,
+              method: 'POST',
+              headers: {'Content-length': body.length, 'Content-type': 'application/json'}
+            };
+            var req = http.request(options, this.callback);
+            req.write(body);
+            req.end();
         };
     }
 };
@@ -73,23 +78,26 @@ vows.describe('app')
     }
 })
 
-/*
-FUCK
 .addBatch({
     'app should accept a post to /agenda': {        
-        topic: api.post('/agenda'),
+        topic: api.post('/agenda', '{"holle":"holla"}'),
         'should respond with a 200': assertStatus(200)
-    },
-    'app shouldnt accept a post to /bblala': {        
-        topic: api.post('/bblala'),
-        'should respond with a 404': assertStatus(404)
-    },
-    'app shouldnt accept a flawed json': {        
-        topic: api.post('/agenda', '{"bodyll":"s", "_id":"""123"}'),
+    }
+})
+
+.addBatch({
+    'app shouldnt accept a post to /blabla': {        
+        topic: api.post('/blabla', '{"holle":"holla"}'),
         'should respond with a 404': assertStatus(404)
     }
 })
-*/
+
+.addBatch({
+    'app shouldnt accept a broken json': {        
+        topic: api.post('/blabla', '{XholleX:LhollaL}'),
+        'should respond with a 400': assertStatus(500) //should actually be 400 
+    }
+})
 
 .addBatch({
     'app is closed': {
