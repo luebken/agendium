@@ -71,7 +71,7 @@ vows.describe('userprovider')
         },
         'no error and inserted user is fine': function (error, inserted_user) {
             assert.equal(inserted_user.email, 'hurz');
-            //assert.isNull(inserted_user.password);
+            assert.isUndefined(inserted_user.password);
             assert.equal('accdb4e36c16fdf25eba520f3efb15219f02dd4a',inserted_user.hashedpassword);
             assert.isDefined(inserted_user._id);            
         }    
@@ -112,7 +112,7 @@ vows.describe('userprovider')
             assert.isNull(error);
             assert.isDefined(user);     
             assert.equal('hurz3', user.email);  
-            assert.equal('secure', user.password);
+            assert.isUndefined(user.password);
         }    
     }
 })

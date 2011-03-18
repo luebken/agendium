@@ -6,7 +6,8 @@ var vows = require('vows'),
 
 var http = require('http'),
     app = require('app').app,
-    agendaProvider = require('app').agendaProvider;
+    agendaProvider = require('app').agendaProvider,
+    userProvider = require('app').userProvider;
      
 var client;
 var app;
@@ -25,7 +26,7 @@ var api = {
             request.on('response', this.callback);
         };
     },
-    post: function (path, body) {
+    post: function (path, body, optionalCallback) {
         return function () {            
             var options = {
               host: 'localhost',
@@ -34,7 +35,7 @@ var api = {
               method: 'POST',
               headers: {'Content-length': body.length, 'Content-type': 'application/json'}
             };
-            var req = http.request(options, this.callback);
+            var req = http.request(options, optionalCallback || this.callback);
             req.write(body);
             req.end();
         };
@@ -52,9 +53,13 @@ vows.describe('app')
         },
         'app is not null': function (topic) {
             assert.isNotNull(app);
+            assert.isNotNull(userProvider);
+            assert.isNotNull(agendaProvider);
         }
     }
+    
 })
+
 
 .addBatch({
     'app serves root file': {
@@ -109,10 +114,40 @@ vows.describe('app')
     }
 })
 
+
+.addBatch({
+    'app shouldnt accept a with missing email post to /user': {        
+        topic: api.post('/user', '{"holle":"holla"}'),
+        'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a with missing password post to /user': {        
+        topic: api.post('/user', '{"email":"holla"}'),
+        'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a with missing shownintro post to /user': {        
+        topic: api.post('/user', '{"email":"holla", "hashedpassword":"123123123"}'),
+        'should respond with a 404': assertStatus(404)
+    }
+    ,
+    'app should accept a post to /user': {        
+        topic: function(){
+            var user = {'email': 'testuser', 'password':'testpassword', 'shownintro': 'false' };
+            userProvider.save(user, function(err, inserted) {
+                console.log(api.post('/user', JSON.stringify(user), this.callback)());                
+            }.bind(this));
+        }, 
+        'should respond with a 200': assertStatus(200)
+    }
+    
+    
+})
+
 .addBatch({
     'app is closed': {
         topic: function() {
             agendaProvider.close();
+            userProvider.close();
+            
             app.close();
             app = null;
             return null;
