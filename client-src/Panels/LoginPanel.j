@@ -95,9 +95,10 @@
     }    
 }
 
-- (void) loginSuccessFor: (CPString)email withId:(String) userid{
+- (void) loginSuccessFor: (CPString)email withId:(CPString) userid andShownIntro:(BOOL)shownintro{
+    CPLog('loginSuccessFor shownintro:' + shownintro);
     if ([delegate respondsToSelector:@selector(panelDidClose:data:)]) {
-        [delegate panelDidClose:'login' data:{'userid':userid, 'useremail':email}];
+        [delegate panelDidClose:'login' data:{'id':userid, 'email':email, 'shownintro':shownintro}];
         [self close];
     }    
 }
