@@ -135,8 +135,8 @@
 }
 -(void)didReceiveLoginData:(CPString)data delegate:(id)delegate {    
     if(data && data != "undefined") {
-        var obj = JSON.parse(data);
-        [delegate loginSuccessFor:obj.email withId:obj._id];
+        var user = JSON.parse(data);
+        [delegate loginSuccessFor:user.email withId:user._id andShownIntro:new Boolean(user.shownintro)];
     } else {
         [delegate loginFailed];        
     }

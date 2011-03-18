@@ -15,6 +15,7 @@
 @import "Panels/SharePanel.j"
 @import "Panels/NewPanel.j"
 @import "Panels/UserSettingsPanel.j"
+@import "Panels/IntroPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
 @import "Config.j"
@@ -40,8 +41,7 @@
     AgendiumConnection aConnection;
     
     CPString appId;
-    CPString userid;
-    CPString useremail @accessors;
+    CPDictionary user @accessors;
     BOOL validName;
     BOOL namechanged;
     BOOL nameOKServer;
@@ -51,7 +51,6 @@
 {
     [theWindow orderOut:self];
     [[[LoginPanel alloc] init:self] orderFront:nil];
-
 }
 
 - (void)awakeFromCib
@@ -202,15 +201,14 @@
     [[[OpenPanel alloc] initWithName:name andDelegate:self] orderFront:nil];    
 }
 - (@action) login:(id)sender {
-    [[[UserSettingsPanel alloc] init:self withUsername:self.useremail] orderFront:nil];
+    [[[UserSettingsPanel alloc] init:self withUsername:self.user.email] orderFront:nil];
 }
-
 - (@action) new:(id)sender {
     [[[NewPanel alloc] init:self] orderFront:nil];
 }
 - (@action) save:(id)sender {
     if(validName && nameOKServer){
-        [aConnection saveAgenda:appId rootPage:rootPage userid:userid delegate:self];
+        [aConnection saveAgenda:appId rootPage:rootPage userid:user.id delegate:self];
     }
 }
 - (@action) share:(id)sender {
@@ -253,13 +251,13 @@
 - (void) panelDidClose:(id)tag data:(id)data {
     switch(tag){
         case "login":
-            self.userid = data.userid;
-            self.useremail = data.useremail;
+            self.user = data;
             [theWindow orderFront:self];
+            [[[IntroPanel alloc] initWithDelegate:self] orderFront:nil];    
             break;
         case "open":
-            CPLog("Loading Agenda for " + self.userid + " and name " + data);
-            [aConnection loadAgendaFor:self.userid andName:data withDelegate:self];
+            CPLog("Loading Agenda for " + self.user.id + " and name " + data);
+            [aConnection loadAgendaFor:self.user.id andName:data withDelegate:self];
             break;
         case "empty":
             [appnameField setObjectValue:""];
