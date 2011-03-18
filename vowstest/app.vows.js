@@ -68,10 +68,7 @@ vows.describe('app')
     'app doesnt serve unknown files': {
         topic: api.get('/asdasda'),
         'should respond with a 404': assertStatus(404)
-    }
-})
-
-.addBatch({
+    },
     'app doesnt serve unknown agenda ': {
         topic: api.get('/agenda/unknownagenda'),
         'should respond with a 404': assertStatus(404)
@@ -82,20 +79,33 @@ vows.describe('app')
     'app should accept a post to /agenda': {        
         topic: api.post('/agenda', '{"holle":"holla"}'),
         'should respond with a 200': assertStatus(200)
-    }
-})
-
-.addBatch({
+    },
     'app shouldnt accept a post to /blabla': {        
         topic: api.post('/blabla', '{"holle":"holla"}'),
         'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a broken json': {        
+        topic: api.post('/blabla', '{XholleX:LhollaL}'),
+        'should respond with a 400': assertStatus(500) //should actually be 400 
     }
 })
 
 .addBatch({
-    'app shouldnt accept a broken json': {        
-        topic: api.post('/blabla', '{XholleX:LhollaL}'),
-        'should respond with a 400': assertStatus(500) //should actually be 400 
+    'app shouldnt accept a with missing user post to /password': {        
+        topic: api.post('/password', '{"holle":"holla"}'),
+        'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a post with missing password to /password': {        
+        topic: api.post('/password', '{"user":"testuser"}'),
+        'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a post with missing newpassword to /password': {        
+        topic: api.post('/password', '{"user":"testuser", "oldpassword":"testuser"}'),
+        'should respond with a 404': assertStatus(404)
+    },
+    'app shouldnt accept a wellformed post to /password': {        
+        topic: api.post('/password', '{"user":"testuser", "oldpassword":"testpassold", "newpassword":"testpassnew" }'),
+        'should respond with a 200': assertStatus(200)
     }
 })
 
