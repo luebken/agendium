@@ -5,7 +5,7 @@ Server
 
 Tests
 ------
-* Run 'startmongo.sh' & 'runvowstests.sh'
+* Run 'startmongo.sh' & 'vows vowstest/*'
 * cd client-src & 'jake test'
 
 
