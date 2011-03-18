@@ -175,7 +175,6 @@
 
 - (void)resetData {
     self.rootPage = [[Page alloc] init];
-    self.rootPage.navigationId = "r";
     self.pageViewController.page = rootPage;
     self.appId = undefined; 
     self.validName = true;

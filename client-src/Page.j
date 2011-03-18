@@ -31,7 +31,15 @@
     }
     return page;
 }
-           
+- (id) init {
+    self = [super init];
+    [self initWithTitle:''
+            andSubtitle:''
+            andType:'Navigation'
+            andNavigationId: 'r'];
+    return self;
+}           
+
 - (id) initWithTitle:(CPString) newtitle 
          andSubtitle:(CPString) newsubtitle
              andType:(CPString) newtype
