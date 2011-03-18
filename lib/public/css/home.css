@@ -49,8 +49,8 @@ body {
 
 #header .button {
     position: relative; 
-    top: -8px;
-    left: 365px;
+    top: -6px;
+    left: 435px;
     border: 1px solid #FA2;
     background: #FA2 url(../images/bg-btn.png) repeat-x 0px 0px;
     -webkit-border-radius: 5px;
