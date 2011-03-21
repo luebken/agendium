@@ -12,12 +12,14 @@
         initWithTitle:"A Title" 
         andSubtitle:"A Subtitle" 
         andType:"pagetype" 
+        andLogourl: "" 
         andNavigationId:"anavid"];    
         
     child1 = [[Page alloc] 
         initWithTitle:"A ChildTitle" 
         andSubtitle:"A ChildSubtitle" 
         andType:"childpagetype" 
+        andLogourl: "" 
         andNavigationId:"anavid2"];
     child1.attributes[0] = { key:"A key", value:"A value" };
 }
