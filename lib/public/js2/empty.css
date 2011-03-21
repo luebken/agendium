@@ -1,0 +1,11 @@
+body {
+}
+#msg1{
+    font: 24px "Helvetica Neue", Helvetica;
+    text-align: center;
+}
+#msg2{
+    padding: 50px;
+    font: 20px "Helvetica Neue", Helvetica;
+    text-align: center;
+}
