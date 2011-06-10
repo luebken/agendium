@@ -15,6 +15,7 @@
 @import "Panels/SharePanel.j"
 @import "Panels/NewPanel.j"
 @import "Panels/UserSettingsPanel.j"
+@import "Panels/SelectLogoPanel.j"
 @import "Panels/IntroPanel.j"
 @import "NewTemplate.j"
 @import "AgendiumConnection.j"
@@ -213,6 +214,9 @@
 - (@action) share:(id)sender {
     [[[SharePanel alloc] init:self andAppname:rootPage.title] orderFront:nil];
 }
+- (@action) selectLogo:(id)sender {
+    [[[SelectLogoPanel alloc] initWithUrl:self.rootPage.logourl andDelegate:self] orderFront:nil];    
+}
 
 //
 // AgendiumConnection Delegate
@@ -273,6 +277,9 @@
             break;   
         case "logout":
             history.go(-1);
+            break;
+        case "setlogo":
+            self.rootPage.logourl = data;
             break;
     } 
 }

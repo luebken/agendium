@@ -1,0 +1,9 @@
+ssh node@touchium.no.de
+
+http://wiki.joyent.com/display/node/Node+SmartMachine+FAQ#NodeSmartMachineFAQ-MongoDB
+$ # just as an example - you will really probably want to put these somewhere better:
+$ export LD_LIBRARY_PATH=mongo-extra-64
+$ bin/mongod --help
+ 
+# run mongo in a writable directory
+$ bin/mongod --dbpath ~/mongo
