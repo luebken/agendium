@@ -1,4 +1,4 @@
-@STATIC;1.0;p;20;AgendiumConnection.jt;6168;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;6101;
+@STATIC;1.0;p;20;AgendiumConnection.jt;6195;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;8;Config.jt;6128;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("Config.j",YES);
@@ -19,6 +19,7 @@ listDelegate=_9;
 }
 }),new objj_method(sel_getUid("checkUser:withPassword:delegate:"),function(_b,_c,_d,_e,_f){
 with(_b){
+CPLog("Baseurl "+BASEURL);
 var _10=objj_msgSend(CPURLRequest,"requestWithURL:",BASEURL+"user/"+_d+"/"+_e);
 objj_msgSend(_10,"setHTTPMethod:","GET");
 loginConnection=objj_msgSend(CPURLConnection,"connectionWithRequest:delegate:",_10,_b);
@@ -378,7 +379,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20110318-21:47:25";
+BUILDDATE="v20110610-19:13:10";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -626,7 +627,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;9858;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9765;
+p;20;PageViewController.jt;9827;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9734;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("LPKit/LPSlideView.j",YES);
 objj_executeFile("Table/TMTableView.j",YES);
@@ -878,7 +879,6 @@ var _53=objj_msgSend(objj_msgSend(table,"tableColumns")[1],"headerView");
 var _54=objj_msgSend(objj_msgSend(table,"tableColumns")[2],"headerView");
 var _55;
 objj_msgSend(_52,"setStringValue:","Type");
-CPLog("page.type "+page.type);
 if(objj_msgSend(page,"isNavigationType")){
 objj_msgSend(_53,"setStringValue:","Title");
 objj_msgSend(_54,"setStringValue:","Subtitle");

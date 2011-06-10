@@ -30,6 +30,7 @@
 }
 
 - (void) checkUser:(CPString)email withPassword:(CPString)password delegate:(id)delegate {
+    CPLog("Baseurl " + BASEURL);
     var request = [CPURLRequest requestWithURL:BASEURL+"user/"+email+"/"+password];
     [request setHTTPMethod:'GET'];
     loginConnection = [CPURLConnection connectionWithRequest:request delegate:self];
