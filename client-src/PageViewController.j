@@ -181,16 +181,19 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             newpage = [[Page alloc] initWithTitle:"Title of a navigation page" 
                                       andSubtitle:"The optional subtitle" 
                                           andType: "Navigation"
+                                       andLogourl: ''
                                   andNavigationId: navigationId ];
         } else if(itemtype == 'Detailpage') {
             newpage = [[Page alloc] initWithTitle:"Title of a detail page" 
                                       andSubtitle:"The optional subtitle" 
                                           andType: "Detail"
+                                       andLogourl: ''
                                   andNavigationId: navigationId];
         } else {
             newpage = [[Page alloc] initWithTitle:"A group title" 
                                           andSubtitle:"" 
                                               andType:"Group"
+                                           andLogourl: ''
                                       andNavigationId: navigationId ];
         }
         [page addChild:newpage atIndex:index];            
