@@ -387,7 +387,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20110610-19:15:22";
+BUILDDATE="v20110611-17:02:31";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -647,7 +647,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;9827;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9734;
+p;20;PageViewController.jt;9869;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9776;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("LPKit/LPSlideView.j",YES);
 objj_executeFile("Table/TMTableView.j",YES);
@@ -797,12 +797,12 @@ var _36=objj_msgSend(objj_msgSend(itemtypeButton,"selectedItem"),"title");
 var _37;
 var _38=page.navigationId+"c"+_35;
 if(_36=="Navigationpage"){
-_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","Title of a navigation page","The optional subtitle","Navigation",_38);
+_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andLogourl:andNavigationId:","Title of a navigation page","The optional subtitle","Navigation","",_38);
 }else{
 if(_36=="Detailpage"){
-_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","Title of a detail page","The optional subtitle","Detail",_38);
+_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andLogourl:andNavigationId:","Title of a detail page","The optional subtitle","Detail","",_38);
 }else{
-_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andNavigationId:","A group title","","Group",_38);
+_37=objj_msgSend(objj_msgSend(Page,"alloc"),"initWithTitle:andSubtitle:andType:andLogourl:andNavigationId:","A group title","","Group","",_38);
 }
 }
 objj_msgSend(page,"addChild:atIndex:",_37,_35);
