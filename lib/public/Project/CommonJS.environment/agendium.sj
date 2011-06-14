@@ -387,7 +387,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20110611-17:02:31";
+BUILDDATE="v20110614-10:26:54";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
