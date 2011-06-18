@@ -36,6 +36,17 @@
         [field setTextShadowOffset:CGSizeMakeZero()];
         [field setVerticalAlignment:CPCenterTextAlignment];
         [field setLineBreakMode:CPLineBreakByWordWrapping];
+        /*
+        [field setSendsActionOnEndEditing:YES];
+        [field setAction:@selector(didEndEditing)];  
+        [[CPNotificationCenter defaultCenter]
+            addObserver:self
+               selector:@selector(didEndEditing:)
+                   name:@"CPControlTextDidEndEditingNotification"
+                 object:field];
+        */
+        
+        
         [column1 setDataView:field];
 
         [column1 setWidth:170.0];

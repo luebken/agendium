@@ -78,6 +78,7 @@
                name:@"AddItemToListNotification"
              object:nil];
 
+    //TODO isnt fired at the moment
     [[CPNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(save:)

@@ -9,7 +9,6 @@
     @outlet CPScrollView scrollView;
     @outlet CPButton addButton;
     @outlet CPButton backButton;
-    @outlet CPButton editButton;
     @outlet CPPopUpButton itemtypeButton;
     @outlet CPTextField titleField;
     @outlet LPSlideView slideView;
@@ -58,34 +57,7 @@
     return YES;
 }
 
-//Fixme. Or Throw me away. 
-//TODO: Save on stopedEdtingCell
-- (@action) toggleEditing:(id)sender {    
-    var field;
-    if(self.editing) {
-        [self setEditing:NO];
-        [editButton setTitle:@"Edit"];
-        [editButton unsetThemeState:CPThemeStateDefault];
-        field = [CPTextField labelWithTitle:@""];
-        [field setFont:[CPFont systemFontOfSize:14.0]];
-        [field setVerticalAlignment:CPCenterTextAlignment];
-        [field setLineBreakMode:CPLineBreakByWordWrapping];
-        [[CPNotificationCenter defaultCenter] 
-            postNotificationName:@"EditingDoneNotification" 
-            object:nil];
-    } else {
-        [self setEditing:YES];
-        [editButton setTitle:@"Done"];
-        [editButton setThemeState:CPThemeStateDefault];
-        field = [CPTextField textFieldWithStringValue:@"" 
-                    placeholder:@"" 
-                          width:100];
-    }
-    var cols = [table tableColumns];
-    [cols[1] setDataView:field];
-    [cols[2] setDataView:field];
-    [self myRefresh];
-}
+
 
 
 //table datasource method
