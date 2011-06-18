@@ -387,7 +387,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20110614-10:26:54";
+BUILDDATE="v20110618-18:28:58";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -647,7 +647,7 @@ console.log("PageView.initWithFrame");
 return _3;
 }
 })]);
-p;20;PageViewController.jt;9869;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9776;
+p;20;PageViewController.jt;9767;@STATIC;1.0;I;21;Foundation/CPObject.ji;19;LPKit/LPSlideView.ji;19;Table/TMTableView.jt;9674;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("LPKit/LPSlideView.j",YES);
 objj_executeFile("Table/TMTableView.j",YES);
@@ -693,8 +693,6 @@ _11.delegate=_13;
 }
 }),new objj_method(sel_getUid("tableView:shouldEditTableColumn:row:"),function(_14,_15,_16,_17,row){
 with(_14){
-objj_msgSend(_14,"setEditing:",NO);
-objj_msgSend(_14,"toggleEditing:",_16);
 return YES;
 }
 }),new objj_method(sel_getUid("toggleEditing:"),function(_18,_19,_1a){
@@ -861,7 +859,6 @@ objj_msgSend(_3e,"duplicateItemFromList:",row);
 }
 }),new objj_method(sel_getUid("animationDidEnd:"),function(_45,_46,_47){
 with(_45){
-CPLog("animationDidEnd");
 }
 }),new objj_method(sel_getUid("backButtonClicked:"),function(_48,_49,_4a){
 with(_48){
@@ -3208,7 +3205,7 @@ var s=_8?_8.title:"";
 objj_msgSendSuper({receiver:_6,super_class:objj_getClass("TextFieldColumnView").super_class},"setObjectValue:",s);
 }
 })]);
-p;19;Table/TMTableView.jt;2858;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;ImageTextColumnView.jt;2764;
+p;19;Table/TMTableView.jt;2875;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;ImageTextColumnView.jt;2781;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("ButtonColumnView.j",YES);
 objj_executeFile("ImageTextColumnView.j",YES);
@@ -3217,8 +3214,8 @@ objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("initWithFrame:"),function(_3,_4,_5){
 with(_3){
 if(_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("TMTableView").super_class},"initWithFrame:",_5)){
+CPLog("TMTableView.initWithFrame");
 objj_msgSend(_3,"setUsesAlternatingRowBackgroundColors:",YES);
-objj_msgSend(_3,"setAlternatingRowBackgroundColors:",[objj_msgSend(CPColor,"whiteColor"),objj_msgSend(CPColor,"colorWithHexString:","e4e7ff")]);
 objj_msgSend(_3,"setRowHeight:",50);
 objj_msgSend(_3,"setAllowsColumnSelection:",NO);
 var _6=objj_msgSend(objj_msgSend(CPTableColumn,"alloc"),"initWithIdentifier:","zero");
@@ -3232,6 +3229,8 @@ var _8=objj_msgSend(objj_msgSend(CPTableColumn,"alloc"),"initWithIdentifier:","f
 objj_msgSend(objj_msgSend(_8,"headerView"),"setStringValue:","Title");
 var _9=objj_msgSend(CPTextField,"labelWithTitle:","");
 objj_msgSend(_9,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
+objj_msgSend(_9,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
+objj_msgSend(_9,"setTextShadowOffset:",CGSizeMakeZero());
 objj_msgSend(_9,"setVerticalAlignment:",CPCenterTextAlignment);
 objj_msgSend(_9,"setLineBreakMode:",CPLineBreakByWordWrapping);
 objj_msgSend(_8,"setDataView:",_9);

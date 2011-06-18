@@ -11,8 +11,10 @@
 - (id)initWithFrame:(CGRect) frame {
     if(self = [super initWithFrame:frame]) {
         
+        CPLog('TMTableView.initWithFrame');
+        
         [self setUsesAlternatingRowBackgroundColors:YES];
-        [self setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
+        //[self setAlternatingRowBackgroundColors:[[CPColor whiteColor], [CPColor colorWithHexString:@"e4e7ff"]]];
         [self setRowHeight:50];
         [self setAllowsColumnSelection:NO];
         
@@ -30,6 +32,8 @@
         [[column1 headerView] setStringValue:"Title"];
         var field = [CPTextField labelWithTitle:@""];
         [field setFont:[CPFont systemFontOfSize:14.0]];
+        [field setTextColor:[CPColor grayColor]];
+        [field setTextShadowOffset:CGSizeMakeZero()];
         [field setVerticalAlignment:CPCenterTextAlignment];
         [field setLineBreakMode:CPLineBreakByWordWrapping];
         [column1 setDataView:field];

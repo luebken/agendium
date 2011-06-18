@@ -53,12 +53,14 @@
 //CPTableViewDelegate
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
-    [self setEditing:NO];//so switch always back to YES in toggleEditing
-    [self toggleEditing:aTableView];
+    //[self setEditing:NO];//so switch always back to YES in toggleEditing
+    //[self toggleEditing:aTableView];
     return YES;
 }
 
-- (@action) toggleEditing:(id)sender {
+//Fixme. Or Throw me away. 
+//TODO: Save on stopedEdtingCell
+- (@action) toggleEditing:(id)sender {    
     var field;
     if(self.editing) {
         [self setEditing:NO];
@@ -259,7 +261,6 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 -(void)animationDidEnd:(CPAnimation)animation {
-    CPLog("animationDidEnd");
 }
 
 - (@action)backButtonClicked:(id)sender {
