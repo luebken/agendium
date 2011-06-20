@@ -156,18 +156,21 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
                                       andSubtitle:"The optional subtitle" 
                                           andType: "Navigation"
                                        andLogourl: ''
+                                         andColor: ''
                                   andNavigationId: navigationId ];
         } else if(itemtype == 'Detailpage') {
             newpage = [[Page alloc] initWithTitle:"Title of a detail page" 
                                       andSubtitle:"The optional subtitle" 
                                           andType: "Detail"
                                        andLogourl: ''
+                                         andColor: ''
                                   andNavigationId: navigationId];
         } else {
             newpage = [[Page alloc] initWithTitle:"A group title" 
                                           andSubtitle:"" 
                                               andType:"Group"
                                            andLogourl: ''
+                                             andColor: ''
                                       andNavigationId: navigationId ];
         }
         [page addChild:newpage atIndex:index];            
@@ -253,14 +256,15 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (@action) selectLogo:(id)sender {
-    [[[SelectLogoPanel alloc] initWithUrl:self.page.logourl andDelegate:self] orderFront:nil];    
+    [[[SelectLogoPanel alloc] initWithUrl:self.page.logourl andColor:self.page.color andDelegate:self] orderFront:nil];    
 }
 
 //Panel Delegate
 - (void) panelDidClose:(id)tag data:(id)data {
     switch(tag){
         case "setlogo":
-            self.page.logourl = data;
+            self.page.logourl = data.logourl;
+            self.page.color = data.color;
             break;
     } 
 }

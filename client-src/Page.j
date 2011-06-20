@@ -6,6 +6,7 @@
     CPString title @accessors;
     CPString subtitle @accessors;
     CPString logourl @accessors;
+    CPString color @accessors;
     Page[] children @accessors;
     CPString type @accessors;
     CPString[] attributes @accessors;
@@ -19,6 +20,7 @@
                                andSubtitle:object.subtitle
                                    andType:object.type
                                 andLogourl:object.logourl
+                                  andColor:object.color
                            andNavigationId:navigationId];
     for (var i=0; i < object.children.length; i++) {
         var childNnavigationId = navigationId + "c" + i;
@@ -39,6 +41,7 @@
             andSubtitle:''
             andType:'Navigation'
             andLogourl: ''
+            andColor: ''
             andNavigationId: 'r'];
     return self;
 }           
@@ -47,12 +50,14 @@
          andSubtitle:(CPString) newsubtitle
              andType:(CPString) newtype
           andLogourl:(CPString) newlogourl
+            andColor:(CPString) newcolor
      andNavigationId:(CPString) newNavigationId {
     self = [super init];
     self.title = newtitle;
     self.subtitle = newsubtitle;
     self.type = newtype;
     self.logourl = newlogourl;
+    self.color = newcolor;
     self.navigationId = newNavigationId;
     self.children = [[CPArray alloc] init];
     self.attributes = [[CPArray alloc] init];
@@ -85,6 +90,7 @@
                 andSubtitle:self.subtitle
                 andType:self.type
                 andLogourl:self.logourl
+                andColor:self.color
                 andNavigationId:self.navigationId];
     for (var i=0; i < children.length; i++) {
         var child = [children[i] deepCopy];
@@ -130,6 +136,9 @@
     }
     if(logourl) {
         json += '","logourl":"' + logourl;
+    }
+    if(color) {
+        json += '","color":"' + color;
     }
     json += '","type":"' + type + '","children":[' + childrenJSON + '],"attributes":[' + attributesJSON + ']}';
     return json;
