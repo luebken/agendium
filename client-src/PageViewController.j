@@ -16,7 +16,7 @@
     id delegate;
     TMTableView table;
     Page page @accessors;
-    boolean editing @accessors;
+    boolean myediting @accessors;
 }
 
 - (void) initTable {
@@ -32,7 +32,7 @@
     [backButton setEnabled:NO];
     [itemtypeButton removeAllItems];
 
-    self.editing = NO;
+    self.myediting = NO;
 
     [titleField setFont:[CPFont systemFontOfSize:14.0]];
     [titleField setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
@@ -52,12 +52,39 @@
 //CPTableViewDelegate
 - (BOOL)tableView:(CPTableView)aTableView shouldEditTableColumn:(CPTableColumn)tableColumn row:(int)row
 {
-    //[self setEditing:NO];//so switch always back to YES in toggleEditing
+    [self setMyediting:YES];
     //[self toggleEditing:aTableView];
     return YES;
 }
 
-
+/*
+- (@action) toggleEditing:(id)sender {
+    var field;
+    if(self.myediting) {
+        [self setEditing:NO];
+        [editButton setTitle:@"Edit"];
+        [editButton unsetThemeState:CPThemeStateDefault];
+        field = [CPTextField labelWithTitle:@""];
+        [field setFont:[CPFont systemFontOfSize:14.0]];
+        [field setVerticalAlignment:CPCenterTextAlignment];
+        [field setLineBreakMode:CPLineBreakByWordWrapping];
+        [[CPNotificationCenter defaultCenter] 
+            postNotificationName:@"EditingDoneNotification" 
+            object:nil];
+    } else {
+        [self setMyediting:YES];
+        [editButton setTitle:@"Done"];
+        [editButton setThemeState:CPThemeStateDefault];
+        field = [CPTextField textFieldWithStringValue:@"" 
+                    placeholder:@"" 
+                          width:100];
+    }
+    var cols = [table tableColumns];
+    [cols[1] setDataView:field];
+    [cols[2] setDataView:field];
+    [self myRefresh];
+}
+*/
 
 
 //table datasource method
@@ -86,11 +113,11 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             case "second":
               return pageAtRow.subtitle;
             case "button2":
-              visible = pageAtRow.type !== 'Group' && editing;
-              return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};
+              visible = pageAtRow.type !== 'Group' && myediting;
+              return {row:row, visible:visible, editing:myediting, column:[tableColumn identifier]};
             default :
               visible = pageAtRow.type !== 'Group';
-              return {row:row, visible:visible, editing:editing, column:[tableColumn identifier]};   
+              return {row:row, visible:visible, editing:myediting, column:[tableColumn identifier]};   
         }
     } else {
         var attribute = [[page attributes] objectAtIndex:row];
@@ -104,7 +131,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
             case "second":
               return value;
             default :
-              return {visible:NO, row:row, editing:editing, column:[tableColumn identifier]};
+              return {visible:NO, row:row, editing:myediting, column:[tableColumn identifier]};
         }
     }
 }
@@ -214,7 +241,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     var row = o.row;
     var column = o.column;
     
-    if(![self editing]) {
+    if(![self myediting]) {
         var oldpageid = page.navigationId;
         page = [[page children] objectAtIndex:row];
         var bounds = [[slideView subviews][0] bounds];
@@ -270,6 +297,7 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 }
 
 - (void) myRefresh {
+    [self setMyediting:NO];
     [table reloadData];
     [backButton setEnabled:page.ancestor != null];
     [table deselectAll];
