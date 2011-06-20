@@ -2,7 +2,7 @@
 @import <Foundation/CPObject.j>
 @import "LPKit/LPSlideView.j"
 @import "Table/TMTableView.j"
-
+@import "Panels/SelectLogoPanel.j"
 
 @implementation PageViewController : CPViewController
 {
@@ -235,6 +235,10 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
 -(void)animationDidEnd:(CPAnimation)animation {
 }
 
+//
+// Actions
+//
+
 - (@action)backButtonClicked:(id)sender {
     var oldpageid = page.navigationId;
     page = [page ancestor];
@@ -246,6 +250,19 @@ objectValueForTableColumn:(CPTableColumn)tableColumn
     [slideView slideToView:newScrollView direction:LPSlideViewNegativeDirection];
     [delegate changePageTo:page.navigationId animate:YES reverse:YES];        
     [self myRefresh];
+}
+
+- (@action) selectLogo:(id)sender {
+    [[[SelectLogoPanel alloc] initWithUrl:self.page.logourl andDelegate:self] orderFront:nil];    
+}
+
+//Panel Delegate
+- (void) panelDidClose:(id)tag data:(id)data {
+    switch(tag){
+        case "setlogo":
+            self.page.logourl = data;
+            break;
+    } 
 }
 
 - (void) myRefresh {

@@ -39,11 +39,11 @@ ul li.staron {
     overflow: hidden; 
     white-space: nowrap;
 }
-#logo {  
+.pagelogo {  
     margin:25px 0px 0px 0px;
     padding: 0px;  
 }
-#homeheader {
+.pagelogo h1 {
     text-align: center;
     padding: 0px;
 }
