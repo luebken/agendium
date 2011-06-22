@@ -50,10 +50,10 @@
     passwordDelegate = delegate;
 }
 
-- (void) saveAgenda:(id)appId rootPage:(Page) rootPage userid:(CPString)userid delegate:(id)delegate {
+- (void) saveAgenda:(id)appId rootPage:(Page) rootPage userid:(CPString)userid offline:(CPString)offline delegate:(id)delegate {
     var request = [CPURLRequest requestWithURL:BASEURL + "agenda"];
     [request setHTTPMethod:'POST'];
-    var jsonData = '{"_id":"' + appId + '","userid":"' + userid + '", "rootpage":'+ [rootPage toJSON] + '}';
+    var jsonData = '{"_id":"' + appId + '","userid":"' + userid + '","offline":"' + offline + '", "rootpage":'+ [rootPage toJSON] + '}';
     [request setHTTPBody:jsonData];
     [request setValue:'application/json' forHTTPHeaderField:"Accept"];
     [request setValue:'application/json' forHTTPHeaderField:"Content-Type"];
@@ -111,7 +111,7 @@
     if(data) {
         try {
             var obj = JSON.parse(data);
-            [delegate didReceiveAgenda:obj._id withRootPage:undefined];
+            [delegate didReceiveAgenda:obj._id withRootPage:undefined andOffline:obj.offline];
         } catch (e) {
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 
@@ -125,7 +125,7 @@
         try {
             var obj = JSON.parse(data);
             var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-            [delegate didReceiveAgenda:obj._id withRootPage:rootPage]
+            [delegate didReceiveAgenda:obj._id withRootPage:rootPage andOffline:obj.offline]
         } catch (e) {
             [delegate failureWhileReceivingAgenda:@"Error while parsing Data: " + e];
         } 

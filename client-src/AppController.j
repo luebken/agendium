@@ -35,6 +35,8 @@
     @outlet CPTextField appnameProblemLabel;
     @outlet CPTextField buildDateLabel;
     @outlet CPView pageView;
+    @outlet CPCheckBox offlineCheckbox;
+
 
     Page rootPage;
     PageViewController pageViewController;
@@ -207,8 +209,9 @@
     [[[NewPanel alloc] init:self] orderFront:nil];
 }
 - (@action) save:(id)sender {
+    var offline = [offlineCheckbox objectValue];
     if(validName && nameOKServer){
-        [aConnection saveAgenda:appId rootPage:rootPage userid:user.id delegate:self];
+        [aConnection saveAgenda:appId rootPage:rootPage userid:user.id offline:offline delegate:self];
     }
 }
 - (@action) share:(id)sender {
@@ -216,14 +219,16 @@
 }
 
 
+
 //
 // AgendiumConnection Delegate
 //
--(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage  {
+-(void)didReceiveAgenda:(id)appId2 withRootPage:(Page)newRootpage andOffline:(CPString)offline  {
     self.appId = appId2;
     if(newRootpage) {
         self.rootPage = newRootpage;
-        [appnameField setObjectValue:newRootpage.title];        
+        [appnameField setObjectValue:newRootpage.title];     
+        [offlineCheckbox setObjectValue:offline];        
         [pageViewController setPage:newRootpage];
     }
     namechanged = false;
@@ -271,7 +276,7 @@
             [self resetData];
             var obj = JSON.parse([NewTemplate jsonDataForTemplate:tag withStartingDate:data]);
             var rootPage = [Page initFromJSONObject:obj.rootpage andNavigationId:"r"];
-            [self didReceiveAgenda:undefined withRootPage:rootPage];        
+            [self didReceiveAgenda:undefined withRootPage:rootPage andOffline:'0'];        
             break;   
         case "logout":
             history.go(-1);
