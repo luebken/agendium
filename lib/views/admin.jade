@@ -6,11 +6,18 @@ html
     h2 Current users
     ul
       - each user in users
-        li= user.email
-    h2 Create a new user
-    form(action='/admin/create_secret_user', method='post')
+        form(action='/admin/delete_user', method='post')
+          'Email'
+          input(type="text", name='email', value=user.email)
+          'Id'
+          input(type="text", name='id', value=JSON.stringify(user._id))
+          input(type="text", name='adminpassword', value=adminpassword, hidden)
+          input(type='submit', value='Delete')    
+    h2 New user
+    form(action='/admin/create_user', method='post')
       'Email'
       input(type="text", name='email')
       'Password'
       input(type="text", name='password')
+      input(type="text", name='adminpassword', value=adminpassword, hidden)
       input(type='submit')
