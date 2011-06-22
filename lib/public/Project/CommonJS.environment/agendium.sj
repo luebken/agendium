@@ -153,7 +153,7 @@ CPLog("Error didReceiveChangePassword");
 objj_msgSend(_4c,"didntChangePassword");
 }
 })]);
-p;15;AppController.jt;9834;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;26;Panels/UserSettingsPanel.ji;19;Panels/IntroPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.ji;13;PreviewView.jt;9518;
+p;15;AppController.jt;9730;@STATIC;1.0;I;21;Foundation/CPObject.ji;6;Page.ji;10;PageView.ji;20;PageViewController.ji;19;Panels/LoginPanel.ji;18;Panels/OpenPanel.ji;19;Panels/SharePanel.ji;17;Panels/NewPanel.ji;26;Panels/UserSettingsPanel.ji;19;Panels/IntroPanel.ji;13;NewTemplate.ji;20;AgendiumConnection.ji;8;Config.ji;13;PreviewView.jt;9414;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("Page.j",YES);
 objj_executeFile("PageView.j",YES);
@@ -349,7 +349,6 @@ switch(tag){
 case "login":
 _42.user=_44;
 objj_msgSend(theWindow,"orderFront:",_42);
-objj_msgSend(objj_msgSend(objj_msgSend(IntroPanel,"alloc"),"initWithDelegate:",_42),"orderFront:",nil);
 break;
 case "open":
 CPLog("Loading Agenda for "+_42.user.id+" and name "+_44);
@@ -381,7 +380,7 @@ p;13;Config-prod.jt;50;@STATIC;1.0;t;33;
 BASEURL="http://touchium.com/";
 p;8;Config.jt;82;@STATIC;1.0;t;65;
 BASEURL="http://touchium.com/";
-BUILDDATE="v20110622-09:14:48";
+BUILDDATE="v20110622-21:41:32";
 p;6;main.jt;267;@STATIC;1.0;I;23;Foundation/Foundation.jI;15;AppKit/AppKit.ji;15;AppController.jt;181;
 objj_executeFile("Foundation/Foundation.j",NO);
 objj_executeFile("AppKit/AppKit.j",NO);
@@ -3211,7 +3210,7 @@ var s=_8?_8.title:"";
 objj_msgSendSuper({receiver:_6,super_class:objj_getClass("TextFieldColumnView").super_class},"setObjectValue:",s);
 }
 })]);
-p;19;Table/TMTableView.jt;2875;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;ImageTextColumnView.jt;2781;
+p;19;Table/TMTableView.jt;2858;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;ButtonColumnView.ji;21;ImageTextColumnView.jt;2764;
 objj_executeFile("Foundation/CPObject.j",NO);
 objj_executeFile("ButtonColumnView.j",YES);
 objj_executeFile("ImageTextColumnView.j",YES);
@@ -3220,7 +3219,6 @@ objj_registerClassPair(_1);
 class_addMethods(_1,[new objj_method(sel_getUid("initWithFrame:"),function(_3,_4,_5){
 with(_3){
 if(_3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("TMTableView").super_class},"initWithFrame:",_5)){
-CPLog("TMTableView.initWithFrame");
 objj_msgSend(_3,"setUsesAlternatingRowBackgroundColors:",YES);
 objj_msgSend(_3,"setRowHeight:",50);
 objj_msgSend(_3,"setAllowsColumnSelection:",NO);
@@ -3235,7 +3233,7 @@ var _8=objj_msgSend(objj_msgSend(CPTableColumn,"alloc"),"initWithIdentifier:","f
 objj_msgSend(objj_msgSend(_8,"headerView"),"setStringValue:","Title");
 var _9=objj_msgSend(CPTextField,"labelWithTitle:","");
 objj_msgSend(_9,"setFont:",objj_msgSend(CPFont,"systemFontOfSize:",14));
-objj_msgSend(_9,"setTextColor:",objj_msgSend(CPColor,"grayColor"));
+objj_msgSend(_9,"setTextColor:",objj_msgSend(CPColor,"colorWithHexString:","333333"));
 objj_msgSend(_9,"setTextShadowOffset:",CGSizeMakeZero());
 objj_msgSend(_9,"setVerticalAlignment:",CPCenterTextAlignment);
 objj_msgSend(_9,"setLineBreakMode:",CPLineBreakByWordWrapping);
