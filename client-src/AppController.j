@@ -259,7 +259,7 @@
         case "login":
             self.user = data;
             [theWindow orderFront:self];
-            [[[IntroPanel alloc] initWithDelegate:self] orderFront:nil];    
+            //[[[IntroPanel alloc] initWithDelegate:self] orderFront:nil];    
             break;
         case "open":
             CPLog("Loading Agenda for " + self.user.id + " and name " + data);
